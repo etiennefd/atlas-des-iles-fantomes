@@ -1,0 +1,111 @@
+---
+import { getCollection, render } from "astro:content";
+import { marked } from "marked";
+import Base from "../../../layouts/Base.astro";
+import { ui, other, type Lang } from "../../../i18n/ui";
+import { splitStoryId, lifespan } from "../../../lib/atlas";
+
+export async function getStaticPaths() {
+  const stories = await getCollection("stories");
+  return stories.map((story) => {
+    const { lang, slug } = splitStoryId(story.id);
+    return { params: { lang, slug }, props: { story } };
+  });
+}
+
+const { story } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const t = ui[lang];
+const o = other(lang);
+
+const islands = await getCollection("islands");
+const covered = story.data.islands
+  .map((id) => islands.find((i) => i.id === id))
+  .filter(Boolean);
+
+// The signature: each island's lifespan, joined when a story covers several.
+const spans = covered
+  .map((i) => {
+    const s = lifespan(i!);
+    return covered.length > 1 && s
+      ? `${lang === "fr" ? i!.data.name_fr : i!.data.name_en}, ${s}`
+      : s;
+  })
+  .filter(Boolean);
+
+// Does a counterpart exist in the other language?
+const stories = await getCollection("stories");
+const counterpart = stories.find((s) => {
+  const p = splitStoryId(s.id);
+  return (
+    p.lang === o && s.data.islands.some((id) => story.data.islands.includes(id))
+  );
+});
+const altHref = counterpart
+  ? `/${o}/iles/${splitStoryId(counterpart.id).slug}/`
+  : undefined;
+
+const { Content } = await render(story);
+const inline = (md: string) => marked.parseInline(md);
+---
+
+<Base lang={lang} title={story.data.title} altHref={altHref}>
+  <article class="story">
+    <h1 class="story__title">{story.data.title}</h1>
+    {spans.length > 0 && <span class="story__span sc">{spans.join(" · ")}</span>}
+
+    {
+      story.data.images.map((img) => (
+        <figure class="story__figure">
+          <img src={img.src} alt={img.alt} loading="lazy" />
+          {img.caption && (
+            <figcaption set:html={inline(img.caption)} />
+          )}
+        </figure>
+      ))
+    }
+
+    {
+      story.data.notice.length > 0 && (
+        <div class="notice">
+          {story.data.notice.map((row) => (
+            <p class="notice__row">
+              <span class="notice__label">{row.label}</span>
+              <span class="notice__body" set:html={inline(row.body)} />
+            </p>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="story__foot">
+      {
+        story.data.source && (
+          <p>
+            {t.originally}{" "}
+            <a href={story.data.source}>Cartographier tout et n'importe quoi</a>
+            {", "}
+            <span class="sc">
+              {story.data.date.toLocaleDateString(lang, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </p>
+        )
+      }
+      {
+        counterpart && (
+          <p>
+            <a href={altHref}>{t.otherLang}</a>
+          </p>
+        )
+      }
+    </footer>
+  </article>
+</Base>

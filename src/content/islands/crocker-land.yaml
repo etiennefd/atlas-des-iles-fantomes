@@ -1,0 +1,6 @@
+name_fr: Crocker Land
+name_en: Crocker Land
+kind: island
+ocean: arctique
+coords: [-100.0, 83.0]  # TODO verify
+span: [1906, 1914]

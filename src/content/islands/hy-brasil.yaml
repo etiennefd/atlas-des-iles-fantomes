@@ -1,0 +1,6 @@
+name_fr: L'île de Hy-Brasil
+name_en: The Island of Hy-Brasil
+kind: island
+ocean: atlantique-nord
+coords: [-15.0, 51.5]   # TODO verify
+span: [1325, 1865]

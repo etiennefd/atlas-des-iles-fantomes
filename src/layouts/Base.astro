@@ -1,0 +1,45 @@
+---
+import "../styles/tokens.css";
+import { ui, other, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  /** Path on the other language site, if a counterpart exists. */
+  altHref?: string;
+}
+const { lang, title, altHref } = Astro.props;
+const t = ui[lang];
+const o = other(lang);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} — ${t.siteTitle}` : t.siteTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+    />
+    {altHref && <link rel="alternate" hreflang={o} href={altHref} />}
+  </head>
+  <body>
+    <header class="masthead">
+      <p class="masthead__title">
+        <a href={`/${lang}/`}>{t.siteTitle}</a>
+      </p>
+      <nav class="sc">
+        <a href={`/${lang}/liste/`}>{t.list}</a>
+        {" · "}
+        <a href={altHref ?? `/${o}/`}>{t.otherLang}</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

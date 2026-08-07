@@ -1,0 +1,6 @@
+name_fr: Bradley Land
+name_en: Bradley Land
+kind: island
+ocean: arctique
+coords: [-102.0, 85.0]  # TODO verify
+span: [1907, 1918]

@@ -1,0 +1,8 @@
+# Planned state test case: no story in either language.
+name_fr: Thulé
+name_en: Thule
+kind: island
+ocean: atlantique-nord
+coords: [-8.0, 64.0]    # TODO verify
+span_qualifier: vers
+span: [-330, 1600]

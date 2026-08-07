@@ -1,0 +1,261 @@
+/* ---------------------------------------------------------------
+   Atlas des îles fantômes — tokens
+   The page background IS the ocean. No panel chrome over the map.
+   --------------------------------------------------------------- */
+
+@font-face {
+  /* Faune — Alice Savoie / CNAP, free. Drop the .woff2 files in
+     /public/fonts/ ; falls back to Spectral until you do.
+     https://github.com/Fondation-Cartier/faune  (or the CNAP release) */
+  font-family: "Faune";
+  src: url("/fonts/Faune-Text-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Faune";
+  src: url("/fonts/Faune-Text-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --water: #edeff0;
+  --land: #383d40;
+  --phantom: #74202f;
+  --phantom-soft: #b08089;
+  --ink: #16191b;
+  --rule: #c7cccf;
+
+  --display: "Faune", "Spectral", Georgia, serif;
+  --body: "Spectral", Georgia, "Times New Roman", serif;
+
+  --measure: 34rem; /* ~68 characters at this size */
+  --step: 1.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--water);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-variant-numeric: oldstyle-nums;
+}
+
+a {
+  color: var(--phantom);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--phantom);
+  outline-offset: 3px;
+}
+
+/* --- small caps utility: dates, labels, the counter ------------- */
+.sc {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.9em;
+}
+
+/* --- site chrome ------------------------------------------------ */
+.masthead {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: calc(var(--step) * 2) var(--step) var(--step);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.masthead a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.masthead__title {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.counter {
+  color: var(--land);
+  white-space: nowrap;
+}
+
+/* --- story page ------------------------------------------------- */
+.story {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--step) calc(var(--step) * 4);
+}
+
+.story__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5.5vw, 2.6rem);
+  line-height: 1.15;
+  margin: calc(var(--step) * 1.5) 0 0.35rem;
+  text-wrap: balance;
+}
+
+/* The signature: an island's lifespan, set like a specimen label. */
+.story__span {
+  color: var(--land);
+  margin: 0 0 var(--step);
+  display: block;
+}
+
+.story__figure {
+  margin: var(--step) 0;
+}
+.story__figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--rule);
+}
+.story__figure figcaption {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--land);
+  margin-top: 0.6rem;
+  line-height: 1.5;
+}
+
+/* The bullet block. Open-ended labels, so it has to survive
+   both "à l'ouest de l'Irlande" and a four-line paragraph. */
+.notice {
+  margin: calc(var(--step) * 1.5) 0;
+  padding: var(--step) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.notice__row + .notice__row {
+  margin-top: 0.65rem;
+}
+.notice__label {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.07em;
+  color: var(--land);
+}
+.notice__label::after {
+  content: " : ";
+  letter-spacing: 0;
+}
+:root:lang(en) .notice__label::after,
+[lang="en"] .notice__label::after {
+  content: ": ";
+}
+.notice__body {
+  display: inline;
+}
+.notice__body p {
+  display: inline;
+  margin: 0;
+}
+
+/* Scene break. `***` in markdown renders as <hr>; we draw his `//`. */
+.prose hr {
+  border: 0;
+  margin: calc(var(--step) * 1.6) 0;
+  text-align: center;
+}
+.prose hr::after {
+  content: "//";
+  color: var(--phantom-soft);
+  font-family: var(--body);
+  letter-spacing: 0.15em;
+}
+
+.prose p {
+  margin: 0 0 1.1em;
+}
+.prose p:first-of-type::first-line {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.04em;
+}
+
+.story__foot {
+  margin-top: calc(var(--step) * 2.5);
+  padding-top: var(--step);
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--land);
+}
+.story__foot ul {
+  padding-left: 1.1em;
+  margin: 0.4rem 0;
+}
+
+/* Cross-language note, for stories that exist in one language only. */
+.crosslang {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--land);
+  margin: 0 0 var(--step);
+}
+
+/* --- list page -------------------------------------------------- */
+.list {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--step) calc(var(--step) * 4);
+}
+.list h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.9rem;
+  margin: var(--step) 0 var(--step);
+}
+.list ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.list li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+.list li[data-state="planned"] {
+  color: var(--phantom-soft);
+}
+.list__span {
+  color: var(--land);
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
