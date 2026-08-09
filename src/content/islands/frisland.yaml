@@ -1,0 +1,10 @@
+name_fr: "Frisland"
+name_en: "Frisland"
+kind: island
+ocean: atlantique-nord
+coords: [-25.0, 62.5]
+span: [1558, 1660]
+coords_confidence: approximate
+coords_note: >-
+  Zeno map 1558: south of Iceland. Reappeared off Labrador 1630; gone by
+  1652.

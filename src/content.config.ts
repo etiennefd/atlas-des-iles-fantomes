@@ -9,6 +9,8 @@ const OCEANS = [
   "pacifique-sud",
   "indien",
   "antarctique",
+  "mer-noire",
+  "mediterranee",
 ] as const;
 
 /**
@@ -39,6 +41,19 @@ const islands = defineCollection({
     span: z.tuple([z.number().nullable(), z.number().nullable()]).optional(),
     /** e.g. "vers" — prefixed to the span when displayed. */
     span_qualifier: z.string().optional(),
+
+    /**
+     * How much to trust `coords`.
+     * attested    — a specific published position exists
+     * approximate — a described region, no fixed coordinate
+     * conjectural — my guess from context; check it
+     * unknown     — no position found; island cannot be drawn yet
+     */
+    coords_confidence: z
+      .enum(["attested", "approximate", "conjectural", "unknown"])
+      .default("unknown"),
+    /** Where the position came from, or why there isn't one. */
+    coords_note: z.string().optional(),
   }),
 });
 
@@ -53,6 +68,8 @@ const stories = defineCollection({
     /** Island ids covered by this story. At least one. */
     islands: z.array(z.string()).nonempty(),
     date: z.date(),
+    /** Partial draft: keeps the notice, but the island still reads as planned. */
+    draft: z.boolean().default(false),
     /** Original post on the old blog, if any. */
     source: z.string().url().optional(),
 

@@ -71,8 +71,36 @@ gh repo create atlas-des-iles-fantomes --private --source=. --push
 Then point Cloudflare Pages at the repo: build command `npm run build`, output
 directory `dist`.
 
+## The map
+
+`src/components/PhantomMap.astro` + `src/components/map.ts`. Van der Grinten
+projection, D3, ~33 kB gzipped. Hover (or first tap on touch) reveals the
+island's name and lifespan; click navigates. Wheel/pinch zooms to 8x.
+
+Geometry is **placeholder blobs**, generated from each island's coordinates:
+
+```sh
+python3 scripts/build_geojson.py
+cp src/data/islands.geojson public/data/islands.geojson
+```
+
+Re-run that after editing any island's `coords`. Replace blobs with traced
+outlines one at a time — nothing else depends on the shapes.
+
+### Winding order
+
+d3-geo reads polygons spherically. A ring wound the wrong way renders as *the
+whole planet minus that island* — a solid disc over the map. The build script
+forces clockwise. **QGIS and geojson.io export counterclockwise**, so flip
+anything you trace. Check with:
+
+```js
+import { geoArea } from "d3-geo";        // > 2*PI means inverted
+```
+
 ## Next
 
-1. Coordinates for the remaining islands (see PLAN.md §11).
-2. The map: Van der Grinten, D3, Voronoi hit-testing, halos, zoom.
-3. Migrate the 28 stories.
+1. Verify the conjectural coordinates (see COORDINATES.md).
+2. Migrate the 28 stories.
+3. Trace real outlines, starting with californie, coree and frisland — the
+   three where a blob actively misleads.

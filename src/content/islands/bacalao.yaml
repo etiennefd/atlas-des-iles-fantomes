@@ -1,0 +1,9 @@
+name_fr: "Bacalao"
+name_en: "Bacalao"
+kind: island
+ocean: atlantique-nord
+coords: [-52.0, 47.5]
+span: [1508, 1600]
+coords_confidence: conjectural
+coords_note: >-
+  Terra dos Bacalhaus, Newfoundland region. Position highly variable.

@@ -1,0 +1,10 @@
+name_fr: "L'île María de Lajara"
+name_en: "María de Lajara"
+kind: island
+ocean: pacifique-nord
+coords: [-140.0, 27.0]
+span: [1699, 1830]
+coords_confidence: attested
+coords_note: >-
+  Pacific charts registered it at about 27 N, 140 W (ENE of Hawaii) from
+  the late 17th to early 19th century.

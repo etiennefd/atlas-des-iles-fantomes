@@ -1,0 +1,11 @@
+name_fr: "Les îles Nimrod"
+name_en: "The Nimrod Islands"
+kind: island
+ocean: antarctique
+coords: [-158.0, -56.0]
+span: [1828, 1909]
+coords_confidence: attested
+coords_note: >-
+  Charted at approximately 56 S 158 W, east of Emerald Island and west of
+  Dougherty Island. Reported 1828 by Capt. Eilbeck of the Nimrod; disproven
+  1909 by Capt. Davis of a different Nimrod.

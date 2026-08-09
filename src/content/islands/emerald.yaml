@@ -1,0 +1,9 @@
+name_fr: "L'île Emerald"
+name_en: "Emerald Island"
+kind: island
+ocean: antarctique
+coords: [162.2, -57.5]
+span: [1821, 1909]
+coords_confidence: attested
+coords_note: >-
+  Capt. William Elliot of the Emerald, December 1821: 57 30' S 162 12' E.

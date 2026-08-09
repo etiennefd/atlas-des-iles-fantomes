@@ -1,0 +1,10 @@
+name_fr: "Kianida"
+name_en: "Kianida"
+kind: island
+ocean: mer-noire
+coords: [33.0, 43.5]
+span: [1467, 1600]
+coords_confidence: conjectural
+coords_note: >-
+  Cianeis Insula, shown in the Black Sea on a 1467 map. Ocean field needs
+  a 'mer-noire' value adding.

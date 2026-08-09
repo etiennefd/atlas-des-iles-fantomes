@@ -1,0 +1,10 @@
+name_fr: "L'île de Dougherty"
+name_en: "Dougherty Island"
+kind: island
+ocean: antarctique
+coords: [-120.333, -59.333]
+span: [1841, 1934]
+coords_confidence: attested
+coords_note: >-
+  Capt. Daniel Dougherty of the James Stewart, 1841: 59 20' S 120 20' W.
+  Still on maps in 1934.

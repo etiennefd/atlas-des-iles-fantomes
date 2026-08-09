@@ -1,5 +1,10 @@
-name_fr: La Corée
-name_en: Korea
+name_fr: "La Corée"
+name_en: "Korea"
 kind: misdrawn
 ocean: pacifique-nord
-coords: [127.5, 37.0]   # TODO verify
+coords: [127.5, 37.0]
+span: [1568, 1700]
+coords_confidence: approximate
+coords_note: >-
+  Korea depicted as an island on European charts of the 16th-17th
+  centuries.

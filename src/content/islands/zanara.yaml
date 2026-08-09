@@ -1,0 +1,10 @@
+name_fr: "Zanara"
+name_en: "Zanara"
+kind: island
+ocean: mediterranee
+coords: [10.99, 42.3]
+span: [1589, 1720]
+coords_confidence: approximate
+coords_note: >-
+  Tyrrhenian Sea off Tuscany, near Monte Argentario, between Giglio and
+  Giannutri. Appears in Mercator, 1589; gone by about 1720.

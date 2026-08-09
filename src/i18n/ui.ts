@@ -16,6 +16,7 @@ export const ui = {
       "Cette histoire n'existe qu'en anglais pour l'instant.",
     read: "Lire en anglais",
     written: "écrites",
+    reset: "Réinitialiser la carte",
   },
   en: {
     siteTitle: "Atlas of Phantom Islands",
@@ -31,6 +32,7 @@ export const ui = {
       "This story exists only in French for now.",
     read: "Read it in French",
     written: "written",
+    reset: "Reset the map",
   },
 } as const;
 

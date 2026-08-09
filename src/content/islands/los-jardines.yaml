@@ -1,0 +1,10 @@
+name_fr: "Los Jardines"
+name_en: "Los Jardines"
+kind: island
+ocean: pacifique-nord
+coords: [150.0, 21.0]
+span: [1528, 1973]
+coords_confidence: conjectural
+coords_note: >-
+  SOURCES CONFLICT: English Wikipedia says NE of the Marianas near Guam;
+  German Wikipedia says east of the Marshalls. Pick per your research.

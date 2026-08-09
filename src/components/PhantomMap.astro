@@ -1,0 +1,53 @@
+---
+import { ui, type Lang } from "../i18n/ui";
+import { resolveIslands, lifespan } from "../lib/atlas";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const resolved = await resolveIslands(lang);
+const meta = resolved.map((r) => ({
+  id: r.island.id,
+  name: r.name,
+  state: r.state,
+  href: r.href,
+  lifespan: lifespan(r.island),
+  forthcoming: t.forthcoming,
+}));
+---
+
+<div
+  class="pmap-wrap"
+  data-label={t.siteTitle}
+  data-reset-title={t.reset}
+  id="phantom-map"
+>
+  <noscript>
+    <p class="pmap__noscript">
+      <a href={`/${lang}/liste/`}>{t.list}</a>
+    </p>
+  </noscript>
+</div>
+
+<script type="application/json" id="pmap-data" set:html={JSON.stringify(meta)} />
+
+<script>
+  import { mount } from "../components/map";
+
+  const root = document.getElementById("phantom-map");
+  const raw = document.getElementById("pmap-data")?.textContent;
+  if (root && raw) {
+    mount({
+      root,
+      meta: JSON.parse(raw),
+      landUrl: "/data/land-110m.json",
+      islandsUrl: "/data/islands.geojson",
+    }).catch((err) => {
+      console.error("map failed to mount", err);
+      root.classList.add("is-failed");
+    });
+  }
+</script>

@@ -1,0 +1,9 @@
+name_fr: "Groclant"
+name_en: "Groclant"
+kind: island
+ocean: arctique
+coords: [-45.0, 72.0]
+span: [1507, 1700]
+coords_confidence: conjectural
+coords_note: >-
+  Groclandia, northwest of Greenland on Ruysch/Mercator maps.

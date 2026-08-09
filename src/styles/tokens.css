@@ -259,3 +259,129 @@ a:hover {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* --- map -------------------------------------------------------- */
+.pmap-wrap {
+  position: relative;
+  width: 100%;
+  height: min(72vh, 640px);
+  margin: 0 auto;
+  max-width: 1200px;
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.pmap-wrap.is-ready { opacity: 1; }
+
+.pmap__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.pmap__landpath {
+  fill: var(--land);
+  stroke: none;
+}
+
+.pmap__island {
+  fill: var(--phantom);
+  stroke: var(--phantom);
+  stroke-width: 0.75;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.15s ease;
+}
+.pmap__island.is-translated { fill: none; stroke-width: 1.25; }
+.pmap__island.is-planned {
+  fill: none;
+  stroke: var(--phantom-soft);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+/* Misdrawn: a real place wrongly charted. No fill, so the true coastline
+   shows through underneath. */
+.pmap__island.kind-misdrawn { fill: none; stroke-width: 1.5; }
+.pmap__island.is-active { fill: var(--phantom); }
+.pmap__island.is-planned.is-active { fill: none; stroke: var(--phantom); }
+
+.pmap__halo {
+  fill: none;
+  stroke: var(--phantom);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, stroke-width 0.15s ease;
+}
+.pmap__halo.is-planned { stroke: var(--phantom-soft); opacity: 0.4; }
+.pmap__halo.is-active { opacity: 1; stroke-width: 1.75; }
+
+.pmap__labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pmap__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+  text-decoration: none;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  padding: 0.2rem 0.45rem 0.25rem;
+  background: color-mix(in srgb, var(--water) 92%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--water) 92%, transparent);
+}
+.pmap__label.is-active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+.pmap__name {
+  font-family: var(--display);
+  font-style: italic; /* hydrography convention: these are really water */
+  font-size: 1rem;
+  line-height: 1.1;
+}
+.pmap__span {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--land);
+}
+.pmap__label.is-planned .pmap__name { color: var(--phantom-soft); }
+
+.pmap__reset {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  background: var(--water);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+}
+.pmap__reset:hover { border-color: var(--phantom); color: var(--phantom); }
+
+.pmap-wrap.is-failed { opacity: 1; }
+.pmap__noscript { text-align: center; padding: 2rem 0; }
+
+@media (max-width: 640px) {
+  .pmap-wrap { height: min(60vh, 460px); }
+  .pmap__name { font-size: 0.9rem; }
+}
+
+.pmap-foot {
+  text-align: center;
+  margin: 0.5rem auto 3rem;
+  color: var(--land);
+}

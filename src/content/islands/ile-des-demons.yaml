@@ -1,0 +1,9 @@
+name_fr: "L'île des Démons"
+name_en: "The Isle of Demons"
+kind: island
+ocean: atlantique-nord
+coords: [-55.5, 51.5]
+span: [1508, 1600]
+coords_confidence: conjectural
+coords_note: >-
+  Usually charted off the northern tip of Newfoundland, near Quirpon.

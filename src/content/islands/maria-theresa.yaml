@@ -1,0 +1,10 @@
+name_fr: "Récif Maria-Theresa"
+name_en: "Maria Theresa Reef"
+kind: reef
+ocean: pacifique-sud
+coords: [-136.65, -36.833]
+span: [1843, 1983]
+coords_confidence: attested
+coords_note: >-
+  Reported 16 Nov 1843 by Capt. Asaph P. Taber of the Maria-Theresa. Also
+  charted as Tabor Reef.

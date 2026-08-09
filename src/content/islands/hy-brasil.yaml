@@ -1,6 +1,10 @@
-name_fr: L'île de Hy-Brasil
-name_en: The Island of Hy-Brasil
+name_fr: "L'île de Hy-Brasil"
+name_en: "The Island of Hy-Brasil"
 kind: island
 ocean: atlantique-nord
-coords: [-15.0, 51.5]   # TODO verify
+coords: [-15.0, 51.5]
 span: [1325, 1865]
+coords_confidence: approximate
+coords_note: >-
+  West of Ireland; position varied across charts. Last mention 1865 as
+  Brasil Rock.

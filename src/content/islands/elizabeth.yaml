@@ -1,0 +1,10 @@
+name_fr: "L'île Elizabeth"
+name_en: "Elizabeth Island"
+kind: island
+ocean: antarctique
+coords: [-70.0, -57.0]
+span: [1578, 1747]
+coords_confidence: approximate
+coords_note: >-
+  Drake, October 1578, at latitude 57 S (Hakluyt: '57 and a terce').
+  Longitude unrecorded; Pactolus Bank proposed.

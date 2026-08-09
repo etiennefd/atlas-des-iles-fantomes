@@ -1,0 +1,11 @@
+name_fr: "L'île Nakanotori"
+name_en: "Nakanotorishima"
+kind: island
+ocean: pacifique-nord
+coords: [154.0, 30.1]
+span: [1825, 1982]
+coords_confidence: approximate
+coords_note: >-
+  North Pacific, east of Japan. Charted around 30 N 154 E. Disproven by a
+  Japanese expedition in 1933 but kept appearing sporadically into the 1940s
+  and 1950s, and possibly as late as 1982.

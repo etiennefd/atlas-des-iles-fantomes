@@ -1,0 +1,10 @@
+name_fr: "L'île de Bermeja"
+name_en: "Bermeja"
+kind: island
+ocean: atlantique-nord
+coords: [-91.0, 22.5]
+span: [1539, 1921]
+coords_confidence: approximate
+coords_note: >-
+  Alonso de Santa Cruz 1539; c. 55 nautical miles off the NW Yucatan
+  coast. A seamount sits at 22 38.76 N 90 51.3 W.

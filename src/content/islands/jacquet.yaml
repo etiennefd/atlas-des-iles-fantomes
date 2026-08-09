@@ -1,0 +1,10 @@
+name_fr: "L'île Jacquet"
+name_en: "Jacquet Island"
+kind: island
+ocean: atlantique-nord
+coords: [-43.0, 47.0]
+span: [1836, 1900]
+coords_confidence: attested
+coords_note: >-
+  Charted at approximately 47 N 43 W, just east of the Flemish Cap.
+  Reported by John Scott of the Seaflower, 1836.

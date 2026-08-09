@@ -1,0 +1,10 @@
+name_fr: "La Terre de Davis"
+name_en: "Davis Land"
+kind: island
+ocean: pacifique-sud
+coords: [-90.0, -27.0]
+span: [1687, 1770]
+coords_confidence: conjectural
+coords_note: >-
+  Sighted by Edward Davis 1687 sailing south from the Galapagos. Later
+  conflated with Easter Island.

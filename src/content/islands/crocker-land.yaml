@@ -1,6 +1,10 @@
-name_fr: Crocker Land
-name_en: Crocker Land
+name_fr: "Crocker Land"
+name_en: "Crocker Land"
 kind: island
 ocean: arctique
-coords: [-100.0, 83.0]  # TODO verify
+coords: [-100.0, 83.0]
 span: [1906, 1914]
+coords_confidence: attested
+coords_note: >-
+  Peary, Nearest the Pole: sighted from Cape Colgate, c. 130 miles NW, at
+  83 N 100 W.

@@ -1,6 +1,10 @@
-name_fr: Bradley Land
-name_en: Bradley Land
+name_fr: "Bradley Land"
+name_en: "Bradley Land"
 kind: island
 ocean: arctique
-coords: [-102.0, 85.0]  # TODO verify
+coords: [-102.0, 84.75]
 span: [1907, 1918]
+coords_confidence: attested
+coords_note: >-
+  Cook: extended 84 deg 20' N to 85 deg 11' N at about 102 W. Midpoint
+  used. Some sources give the southern limit as 83 deg 20'.

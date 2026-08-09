@@ -1,0 +1,11 @@
+name_fr: "L'île aux Vaches"
+name_en: "Cow Island"
+kind: island
+ocean: atlantique-sud
+coords: [-30.0, -3.0]
+span: [1513, 1513]
+coords_confidence: conjectural
+coords_note: >-
+  Atlantic between South America and Africa, not far off the Brazilian coast
+  on the Piri Reis map of 1513 — apparently its only appearance. Position
+  read off the surviving fragment, so treat as loose.

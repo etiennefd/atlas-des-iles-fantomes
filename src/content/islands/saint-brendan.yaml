@@ -1,0 +1,10 @@
+name_fr: "L'île de Saint-Brendan"
+name_en: "Saint Brendan's Island"
+kind: island
+ocean: atlantique-nord
+coords: [-25.0, 30.0]
+span: [null, 1759]
+coords_confidence: conjectural
+coords_note: >-
+  Position wandered constantly across a millennium of charts. Verify
+  against whichever depiction the story uses.

@@ -1,0 +1,10 @@
+name_fr: "Récif Ernest-Legouvé"
+name_en: "Ernest Legouvé Reef"
+kind: reef
+ocean: pacifique-sud
+coords: [-150.667, -35.2]
+span: [1902, 1983]
+coords_confidence: attested
+coords_note: >-
+  International Hydrographic Bureau, 9 Feb 1957: 35 12' S 150 40' W.
+  Searched 1982-83, not found.

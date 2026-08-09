@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import PhantomMap from "../../components/PhantomMap.astro";
 import { ui, LANGS, type Lang } from "../../i18n/ui";
 import { resolveIslands } from "../../lib/atlas";
 
@@ -14,11 +15,10 @@ const written = islands.filter((i) => i.state !== "planned").length;
 ---
 
 <Base lang={lang} altHref={`/${lang === "fr" ? "en" : "fr"}/`}>
-  <div class="list">
-    <h1>{t.siteTitle}</h1>
-    <p>{t.tagline}</p>
-    <p class="sc counter">{written} / {islands.length} {t.written}</p>
-    <p><!-- The map component mounts here. Not built yet. --></p>
-    <p><a href={`/${lang}/liste/`}>{t.list} →</a></p>
-  </div>
+  <PhantomMap lang={lang} />
+  <p class="pmap-foot sc">
+    <span class="counter">{written} / {islands.length} {t.written}</span>
+    {" · "}
+    <a href={`/${lang}/liste/`}>{t.list}</a>
+  </p>
 </Base>

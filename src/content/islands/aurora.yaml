@@ -1,0 +1,10 @@
+name_fr: "Les îles Aurora"
+name_en: "The Aurora Islands"
+kind: island
+ocean: atlantique-sud
+coords: [-47.817, -52.617]
+span: [1762, 1870]
+coords_confidence: attested
+coords_note: >-
+  Spanish ship San Miguel fixed them at 52 37' S, 47 49' W. Surveyed by
+  the Atrevida, 20 Feb 1794.

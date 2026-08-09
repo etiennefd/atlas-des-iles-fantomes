@@ -34,6 +34,8 @@ export async function resolveIslands(lang: Lang): Promise<Resolved[]> {
 
   const byLang = new Map<string, Map<string, Story>>();
   for (const story of stories) {
+    // Drafts keep their notice and image but leave the island "planned".
+    if (story.data.draft) continue;
     const { lang: l } = splitStoryId(story.id);
     if (!byLang.has(l)) byLang.set(l, new Map());
     for (const id of story.data.islands) byLang.get(l)!.set(id, story);

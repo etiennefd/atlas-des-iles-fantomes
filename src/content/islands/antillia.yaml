@@ -1,0 +1,9 @@
+name_fr: "Antillia"
+name_en: "Antillia"
+kind: island
+ocean: atlantique-nord
+coords: [-45.0, 32.0]
+span: [1424, 1500]
+coords_confidence: approximate
+coords_note: >-
+  Pizzigano chart 1424, far west of Portugal; Satanazes just north.
