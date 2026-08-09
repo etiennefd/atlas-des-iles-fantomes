@@ -280,6 +280,15 @@ a:hover {
   cursor: crosshair;
 }
 
+/* The globe's edge. The page background is already the ocean, so the disc
+   needs only a rule to sit in — a fill would flatten it into a plate. */
+.pmap__sphere {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
 .pmap__landpath {
   fill: var(--land);
   stroke: none;

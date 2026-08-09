@@ -46,11 +46,24 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
 
 - **No Leaflet / MapLibre.** D3 + inline SVG + Natural Earth 110m TopoJSON.
   No tile server, full control of every colour.
-- **Van der Grinten projection** (`d3-geo-projection`). Chosen for thematic
-  reasons: a project about cartographic error deserves a projection with
-  visible historical personality. Fitted to a −62°..84° latitude band so
-  Antarctica falls outside the viewBox — every Southern Ocean phantom is
-  above −60, so nothing is lost.
+- **An orthographic globe** (`d3-geo`), not a flat projection. This replaced
+  Van der Grinten in August 2026 after building both and comparing them side
+  by side. Van der Grinten was chosen for thematic reasons — a project about
+  cartographic error deserves a projection with visible historical
+  personality — and it did look the part, but the globe won on capability:
+  it reaches views a fitted flat map cannot. Centring on Antarctica shows
+  nine Southern Ocean phantoms at once (Aurora, Dougherty, Elizabeth,
+  Emerald, Nimrod, Davis Land, Tuanaki, Ernest-Legouvé, Maria-Theresa); the
+  old −62°..84° fit crushed every one of them against the bottom crop. Same
+  for the Arctic cluster. Dragging rotates, so there is no edge in any
+  direction.
+
+  Known cost, accepted: a globe shows one hemisphere, so about half the
+  atlas is behind the earth at any moment (19 of 34 visible at the home
+  view). The `liste` page remains the complete index.
+
+  The Van der Grinten implementation is in git history at `170475b` if this
+  is ever revisited.
 - **One canonical French slug per island**, used in both language trees:
   `/en/iles/ile-des-demons`. No slug lookup table.
 - **Stories are many-to-many with islands.** Three existing posts cover more
@@ -123,8 +136,17 @@ across is a silent no-op. Worth wiring into an npm script.
 invisible-but-present container, which looks identical to nothing happening.
 Check the console before assuming the component didn't render.
 
-**Placeholder blobs shrink above 60° latitude** — otherwise Van der Grinten
-stretches Crocker Land (83°N) into a scar across the Arctic.
+**Placeholder blobs shrink above 60° latitude.** `build_geojson.py` divides a
+blob's longitude extent by cos(latitude), floored at 0.35, so it stays roughly
+circular *on the ground* rather than smearing east-west near the poles. This
+is a geographic correction, not a projection workaround, so it survived the
+move to the globe — but the 0.35 floor was tuned by eye against Van der
+Grinten and has not been re-examined since.
+
+**The far hemisphere must be culled explicitly.** `projection()` still returns
+a point for a location behind the globe — it mirrors it onto the near disc —
+so without a `geoDistance > π/2` test you can hover an island through the
+earth.
 
 ## Design
 

@@ -15,10 +15,10 @@ npm run build
 
 ## What's here
 
-The content structure and the story page. **The map is not built yet** — the
-homepage has a placeholder where it will mount.
+The content structure, the story page, and the map (see below). 34 islands
+have coordinates; 3 stories are written, 2 are partial drafts.
 
-Five islands are seeded to exercise every rendering state:
+Five of the islands exercise every rendering state:
 
 | Island | State (fr) | State (en) | Why it's here |
 |---|---|---|---|
@@ -73,29 +73,31 @@ directory `dist`.
 
 ## The map
 
-`src/components/PhantomMap.astro` + `src/components/map.ts`. Van der Grinten
-projection, D3, ~35 kB gzipped. Hover (or first tap on touch) reveals the
-island's name and lifespan; click navigates. Wheel/pinch zooms to 8x.
+`src/components/PhantomMap.astro` + `src/components/map.ts`. An orthographic
+globe, D3, ~35 kB gzipped. Hover (or first tap on touch) reveals the island's
+name and lifespan; click navigates. Wheel/pinch zooms to 8x.
 
-### Wrapping
+Dragging turns the globe: horizontally it never runs out, and vertically it
+tilts, so the poles are reachable. That is the reason for the globe — the
+Southern Ocean phantoms sit in a ring you can look straight down at, and the
+Arctic ones likewise. `HOME_LON`/`HOME_LAT` set where it opens and returns to.
 
-Dragging left or right goes on forever: there is no edge, and the Pacific can
-sit whole in the middle of the frame instead of being split down both sides.
+A globe shows one hemisphere, so roughly half the atlas is behind the earth at
+any moment. `liste` is the complete index.
 
-Van der Grinten is a *round* projection — the world lands in a circle — so it
-can't be tiled sideways the way a cylindrical one can. Copies placed edge to
-edge would show circular seams. Horizontal panning therefore changes the
-**central meridian** (`projection.rotate`) rather than translating the map.
-`HOME_LON` sets the meridian the map opens on and returns to — change it to
-`-160` to open on the Pacific.
+### How position works
 
 d3-zoom supplies the scale and the raw gesture deltas; **position is entirely
 ours**. Its own `x`/`y` never reach the transform and `translateExtent` is
-unbounded, because x is the rotation channel and any vertical correction would
-otherwise be overwritten by the next event's `t.y`. The transform is
-`translate(offX, offY) scale(k)`, with the scale anchored at the frame centre
-— without that anchor it grows away from x = 0 and the map walks off to the
-right. `clampPan()` holds the vertical so the map always covers the frame.
+unbounded, because both axes are rotation and any correction we made would be
+overwritten by the next event's transform. The SVG transform is
+`translate(offX, offY) scale(k)` with the scale anchored at the frame centre —
+without that anchor it grows away from the origin and the globe walks off to
+the top left.
+
+The far hemisphere is culled explicitly (`geoDistance > π/2`): `projection()`
+still returns a point for a location behind the globe, mirrored onto the near
+disc, so without the test you can hover an island through the earth.
 
 ### Zoom anchoring
 
@@ -103,16 +105,18 @@ Zoom holds the point under the cursor, and the correction is made in
 **degrees, not pixels**. Two traps, both of which look like "zoom is slightly
 drifty" until measured:
 
-- Van der Grinten isn't cylindrical, so nudging longitude also moves a point
-  *vertically*, and the vertical fix moves it back horizontally. One pass
-  cannot converge; the loop iterates until the error is under a quarter pixel.
-- Pixels-per-degree is not a constant, so a pixel-scaled nudge overshoots and
-  the loop oscillates. Asking `invert()` what is actually under the cursor and
-  shifting the meridian by the difference in longitude converges in two or
-  three passes.
+- Nudging longitude also moves a point *vertically*, and the vertical fix
+  moves it back horizontally. One pass cannot converge; the loop iterates
+  until the error is under a quarter pixel.
+- Pixels-per-degree is not a constant — on a sphere it falls away towards the
+  limb — so a pixel-scaled nudge overshoots and the loop oscillates. Asking
+  `invert()` what is actually under the cursor and shifting by the difference
+  in longitude converges in two or three passes.
 
-Measured drift over six successive zoom steps is 2–9 px, roughly a pixel per
-step, holding at 83°N and in the mid-Pacific alike.
+Within ~75° of the centre the cursor holds to a few pixels (measured 4–10 px
+over six successive zoom steps). Past that the globe is degenerate — one pixel
+spans a huge angle and `invert()` is ill-conditioned — so it falls back to
+scaling about the middle of the disc.
 
 Because rotation changes the geometry, every path is regenerated per frame
 (coalesced to one reprojection per rAF; measured 60 fps while dragging).

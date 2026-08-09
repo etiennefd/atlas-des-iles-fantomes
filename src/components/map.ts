@@ -2,9 +2,10 @@ import {
   geoPath,
   geoCentroid,
   geoBounds,
+  geoDistance,
+  geoOrthographic,
   type GeoProjection,
 } from "d3-geo";
-import { geoVanDerGrinten } from "d3-geo-projection";
 import { select } from "d3-selection";
 import { zoom as d3zoom, zoomIdentity, type D3ZoomEvent } from "d3-zoom";
 import { Delaunay } from "d3-delaunay";
@@ -31,17 +32,12 @@ type Cfg = {
 // Screen-space radius below which an island gets a halo ring.
 const HALO_THRESHOLD = 14;
 const HALO_MIN = 7;
-// Latitude band the map is fitted to. Van der Grinten inflates the poles
-// enormously; cropping below -62 keeps Antarctica out of the frame while
-// still showing every Southern Ocean phantom (the lowest is Dougherty, -59.3).
-const FIT_SOUTH = -62;
-const FIT_NORTH = 84;
 const MAX_ZOOM = 8;
-// Central meridian the map opens on and returns to. 0 is Atlantic-centred;
-// -160 would open on the Pacific. Van der Grinten is a round projection, so
-// it can't be tiled the way a cylindrical one can — horizontal panning
-// rotates the globe instead, which is seamless and has no edge to reach.
+// Where the globe opens and returns to. Dragging rotates it, so there is no
+// edge to reach in any direction and the poles are reachable — which a
+// flattened projection fitted to a latitude band could never offer.
 const HOME_LON = 0;
+const HOME_LAT = 0;
 
 const wrap180 = (d: number) => ((((d + 180) % 360) + 360) % 360) - 180;
 
@@ -100,20 +96,25 @@ export async function mount(cfg: Cfg) {
   // --- projection --------------------------------------------------------
   let W = 0,
     H = 0,
-    k = 1,
-    panY = 0;
-  // Horizontal position is a rotation, not a translation: `lambda` is the
-  // projection's rotation and `lastTx` only exists to turn d3-zoom's
-  // ever-growing x into a per-gesture delta.
+    k = 1;
+  // Position is rotation, not translation: dragging turns the globe. `lastTx`
+  // and `lastTy` exist only to turn d3-zoom's ever-growing x/y into
+  // per-gesture deltas.
   let lambda = HOME_LON;
+  let phi = -HOME_LAT;
   let lastTx = 0;
   let lastTy = 0;
   let offX = 0;
   let offY = 0;
   let suppressRotate = false;
-  const projection: GeoProjection = geoVanDerGrinten();
+  const clampPhi = (v: number) => Math.max(-89, Math.min(89, v));
+  const projection: GeoProjection = geoOrthographic().clipAngle(90);
   const path = geoPath(projection);
 
+  // The ocean is the disc itself, so it needs an edge — otherwise the land
+  // floats on the page background with nothing to sit in.
+  const spherePath = el("path", { class: "pmap__sphere" }) as SVGPathElement;
+  gLand.before(spherePath);
 
   const landPath = el("path", { class: "pmap__landpath" });
   gLand.append(landPath);
@@ -178,7 +179,13 @@ export async function mount(cfg: Cfg) {
       shapes.get(id)!.setAttribute("d", path(f as any) ?? "");
     }
     anchors.length = 0;
+    // projection() still returns a point for the far side of the globe — it
+    // mirrors it onto the near disc — so the hidden hemisphere has to be
+    // culled explicitly, or you could hover an island through the earth.
+    // Just under 90° to spare the jittery limb.
+    const centre: [number, number] = [-lambda, -phi];
     for (const g of geoInfo) {
+      if (geoDistance([g.lon, g.lat], centre) > Math.PI / 2 - 0.02) continue;
       const p = projection([g.lon, g.lat]);
       if (!p || !Number.isFinite(p[0])) continue;
       // Apparent size, measured north-south so it never crosses the seam.
@@ -190,20 +197,6 @@ export async function mount(cfg: Cfg) {
       anchors.push({ id: g.id, x: p[0], y: p[1], sizePx });
     }
   }
-
-  // Sample the latitude band we want in frame. Antarctica is still drawn but
-  // falls below the viewBox, which clips it.
-  const fitTarget = {
-    type: "MultiPoint",
-    coordinates: (() => {
-      const pts: [number, number][] = [];
-      for (let lon = -180; lon <= 180; lon += 15) {
-        pts.push([lon, FIT_SOUTH], [lon, FIT_NORTH]);
-      }
-      pts.push([-180, 0], [180, 0]);
-      return pts;
-    })(),
-  };
 
   let delaunay: Delaunay<number> | null = null;
   function rebuildVoronoi() {
@@ -223,42 +216,34 @@ export async function mount(cfg: Cfg) {
     W = Math.max(320, r.width);
     H = Math.max(240, r.height);
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-    projection.rotate([lambda, 0]);
+    projection.rotate([lambda, phi]);
     projection.fitExtent(
       [
         [8, 8],
         [W - 8, H - 8],
       ],
-      fitTarget as any
+      { type: "Sphere" } as any
     );
     applyTransform();
   }
 
-  // Screen position of a projected point is `p * k + off`. Because horizontal
-  // position is a rotation, d3-zoom's x never reaches the transform — so the
-  // scale needs its own anchor, or it grows away from x=0 and the map walks
-  // off to the right. Anchoring at the frame centre keeps the middle put.
-  // Vertically the flat map still translates, so d3's y is the anchor there.
+  // Screen position of a projected point is `p * k + off`. d3-zoom's own
+  // translation never reaches the transform, so the scale needs its own
+  // anchor or it grows away from the origin and the globe walks off to the
+  // top left. Anchoring at the frame centre keeps the disc centred at every
+  // zoom level.
   function setOffsets() {
     offX = (W / 2) * (1 - k);
-    offY = (H / 2) * (1 - k) + panY;
-  }
-
-  // Vertical panning is bounded so the flat map always covers the frame —
-  // there is no vertical wrap to fall back on. At k = 1 the range collapses
-  // to zero, which pins it exactly as before.
-  function clampPan() {
-    const top = (8 - H / 2) * k + H / 2;
-    const bottom = (H - 8 - H / 2) * k + H / 2;
-    panY = Math.max(Math.min(0, H - bottom), Math.min(Math.max(0, -top), panY));
+    offY = (H / 2) * (1 - k);
   }
 
   function applyTransform() {
     // Rotation changes the geometry itself, so every path is regenerated —
     // there is no transform shortcut for a change of central meridian.
-    projection.rotate([lambda, 0]);
+    projection.rotate([lambda, phi]);
     setOffsets();
     gRoot.setAttribute("transform", `translate(${offX},${offY}) scale(${k})`);
+    spherePath.setAttribute("d", path({ type: "Sphere" } as any) ?? "");
     landPath.setAttribute("d", path(land as any) ?? "");
     project();
     updateHalosAndLabels();
@@ -394,15 +379,24 @@ export async function mount(cfg: Cfg) {
           (holdAt[0] - offX) / kPrev,
           (holdAt[1] - offY) / kPrev,
         ]);
-        if (inv && Number.isFinite(inv[0])) holdGeo = inv;
+        // Within about 75° of the centre the cursor can be held to a pixel or
+        // two. Past that the globe is degenerate — one pixel spans a huge
+        // angle and invert() is ill-conditioned, so anchoring diverges — and
+        // we fall back to scaling about the middle of the disc, which is
+        // stable and is what globe UIs conventionally do anyway.
+        if (
+          inv &&
+          Number.isFinite(inv[0]) &&
+          geoDistance(inv, [-lambda, -phi]) < 1.31
+        )
+          holdGeo = inv;
       }
 
       k = t.k;
       if (!suppressRotate && !zooming) {
         lambda = wrap180(lambda + (dx / (W * k)) * 360);
-        panY += dy;
+        phi = clampPhi(phi - (dy / (H * k)) * 180);
       }
-      clampPan();
       setOffsets();
 
       // Pin the point under the cursor. The correction is made in *degrees*,
@@ -415,7 +409,7 @@ export async function mount(cfg: Cfg) {
       // is exact and can be applied directly.
       if (holdGeo && holdAt) {
         for (let i = 0; i < 6; i++) {
-          projection.rotate([lambda, 0]);
+          projection.rotate([lambda, phi]);
           const p = projection(holdGeo);
           if (!p || !Number.isFinite(p[0])) break;
           const ex = holdAt[0] - (p[0] * k + offX);
@@ -427,15 +421,14 @@ export async function mount(cfg: Cfg) {
           ]);
           if (!under || !Number.isFinite(under[0])) break;
           lambda = wrap180(lambda + wrap180(under[0] - holdGeo[0]));
-          panY += ey;
-          clampPan();
+          phi = clampPhi(phi + (under[1] - holdGeo[1]));
           setOffsets();
         }
       }
 
       reset.hidden =
         k === 1 &&
-        panY === 0 &&
+        Math.abs(phi + HOME_LAT) < 0.5 &&
         Math.abs(wrap180(lambda - HOME_LON)) < 0.5;
       schedule();
     });
@@ -454,14 +447,14 @@ export async function mount(cfg: Cfg) {
     // while that runs, or the two fight each other.
     suppressRotate = true;
     const from = lambda;
-    const fromPan = panY;
+    const fromPhi = phi;
     const delta = wrap180(HOME_LON - from); // always the short way round
     const t0 = performance.now();
     const step = (now: number) => {
       const u = dur === 0 ? 1 : Math.min(1, (now - t0) / dur);
       const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
       lambda = wrap180(from + delta * e);
-      panY = fromPan * (1 - e);
+      phi = -HOME_LAT + (fromPhi + HOME_LAT) * (1 - e);
       applyTransform();
       if (u < 1) requestAnimationFrame(step);
     };
@@ -481,8 +474,8 @@ export async function mount(cfg: Cfg) {
   function refreshExtent() {
     // d3's own translation is never applied — we read its deltas and keep
     // position ourselves — so it must stay unconstrained in both axes or it
-    // would silently swallow gestures at the edges. Vertical bounds live in
-    // clampPan(); horizontally there is nothing to bound, which is the wrap.
+    // would silently swallow gestures at the edges. A globe has no edges to
+    // bound: every direction comes back round.
     zoomBehavior.translateExtent([
       [-Infinity, -Infinity],
       [Infinity, Infinity],
