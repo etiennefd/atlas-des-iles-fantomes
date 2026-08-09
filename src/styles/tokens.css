@@ -4,17 +4,21 @@
    --------------------------------------------------------------- */
 
 @font-face {
-  /* Faune — Alice Savoie / CNAP, free. Drop the .woff2 files in
-     /public/fonts/ ; falls back to Spectral until you do.
-     https://github.com/Fondation-Cartier/faune  (or the CNAP release) */
+  /* Faune — Alice Savoie / Cnap. CC BY-ND 4.0: commercial use is fine, credit
+     is required, the design must not be modified. Format conversion is
+     explicitly *not* a derivative under CC 4.0, but subsetting is a real
+     modification — so ship the .woff2 files from the official download's
+     `webfonts` folder whole, and don't run them through a subsetter.
+     Falls back to Spectral until they're in place.
+     https://www.cnap.fr/sites/faune/en.html */
   font-family: "Faune";
-  src: url("/fonts/Faune-Text-Regular.woff2") format("woff2");
+  src: url("/fonts/Faune-Text_Regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: "Faune";
-  src: url("/fonts/Faune-Text-Italic.woff2") format("woff2");
+  src: url("/fonts/Faune-Text_Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -74,6 +78,14 @@ a:hover {
   font-variant-caps: all-small-caps;
   letter-spacing: 0.08em;
   font-size: 0.9em;
+}
+
+/* Type credit. Quiet enough to ignore, present enough to satisfy CC BY-ND —
+   which means it has to be legible, so not --rule at 1.4:1 against the page. */
+.colophon {
+  color: color-mix(in srgb, var(--ink) 62%, var(--water));
+  text-align: center;
+  padding: calc(var(--step) * 1.5) var(--step) var(--step);
 }
 
 /* --- site chrome ------------------------------------------------ */

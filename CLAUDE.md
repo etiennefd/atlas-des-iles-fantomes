@@ -155,12 +155,22 @@ earth.
 --phantom-soft: #B08089;  --ink: #16191B;  --rule: #C7CCCF;
 ```
 
-Display face is **Faune** (Alice Savoie / CNAP, free) — a French typeface drawn
-from natural-history illustration, commissioned for the Muséum national
-d'Histoire naturelle. A face for cataloguing specimens, on a catalogue of
-specimens nobody collected. **Not on Google Fonts**; woff2 files go in
-`public/fonts/`, and it falls back to Spectral until they're added. Body text
-is Spectral (Production Type — real small caps, proper French spacing).
+Display face is **Faune** (Alice Savoie / Cnap) — a French typeface drawn from
+natural-history illustration, commissioned by the Centre national des arts
+plastiques with the Imprimerie Nationale and based on Buffon's *Histoire
+naturelle* and the *Description de l'Égypte*. A face for cataloguing
+specimens, on a catalogue of specimens nobody collected. Body text is Spectral
+(Production Type — real small caps, proper French spacing).
+
+**Faune is CC BY-ND 4.0, not OFL.** Commercial use is fine; credit is
+mandatory and the design must not be modified. The footer carries Cnap's own
+short form, *Faune*, Alice Savoie / Cnap — don't remove it. Format conversion
+is explicitly not a derivative under CC 4.0, but **subsetting is**, so the
+woff2 files in `public/fonts/` are Cnap's own, shipped whole and unrenamed.
+Only Text Regular and Text Italic are installed, which is every weight the
+site uses; Text Bold and the three Display cuts (Thin, Black, BoldItalic) are
+in the download if ever wanted. **Not on Google Fonts** — it falls back to
+Spectral if the files go missing.
 
 Signature element: every island gets a **lifespan** on hover — `1906 – 1914`.
 Repeated across the map, the site reads as a necrology, which is a more

@@ -43,16 +43,29 @@ Two conventions when migrating from the blog:
 
 ## Fonts
 
-Body text is Spectral, loaded from Google Fonts. Display is **Faune**
-(Alice Savoie / CNAP, free) — it is *not* on Google Fonts. Download the woff2
-files and drop them in `public/fonts/`:
+Body text is Spectral, from Google Fonts. Display is **Faune** (Alice Savoie /
+Cnap), self-hosted and committed:
 
 ```
-public/fonts/Faune-Text-Regular.woff2
-public/fonts/Faune-Text-Italic.woff2
+public/fonts/Faune-Text_Regular.woff2
+public/fonts/Faune-Text_Italic.woff2
 ```
 
-Until then it falls back to Spectral and everything still works.
+These are Cnap's own webfonts, taken whole from the `Webfonts/woff2` folder of
+the download at <https://www.cnap.fr/sites/faune/en.html> and left unrenamed.
+If they ever go missing the site falls back to Spectral and still works.
+
+**Licence: CC BY-ND 4.0.** Commercial use is fine. Credit is mandatory — the
+footer carries Cnap's short form, *Faune*, Alice Savoie / Cnap — and the
+design must not be modified. Format conversion is explicitly *not* a
+derivative under CC 4.0, but **subsetting is a modification**, so don't run
+these through a subsetter to save the ~80 kB.
+
+Only the two Regular/Italic faces are installed; that is every weight the site
+uses. Text Bold and the three Display cuts (Thin, Black, BoldItalic) are in
+the download if you ever want them.
+
+> The download button on the English page didn't work; the French page did.
 
 ## Publish to GitHub
 
