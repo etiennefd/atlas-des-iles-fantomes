@@ -74,8 +74,28 @@ directory `dist`.
 ## The map
 
 `src/components/PhantomMap.astro` + `src/components/map.ts`. Van der Grinten
-projection, D3, ~33 kB gzipped. Hover (or first tap on touch) reveals the
+projection, D3, ~35 kB gzipped. Hover (or first tap on touch) reveals the
 island's name and lifespan; click navigates. Wheel/pinch zooms to 8x.
+
+### Wrapping
+
+Dragging left or right goes on forever: there is no edge, and the Pacific can
+sit whole in the middle of the frame instead of being split down both sides.
+
+Van der Grinten is a *round* projection — the world lands in a circle — so it
+can't be tiled sideways the way a cylindrical one can. Copies placed edge to
+edge would show circular seams. Horizontal panning therefore changes the
+**central meridian** (`projection.rotate`) rather than translating the map:
+d3-zoom's `x` is consumed as a delta and spent on rotation, `translateExtent`
+is unbounded in x, and only `y` and `k` reach the SVG transform. `HOME_LON`
+sets the meridian the map opens on and returns to — change it to `-160` to
+open on the Pacific.
+
+Because rotation changes the geometry, every path is regenerated per frame
+(coalesced to one reprojection per rAF; measured 60 fps while dragging).
+Island anchors and label sizes come from `geoCentroid`/`geoBounds` rather than
+`path.centroid`/`getBBox`, which both misbehave for a shape the antimeridian
+has cut into two pieces at opposite edges of the frame.
 
 Geometry is **placeholder blobs**, generated from each island's coordinates:
 

@@ -1,4 +1,4 @@
-import { geoPath, type GeoProjection } from "d3-geo";
+import { geoPath, geoCentroid, geoBounds, type GeoProjection } from "d3-geo";
 import { geoVanDerGrinten } from "d3-geo-projection";
 import { select } from "d3-selection";
 import { zoom as d3zoom, zoomIdentity, type D3ZoomEvent } from "d3-zoom";
@@ -32,6 +32,13 @@ const HALO_MIN = 7;
 const FIT_SOUTH = -62;
 const FIT_NORTH = 84;
 const MAX_ZOOM = 8;
+// Central meridian the map opens on and returns to. 0 is Atlantic-centred;
+// -160 would open on the Pacific. Van der Grinten is a round projection, so
+// it can't be tiled the way a cylindrical one can — horizontal panning
+// rotates the globe instead, which is seamless and has no edge to reach.
+const HOME_LON = 0;
+
+const wrap180 = (d: number) => ((((d + 180) % 360) + 360) % 360) - 180;
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const el = (n: string, attrs: Record<string, string> = {}) => {
@@ -89,8 +96,13 @@ export async function mount(cfg: Cfg) {
   let W = 0,
     H = 0,
     k = 1,
-    tx = 0,
     ty = 0;
+  // Horizontal position is a rotation, not a translation: `lambda` is the
+  // projection's rotation and `lastTx` only exists to turn d3-zoom's
+  // ever-growing x into a per-gesture delta.
+  let lambda = HOME_LON;
+  let lastTx = 0;
+  let suppressRotate = false;
   const projection: GeoProjection = geoVanDerGrinten();
   const path = geoPath(projection);
 
@@ -132,16 +144,41 @@ export async function mount(cfg: Cfg) {
     chips.set(id, a);
   }
 
+  // Spherical centroid and angular half-height per island. Both are
+  // rotation-invariant, so deriving screen position and apparent size from
+  // these keeps a shape's anchor put even when rotation splits it across the
+  // antimeridian — path.centroid() and getBBox() both go haywire on a shape
+  // cut into two pieces at opposite edges of the frame.
+  const geoInfo = feats.map((f: any) => {
+    const c = geoCentroid(f);
+    const b = geoBounds(f);
+    return {
+      id: f.properties.id as string,
+      lon: c[0],
+      lat: c[1],
+      halfLat: Math.max((b[1][1] - b[0][1]) / 2, 0),
+    };
+  });
+
   // Anchor point per island, in projected screen coords (pre-transform).
-  const anchors: { id: string; x: number; y: number }[] = [];
+  const anchors: { id: string; x: number; y: number; sizePx: number }[] = [];
 
   function project() {
-    anchors.length = 0;
     for (const f of feats) {
       const id = f.properties.id as string;
-      const c = path.centroid(f as any);
-      if (Number.isFinite(c[0])) anchors.push({ id, x: c[0], y: c[1] });
       shapes.get(id)!.setAttribute("d", path(f as any) ?? "");
+    }
+    anchors.length = 0;
+    for (const g of geoInfo) {
+      const p = projection([g.lon, g.lat]);
+      if (!p || !Number.isFinite(p[0])) continue;
+      // Apparent size, measured north-south so it never crosses the seam.
+      const e =
+        g.halfLat > 0
+          ? projection([g.lon, Math.min(g.lat + g.halfLat, 89)])
+          : null;
+      const sizePx = e ? 2 * Math.hypot(e[0] - p[0], e[1] - p[1]) : 0;
+      anchors.push({ id: g.id, x: p[0], y: p[1], sizePx });
     }
   }
 
@@ -166,7 +203,7 @@ export async function mount(cfg: Cfg) {
     // regardless of zoom level.
     const pts = new Float64Array(anchors.length * 2);
     anchors.forEach((a, i) => {
-      pts[i * 2] = a.x * k + tx;
+      pts[i * 2] = a.x * k;
       pts[i * 2 + 1] = a.y * k + ty;
     });
     delaunay = new Delaunay(pts);
@@ -177,6 +214,7 @@ export async function mount(cfg: Cfg) {
     W = Math.max(320, r.width);
     H = Math.max(240, r.height);
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    projection.rotate([lambda, 0]);
     projection.fitExtent(
       [
         [8, 8],
@@ -184,25 +222,39 @@ export async function mount(cfg: Cfg) {
       ],
       fitTarget as any
     );
-    project();
     applyTransform();
   }
 
   function applyTransform() {
-    gRoot.setAttribute("transform", `translate(${tx},${ty}) scale(${k})`);
+    // Rotation changes the geometry itself, so every path is regenerated —
+    // there is no transform shortcut for a change of central meridian.
+    projection.rotate([lambda, 0]);
+    gRoot.setAttribute("transform", `translate(0,${ty}) scale(${k})`);
     landPath.setAttribute("d", path(land as any) ?? "");
+    project();
     updateHalosAndLabels();
     rebuildVoronoi();
   }
 
+  // Coalesce redraws: d3-zoom fires per pointermove, but we only need one
+  // reprojection per frame.
+  let frame = 0;
+  function schedule() {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      applyTransform();
+    });
+  }
+
   function updateHalosAndLabels() {
+    const byAnchor = new Map(anchors.map((a) => [a.id, a]));
     for (const f of feats) {
       const id = f.properties.id as string;
-      const shape = shapes.get(id)!;
       const halo = halos.get(id)!;
       const chip = chips.get(id)!;
 
-      const a = anchors.find((p) => p.id === id);
+      const a = byAnchor.get(id);
       if (!a) {
         halo.setAttribute("r", "0");
         chip.style.display = "none";
@@ -210,23 +262,16 @@ export async function mount(cfg: Cfg) {
       }
 
       // Apparent size in device pixels at the current zoom.
-      let bboxDiag = 0;
-      try {
-        const b = shape.getBBox();
-        bboxDiag = Math.hypot(b.width, b.height) * k;
-      } catch {
-        bboxDiag = 0;
-      }
-      const needsHalo =
-        f.geometry.type === "Point" || bboxDiag < HALO_THRESHOLD;
-      const r = needsHalo ? Math.max(bboxDiag * 1.35, HALO_MIN) / k : 0;
+      const sizePx = a.sizePx * k;
+      const needsHalo = f.geometry.type === "Point" || sizePx < HALO_THRESHOLD;
+      const r = needsHalo ? Math.max(sizePx * 1.35, HALO_MIN) / k : 0;
       halo.setAttribute("cx", String(a.x));
       halo.setAttribute("cy", String(a.y));
       halo.setAttribute("r", String(r));
 
-      const sx = a.x * k + tx;
+      const sx = a.x * k;
       const sy = a.y * k + ty;
-      const off = Math.max((r || bboxDiag / 2) * k, 8) + 6;
+      const off = Math.max(r ? r * k : sizePx / 2, 8) + 6;
       chip.style.display = sx < -80 || sx > W + 80 || sy < -40 || sy > H + 40 ? "none" : "";
       chip.style.transform = `translate(${sx}px, ${sy - off}px) translate(-50%, -100%)`;
     }
@@ -257,7 +302,7 @@ export async function mount(cfg: Cfg) {
     const i = delaunay.find(mx, my);
     if (i == null || i < 0) return null;
     const a = anchors[i];
-    const d = Math.hypot(a.x * k + tx - mx, a.y * k + ty - my);
+    const d = Math.hypot(a.x * k - mx, a.y * k + ty - my);
     return d <= CUTOFF ? a.id : null;
   }
 
@@ -296,9 +341,19 @@ export async function mount(cfg: Cfg) {
   const zoomBehavior = d3zoom<SVGSVGElement, unknown>()
     .scaleExtent([1, MAX_ZOOM])
     .on("zoom", (ev: D3ZoomEvent<SVGSVGElement, unknown>) => {
-      ({ k, x: tx, y: ty } = ev.transform);
-      reset.hidden = k === 1 && tx === 0 && ty === 0;
-      applyTransform();
+      const t = ev.transform;
+      // d3-zoom's x is allowed to run away to infinity; we consume it as a
+      // delta and spend it on rotation, so there is no edge to drag up
+      // against in either direction. At zoom k the world spans W*k pixels,
+      // so that many pixels of drag is exactly one full turn.
+      const dx = t.x - lastTx;
+      lastTx = t.x;
+      k = t.k;
+      ty = t.y;
+      if (!suppressRotate) lambda = wrap180(lambda + (dx / (W * k)) * 360);
+      reset.hidden =
+        k === 1 && ty === 0 && Math.abs(wrap180(lambda - HOME_LON)) < 0.5;
+      schedule();
     });
 
   const sel = select(svg as unknown as SVGSVGElement);
@@ -306,16 +361,42 @@ export async function mount(cfg: Cfg) {
   // translateExtent needs the size, so set it after first resize.
 
   reset.addEventListener("click", () => {
+    const dur = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? 0
+      : 450;
+
+    // Rotation lives outside the zoom transform, so it needs its own tween —
+    // and the zoom transition's own x-change must not be spent on rotation
+    // while that runs, or the two fight each other.
+    suppressRotate = true;
+    const from = lambda;
+    const delta = wrap180(HOME_LON - from); // always the short way round
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const u = dur === 0 ? 1 : Math.min(1, (now - t0) / dur);
+      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      lambda = wrap180(from + delta * e);
+      applyTransform();
+      if (u < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+
     sel
       .transition()
-      .duration(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450)
-      .call(zoomBehavior.transform as any, zoomIdentity);
+      .duration(dur)
+      .call(zoomBehavior.transform as any, zoomIdentity)
+      .on("end interrupt", () => {
+        suppressRotate = false;
+        lastTx = 0;
+      });
   });
 
   function refreshExtent() {
+    // Unbounded in x — that is the wrap-around. Vertical stays penned in so
+    // the map can't be dragged off the top or bottom of the frame.
     zoomBehavior.translateExtent([
-      [-W * 0.15, -H * 0.15],
-      [W * 1.15, H * 1.15],
+      [-Infinity, -H * 0.15],
+      [Infinity, H * 1.15],
     ]);
   }
 
