@@ -1,4 +1,4 @@
-name_fr: "L'île de Californie"
+name_fr: "L’île de Californie"
 name_en: "The Island of California"
 kind: misdrawn
 ocean: pacifique-nord
@@ -6,5 +6,5 @@ coords: [-114.0, 28.0]
 span: [1510, 1747]
 coords_confidence: approximate
 coords_note: >-
-  Baja California drawn as an island. Ferdinand VII's 1747 decree
+  Baja California drawn as an island. Ferdinand VII’s 1747 decree
   conventionally ends it.

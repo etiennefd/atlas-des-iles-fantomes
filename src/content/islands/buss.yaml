@@ -1,4 +1,4 @@
-name_fr: "L'île Buss"
+name_fr: "L’île Buss"
 name_en: "Buss Island"
 kind: island
 ocean: atlantique-nord
@@ -6,5 +6,5 @@ coords: [-25.0, 57.0]
 span: [1578, 1856]
 coords_confidence: approximate
 coords_note: >-
-  Charted between Ireland and Frisland at about 57 deg N. Frobisher's
+  Charted between Ireland and Frisland at about 57 deg N. Frobisher’s
   third expedition.
