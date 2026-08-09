@@ -43,29 +43,39 @@ Two conventions when migrating from the blog:
 
 ## Fonts
 
-Body text is Spectral, from Google Fonts. Display is **Faune** (Alice Savoie /
-Cnap), self-hosted and committed:
+**Spectral throughout**, from Google Fonts — body and display both. No
+self-hosted fonts, nothing in `public/fonts/`. Spectral carries the site on
+real small caps, a proper italic and three weights; hierarchy comes from size,
+weight and small caps rather than from a second family.
 
-```
-public/fonts/Faune-Text_Regular.woff2
-public/fonts/Faune-Text_Italic.woff2
-```
+`--display` still exists as a separate token, set to `var(--body)`. It is the
+seam where a display face would go, so adding one later is a one-line change.
 
-These are Cnap's own webfonts, taken whole from the `Webfonts/woff2` folder of
-the download at <https://www.cnap.fr/sites/faune/en.html> and left unrenamed.
-If they ever go missing the site falls back to Spectral and still works.
+### What was tried, and why not
 
-**Licence: CC BY-ND 4.0.** Commercial use is fine. Credit is mandatory — the
-footer carries Cnap's short form, *Faune*, Alice Savoie / Cnap — and the
-design must not be modified. Format conversion is explicitly *not* a
-derivative under CC 4.0, but **subsetting is a modification**, so don't run
-these through a subsetter to save the ~80 kB.
+A display face was evaluated and rejected. The candidates were Faune, EB
+Garamond, Playfair Display, Bodoni Moda, Libre Bodoni and Theano Didot, all
+compared on the real site with a temporary `?font=` switcher.
 
-Only the two Regular/Italic faces are installed; that is every weight the site
-uses. Text Bold and the three Display cuts (Thin, Black, BoldItalic) are in
-the download if you ever want them.
+**Faune** (Alice Savoie / Cnap) had been chosen in the very first design
+session and written into the notes as "drawn from natural-history
+illustration… a face for cataloguing specimens." Two things were wrong with
+that. It was described as commissioned for the Muséum national d'Histoire
+naturelle; it was actually commissioned by the Centre national des arts
+plastiques with the Imprimerie Nationale, and the natural-history thread is
+its *source material* (Buffon, the Description de l'Égypte), not a client. And
+the face the story implies — engraved, serifed — is not what Faune is: its
+upright is a flared humanist **sans**. Set above Spectral's serif body it read
+as a clash rather than a pairing.
 
-> The download button on the English page didn't work; the French page did.
+Faune's italic is genuinely distinctive and was the strongest argument for
+keeping it, but not enough to justify a second family, 83 kB, and a CC BY-ND
+credit obligation in the footer.
+
+If a display face is ever revisited: it needs a **real italic cut**, because
+map labels are italic by the hydrography convention and a synthesised oblique
+looks wrong on a high-contrast face. That alone ruled out Theano Didot, which
+ships Regular only.
 
 ## Publish to GitHub
 

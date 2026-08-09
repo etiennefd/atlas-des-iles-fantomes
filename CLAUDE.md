@@ -155,22 +155,28 @@ earth.
 --phantom-soft: #B08089;  --ink: #16191B;  --rule: #C7CCCF;
 ```
 
-Display face is **Faune** (Alice Savoie / Cnap) — a French typeface drawn from
-natural-history illustration, commissioned by the Centre national des arts
-plastiques with the Imprimerie Nationale and based on Buffon's *Histoire
-naturelle* and the *Description de l'Égypte*. A face for cataloguing
-specimens, on a catalogue of specimens nobody collected. Body text is Spectral
-(Production Type — real small caps, proper French spacing).
+**Spectral throughout** (Production Type — real small caps, proper French
+spacing), body and display alike. `--display` is set to `var(--body)` and kept
+only as the seam where a display face would go.
 
-**Faune is CC BY-ND 4.0, not OFL.** Commercial use is fine; credit is
-mandatory and the design must not be modified. The footer carries Cnap's own
-short form, *Faune*, Alice Savoie / Cnap — don't remove it. Format conversion
-is explicitly not a derivative under CC 4.0, but **subsetting is**, so the
-woff2 files in `public/fonts/` are Cnap's own, shipped whole and unrenamed.
-Only Text Regular and Text Italic are installed, which is every weight the
-site uses; Text Bold and the three Display cuts (Thin, Black, BoldItalic) are
-in the download if ever wanted. **Not on Google Fonts** — it falls back to
-Spectral if the files go missing.
+**A second family was tried and rejected** in August 2026 — don't re-propose
+one casually. Faune (Alice Savoie / Cnap) was picked in the first design
+session on an unverified premise: the notes described it as commissioned for
+the Muséum national d'Histoire naturelle and as drawn from natural-history
+engraving. It was in fact commissioned by the Centre national des arts
+plastiques with the Imprimerie Nationale, and — decisively — its upright is a
+flared humanist **sans**, not the engraved serif the story implied. Against
+Spectral's serif body it read as a clash. EB Garamond, Playfair Display,
+Bodoni Moda, Libre Bodoni and Theano Didot were compared on the real site;
+Spectral alone won.
+
+Two things to carry forward if it's ever revisited. A display face needs a
+**real italic cut**, because map labels are italic by the hydrography
+convention and a synthesised oblique looks wrong on a high-contrast face —
+that ruled out Theano Didot, which ships Regular only. And verify what a face
+*looks like* before writing a rationale for it: a computed `font-family` only
+reports what was asked for, not what rendered, so measure against generic
+serif to catch a silent fallback.
 
 Signature element: every island gets a **lifespan** on hover — `1906 – 1914`.
 Repeated across the map, the site reads as a necrology, which is a more
@@ -197,8 +203,7 @@ interesting object than a clickable index.
    indefinitely.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
-5. Faune woff2 files.
-6. Domain, then Cloudflare Pages (`npm run build`, output `dist`).
+5. Domain, then Cloudflare Pages (`npm run build`, output `dist`).
 
 ## Open questions
 
