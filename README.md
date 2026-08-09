@@ -85,11 +85,34 @@ sit whole in the middle of the frame instead of being split down both sides.
 Van der Grinten is a *round* projection — the world lands in a circle — so it
 can't be tiled sideways the way a cylindrical one can. Copies placed edge to
 edge would show circular seams. Horizontal panning therefore changes the
-**central meridian** (`projection.rotate`) rather than translating the map:
-d3-zoom's `x` is consumed as a delta and spent on rotation, `translateExtent`
-is unbounded in x, and only `y` and `k` reach the SVG transform. `HOME_LON`
-sets the meridian the map opens on and returns to — change it to `-160` to
-open on the Pacific.
+**central meridian** (`projection.rotate`) rather than translating the map.
+`HOME_LON` sets the meridian the map opens on and returns to — change it to
+`-160` to open on the Pacific.
+
+d3-zoom supplies the scale and the raw gesture deltas; **position is entirely
+ours**. Its own `x`/`y` never reach the transform and `translateExtent` is
+unbounded, because x is the rotation channel and any vertical correction would
+otherwise be overwritten by the next event's `t.y`. The transform is
+`translate(offX, offY) scale(k)`, with the scale anchored at the frame centre
+— without that anchor it grows away from x = 0 and the map walks off to the
+right. `clampPan()` holds the vertical so the map always covers the frame.
+
+### Zoom anchoring
+
+Zoom holds the point under the cursor, and the correction is made in
+**degrees, not pixels**. Two traps, both of which look like "zoom is slightly
+drifty" until measured:
+
+- Van der Grinten isn't cylindrical, so nudging longitude also moves a point
+  *vertically*, and the vertical fix moves it back horizontally. One pass
+  cannot converge; the loop iterates until the error is under a quarter pixel.
+- Pixels-per-degree is not a constant, so a pixel-scaled nudge overshoots and
+  the loop oscillates. Asking `invert()` what is actually under the cursor and
+  shifting the meridian by the difference in longitude converges in two or
+  three passes.
+
+Measured drift over six successive zoom steps is 2–9 px, roughly a pixel per
+step, holding at 83°N and in the mid-Pacific alike.
 
 Because rotation changes the geometry, every path is regenerated per frame
 (coalesced to one reprojection per rAF; measured 60 fps while dragging).

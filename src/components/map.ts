@@ -1,4 +1,9 @@
-import { geoPath, geoCentroid, geoBounds, type GeoProjection } from "d3-geo";
+import {
+  geoPath,
+  geoCentroid,
+  geoBounds,
+  type GeoProjection,
+} from "d3-geo";
 import { geoVanDerGrinten } from "d3-geo-projection";
 import { select } from "d3-selection";
 import { zoom as d3zoom, zoomIdentity, type D3ZoomEvent } from "d3-zoom";
@@ -96,15 +101,19 @@ export async function mount(cfg: Cfg) {
   let W = 0,
     H = 0,
     k = 1,
-    ty = 0;
+    panY = 0;
   // Horizontal position is a rotation, not a translation: `lambda` is the
   // projection's rotation and `lastTx` only exists to turn d3-zoom's
   // ever-growing x into a per-gesture delta.
   let lambda = HOME_LON;
   let lastTx = 0;
+  let lastTy = 0;
+  let offX = 0;
+  let offY = 0;
   let suppressRotate = false;
   const projection: GeoProjection = geoVanDerGrinten();
   const path = geoPath(projection);
+
 
   const landPath = el("path", { class: "pmap__landpath" });
   gLand.append(landPath);
@@ -203,8 +212,8 @@ export async function mount(cfg: Cfg) {
     // regardless of zoom level.
     const pts = new Float64Array(anchors.length * 2);
     anchors.forEach((a, i) => {
-      pts[i * 2] = a.x * k;
-      pts[i * 2 + 1] = a.y * k + ty;
+      pts[i * 2] = a.x * k + offX;
+      pts[i * 2 + 1] = a.y * k + offY;
     });
     delaunay = new Delaunay(pts);
   }
@@ -225,11 +234,31 @@ export async function mount(cfg: Cfg) {
     applyTransform();
   }
 
+  // Screen position of a projected point is `p * k + off`. Because horizontal
+  // position is a rotation, d3-zoom's x never reaches the transform — so the
+  // scale needs its own anchor, or it grows away from x=0 and the map walks
+  // off to the right. Anchoring at the frame centre keeps the middle put.
+  // Vertically the flat map still translates, so d3's y is the anchor there.
+  function setOffsets() {
+    offX = (W / 2) * (1 - k);
+    offY = (H / 2) * (1 - k) + panY;
+  }
+
+  // Vertical panning is bounded so the flat map always covers the frame —
+  // there is no vertical wrap to fall back on. At k = 1 the range collapses
+  // to zero, which pins it exactly as before.
+  function clampPan() {
+    const top = (8 - H / 2) * k + H / 2;
+    const bottom = (H - 8 - H / 2) * k + H / 2;
+    panY = Math.max(Math.min(0, H - bottom), Math.min(Math.max(0, -top), panY));
+  }
+
   function applyTransform() {
     // Rotation changes the geometry itself, so every path is regenerated —
     // there is no transform shortcut for a change of central meridian.
     projection.rotate([lambda, 0]);
-    gRoot.setAttribute("transform", `translate(0,${ty}) scale(${k})`);
+    setOffsets();
+    gRoot.setAttribute("transform", `translate(${offX},${offY}) scale(${k})`);
     landPath.setAttribute("d", path(land as any) ?? "");
     project();
     updateHalosAndLabels();
@@ -269,8 +298,8 @@ export async function mount(cfg: Cfg) {
       halo.setAttribute("cy", String(a.y));
       halo.setAttribute("r", String(r));
 
-      const sx = a.x * k;
-      const sy = a.y * k + ty;
+      const sx = a.x * k + offX;
+      const sy = a.y * k + offY;
       const off = Math.max(r ? r * k : sizePx / 2, 8) + 6;
       chip.style.display = sx < -80 || sx > W + 80 || sy < -40 || sy > H + 40 ? "none" : "";
       chip.style.transform = `translate(${sx}px, ${sy - off}px) translate(-50%, -100%)`;
@@ -302,7 +331,7 @@ export async function mount(cfg: Cfg) {
     const i = delaunay.find(mx, my);
     if (i == null || i < 0) return null;
     const a = anchors[i];
-    const d = Math.hypot(a.x * k - mx, a.y * k + ty - my);
+    const d = Math.hypot(a.x * k + offX - mx, a.y * k + offY - my);
     return d <= CUTOFF ? a.id : null;
   }
 
@@ -347,12 +376,67 @@ export async function mount(cfg: Cfg) {
       // against in either direction. At zoom k the world spans W*k pixels,
       // so that many pixels of drag is exactly one full turn.
       const dx = t.x - lastTx;
+      const dy = t.y - lastTy;
       lastTx = t.x;
+      lastTy = t.y;
+      const kPrev = k;
+      const zooming = t.k !== kPrev;
+
+      // d3 supplies the scale and the raw gesture deltas; position is entirely
+      // ours. Its own x and y are never applied, because horizontal position is
+      // a rotation and any vertical correction we make would be overwritten by
+      // the next event's t.y.
+      let holdGeo: [number, number] | null = null;
+      let holdAt: readonly [number, number] | null = null;
+      if (zooming && ev.sourceEvent) {
+        holdAt = pointerPos(ev.sourceEvent as PointerEvent);
+        const inv = (projection as any).invert?.([
+          (holdAt[0] - offX) / kPrev,
+          (holdAt[1] - offY) / kPrev,
+        ]);
+        if (inv && Number.isFinite(inv[0])) holdGeo = inv;
+      }
+
       k = t.k;
-      ty = t.y;
-      if (!suppressRotate) lambda = wrap180(lambda + (dx / (W * k)) * 360);
+      if (!suppressRotate && !zooming) {
+        lambda = wrap180(lambda + (dx / (W * k)) * 360);
+        panY += dy;
+      }
+      clampPan();
+      setOffsets();
+
+      // Pin the point under the cursor. The correction is made in *degrees*,
+      // not pixels: ask what is under the cursor now, and shift the central
+      // meridian by the difference in longitude. Pixels-per-degree is not a
+      // constant on either projection — on a sphere it falls off towards the
+      // limb — so a pixel-scaled nudge overshoots and the loop oscillates
+      // instead of settling. Iterating in degrees converges in two or three
+      // passes. Vertically the flat map translates, so there the pixel error
+      // is exact and can be applied directly.
+      if (holdGeo && holdAt) {
+        for (let i = 0; i < 6; i++) {
+          projection.rotate([lambda, 0]);
+          const p = projection(holdGeo);
+          if (!p || !Number.isFinite(p[0])) break;
+          const ex = holdAt[0] - (p[0] * k + offX);
+          const ey = holdAt[1] - (p[1] * k + offY);
+          if (Math.abs(ex) < 0.25 && Math.abs(ey) < 0.25) break;
+          const under = (projection as any).invert?.([
+            (holdAt[0] - offX) / k,
+            (holdAt[1] - offY) / k,
+          ]);
+          if (!under || !Number.isFinite(under[0])) break;
+          lambda = wrap180(lambda + wrap180(under[0] - holdGeo[0]));
+          panY += ey;
+          clampPan();
+          setOffsets();
+        }
+      }
+
       reset.hidden =
-        k === 1 && ty === 0 && Math.abs(wrap180(lambda - HOME_LON)) < 0.5;
+        k === 1 &&
+        panY === 0 &&
+        Math.abs(wrap180(lambda - HOME_LON)) < 0.5;
       schedule();
     });
 
@@ -370,12 +454,14 @@ export async function mount(cfg: Cfg) {
     // while that runs, or the two fight each other.
     suppressRotate = true;
     const from = lambda;
+    const fromPan = panY;
     const delta = wrap180(HOME_LON - from); // always the short way round
     const t0 = performance.now();
     const step = (now: number) => {
       const u = dur === 0 ? 1 : Math.min(1, (now - t0) / dur);
       const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
       lambda = wrap180(from + delta * e);
+      panY = fromPan * (1 - e);
       applyTransform();
       if (u < 1) requestAnimationFrame(step);
     };
@@ -388,15 +474,18 @@ export async function mount(cfg: Cfg) {
       .on("end interrupt", () => {
         suppressRotate = false;
         lastTx = 0;
+        lastTy = 0;
       });
   });
 
   function refreshExtent() {
-    // Unbounded in x — that is the wrap-around. Vertical stays penned in so
-    // the map can't be dragged off the top or bottom of the frame.
+    // d3's own translation is never applied — we read its deltas and keep
+    // position ourselves — so it must stay unconstrained in both axes or it
+    // would silently swallow gestures at the edges. Vertical bounds live in
+    // clampPan(); horizontally there is nothing to bound, which is the wrap.
     zoomBehavior.translateExtent([
-      [-Infinity, -H * 0.15],
-      [Infinity, H * 1.15],
+      [-Infinity, -Infinity],
+      [Infinity, Infinity],
     ]);
   }
 
