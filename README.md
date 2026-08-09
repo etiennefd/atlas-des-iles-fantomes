@@ -147,6 +147,33 @@ Island anchors and label sizes come from `geoCentroid`/`geoBounds` rather than
 `path.centroid`/`getBBox`, which both misbehave for a shape the antimeridian
 has cut into two pieces at opposite edges of the frame.
 
+### Basemap detail
+
+Natural Earth 110m has **no small islands at all** — no Balearics, no Lesser
+Antilles, no Azores, no Malta — which is a poor look on an atlas about
+islands. But the globe reprojects every path every frame, and detail is
+ruinous at that rate:
+
+| tier | transfer (gzip) | ms/frame | islands |
+|---|---|---|---|
+| land-110m | 20 kB | 3 | none of the above |
+| land-50m | 169 kB | 32 | all of the above |
+| land-10m | 806 kB | 265 | + Faroes and the rest |
+
+Culling to the visible hemisphere doesn't rescue it: at 2× only 46 of 4061
+polygons are visible, yet they still cost 104 ms, because a few of them are
+whole continents.
+
+So detail is drawn **on idle**, never while moving. Any interaction swaps
+straight back to 110m so the next frame stays cheap, and 180 ms after you stop
+the detailed tier is drawn once. Dragging stays at a measured 60 fps; the
+one-off redraw is a single frame you don't notice because nothing is moving.
+
+Tiers load lazily: 110m ships with first paint, 50m is fetched a beat later,
+and 10m only once you zoom past 3× — so a visitor who never zooms in never
+downloads 800 kB. In the same view this takes the basemap from 75 landmasses
+to 788.
+
 Geometry is **placeholder blobs**, generated from each island's coordinates:
 
 ```sh

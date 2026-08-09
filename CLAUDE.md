@@ -128,6 +128,15 @@ the entire map. `scripts/build_geojson.py` forces clockwise winding. QGIS and
 geojson.io export RFC 7946 counterclockwise, so **anything traced by hand needs
 flipping**. Verify with `geoArea(feature) > 2 * Math.PI` → inverted.
 
+**The basemap is drawn at two resolutions on purpose.** 110m has no small
+islands at all; 50m and 10m do, but cost 32 ms and 265 ms per frame against
+110m's 3 ms, and the globe reprojects everything every frame. Detail is
+therefore drawn only when the map is idle, and any interaction reverts to 110m
+instantly. Don't "simplify" this into always drawing the detailed tier —
+dragging drops from 60 fps to about 30 (50m) or 4 (10m). Culling to the
+visible hemisphere does not fix it; a handful of visible polygons are whole
+continents.
+
 **`public/data/islands.geojson` is a copy.** The map fetches it at runtime from
 `public/`, not from `src/data/`. Regenerating geometry without copying it
 across is a silent no-op. Worth wiring into an npm script.

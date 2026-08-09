@@ -33,6 +33,23 @@ type Cfg = {
 const HALO_THRESHOLD = 14;
 const HALO_MIN = 7;
 const MAX_ZOOM = 8;
+
+// Basemap detail. Natural Earth 110m has no small islands at all — no
+// Balearics, no Lesser Antilles, no Azores — which is a poor look on an atlas
+// about islands. But the globe reprojects every path every frame, and detail
+// is ruinous at that rate: measured 3 ms/frame for 110m, 32 ms for 50m and
+// 265 ms for 10m. Culling to the visible hemisphere doesn't rescue it, because
+// the few visible polygons include whole continents.
+//
+// So: coarse while the globe is moving, fine the moment it stops. You only
+// need to *see* small islands when you've stopped to look at them. The 10m
+// tier is additionally gated behind a close zoom, so a casual visitor never
+// downloads 800 kB for it.
+const DETAIL_TIERS = [
+  { url: "/data/land-50m.json", minZoom: 0 },
+  { url: "/data/land-10m.json", minZoom: 3 },
+];
+const IDLE_MS = 180;
 // Where the globe opens and returns to. Dragging rotates it, so there is no
 // edge to reach in any direction and the poles are reachable — which a
 // flattened projection fitted to a latitude band could never offer.
@@ -237,6 +254,83 @@ export async function mount(cfg: Cfg) {
     offY = (H / 2) * (1 - k);
   }
 
+  // --- basemap detail ----------------------------------------------------
+  type Tier = { polys: { p: any; c: [number, number]; r: number }[] };
+  const tiers = new Map<string, Tier | "loading">();
+  let idleTimer = 0;
+  let showingDetail = false;
+
+  function tierFor(zoom: number) {
+    let pick: (typeof DETAIL_TIERS)[number] | null = null;
+    for (const t of DETAIL_TIERS) if (zoom >= t.minZoom) pick = t;
+    return pick;
+  }
+
+  // Split the land into individual polygons, each with a spherical centre and
+  // radius, so the far hemisphere can be skipped when drawing.
+  function prepare(geo: any): Tier {
+    const rings: any[] = [];
+    const push = (g: any) => {
+      if (!g) return;
+      if (g.type === "Polygon") rings.push(g.coordinates);
+      else if (g.type === "MultiPolygon") g.coordinates.forEach((c: any) => rings.push(c));
+    };
+    if (geo.features) geo.features.forEach((f: any) => push(f.geometry));
+    else push(geo.geometry ?? geo);
+    return {
+      polys: rings.map((coordinates) => {
+        const p = { type: "Feature", geometry: { type: "Polygon", coordinates } };
+        const b = geoBounds(p as any);
+        return {
+          p,
+          c: [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2] as [number, number],
+          r: geoDistance(b[0], b[1]) / 2,
+        };
+      }),
+    };
+  }
+
+  function detailD(tier: Tier) {
+    const centre: [number, number] = [-lambda, -phi];
+    let d = "";
+    for (const m of tier.polys) {
+      if (geoDistance(m.c, centre) - m.r > Math.PI / 2) continue;
+      d += path(m.p as any) ?? "";
+    }
+    return d;
+  }
+
+  function drawDetail() {
+    const want = tierFor(k);
+    if (!want) return;
+    const got = tiers.get(want.url);
+    if (got === "loading") return;
+    if (!got) {
+      tiers.set(want.url, "loading");
+      fetch(want.url)
+        .then((r) => r.json())
+        .then((topo) => {
+          tiers.set(want.url, prepare(feature(topo, topo.objects.land)));
+          drawDetail();
+        })
+        .catch(() => tiers.delete(want.url));
+      return;
+    }
+    landPath.setAttribute("d", detailD(got));
+    showingDetail = true;
+  }
+
+  // Any interaction drops straight back to the coarse basemap so the next
+  // frame stays cheap, then redraws detail once things settle.
+  function bumpIdle() {
+    if (showingDetail) {
+      showingDetail = false;
+      landPath.setAttribute("d", path(land as any) ?? "");
+    }
+    clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(drawDetail, IDLE_MS);
+  }
+
   function applyTransform() {
     // Rotation changes the geometry itself, so every path is regenerated —
     // there is no transform shortcut for a change of central meridian.
@@ -244,7 +338,7 @@ export async function mount(cfg: Cfg) {
     setOffsets();
     gRoot.setAttribute("transform", `translate(${offX},${offY}) scale(${k})`);
     spherePath.setAttribute("d", path({ type: "Sphere" } as any) ?? "");
-    landPath.setAttribute("d", path(land as any) ?? "");
+    if (!showingDetail) landPath.setAttribute("d", path(land as any) ?? "");
     project();
     updateHalosAndLabels();
     rebuildVoronoi();
@@ -430,6 +524,7 @@ export async function mount(cfg: Cfg) {
         k === 1 &&
         Math.abs(phi + HOME_LAT) < 0.5 &&
         Math.abs(wrap180(lambda - HOME_LON)) < 0.5;
+      bumpIdle();
       schedule();
     });
 
@@ -485,10 +580,13 @@ export async function mount(cfg: Cfg) {
   const ro = new ResizeObserver(() => {
     resize();
     refreshExtent();
+    bumpIdle();
   });
   ro.observe(root);
 
   resize();
   refreshExtent();
   root.classList.add("is-ready");
+  // Coarse first paint, then fill in the small islands a beat later.
+  bumpIdle();
 }
