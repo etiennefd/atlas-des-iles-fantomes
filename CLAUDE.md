@@ -35,7 +35,7 @@ src/
   components/PhantomMap.astro
   i18n/ui.ts              ~30 UI strings
   pages/[lang]/{index,liste}.astro, pages/[lang]/iles/[slug].astro
-public/data/              runtime copies of islands.geojson + land-110m.json
+public/data/              runtime copies of islands.geojson + land-50m.json
 scripts/                  seed_islands.py, build_geojson.py
 ```
 
@@ -44,8 +44,8 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
 
 ## Decisions already made — don't relitigate
 
-- **No Leaflet / MapLibre.** D3 + inline SVG + Natural Earth 110m TopoJSON.
-  No tile server, full control of every colour.
+- **No Leaflet / MapLibre.** D3 + inline SVG + Natural Earth TopoJSON (50m —
+  see Traps). No tile server, full control of every colour.
 - **An orthographic globe** (`d3-geo`), not a flat projection. This replaced
   Van der Grinten in August 2026 after building both and comparing them side
   by side. Van der Grinten was chosen for thematic reasons — a project about
@@ -128,14 +128,16 @@ the entire map. `scripts/build_geojson.py` forces clockwise winding. QGIS and
 geojson.io export RFC 7946 counterclockwise, so **anything traced by hand needs
 flipping**. Verify with `geoArea(feature) > 2 * Math.PI` → inverted.
 
-**The basemap is drawn at two resolutions on purpose.** 110m has no small
-islands at all; 50m and 10m do, but cost 32 ms and 265 ms per frame against
-110m's 3 ms, and the globe reprojects everything every frame. Detail is
-therefore drawn only when the map is idle, and any interaction reverts to 110m
-instantly. Don't "simplify" this into always drawing the detailed tier —
-dragging drops from 60 fps to about 30 (50m) or 4 (10m). Culling to the
-visible hemisphere does not fix it; a handful of visible polygons are whole
-continents.
+**The basemap is Natural Earth 50m and should stay one resolution.** 110m has
+no small islands at all, which is wrong for this project; 10m runs at 9 fps
+because the globe reprojects everything every frame. Both a 10m basemap and an
+idle-swap scheme (coarse while moving, fine when stopped) were built and
+rejected — the swap worked but was unpleasant to use. 50m holds 60 fps.
+
+**`world-atlas`'s `land-10m.json` is broken as distributed** — 3 degenerate
+zero-area polygons that d3-geo reads as the whole sphere, giving 41.3 sr of
+land against a true ~2.9 and rendering the globe as a solid disc. Worth
+knowing before blaming your own code.
 
 **`public/data/islands.geojson` is a copy.** The map fetches it at runtime from
 `public/`, not from `src/data/`. Regenerating geometry without copying it

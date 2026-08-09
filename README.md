@@ -147,32 +147,30 @@ Island anchors and label sizes come from `geoCentroid`/`geoBounds` rather than
 `path.centroid`/`getBBox`, which both misbehave for a shape the antimeridian
 has cut into two pieces at opposite edges of the frame.
 
-### Basemap detail
+### Basemap resolution
 
-Natural Earth 110m has **no small islands at all** — no Balearics, no Lesser
-Antilles, no Azores, no Malta — which is a poor look on an atlas about
-islands. But the globe reprojects every path every frame, and detail is
-ruinous at that rate:
+**Natural Earth 50m**, everywhere, every frame. 110m — the usual default —
+contains no small islands at all: no Balearics, no Lesser Antilles, no Azores,
+no Malta, no Bermuda, which is a poor look on an atlas about islands. 50m has
+them, at 169 kB gzipped against 110m's 20 kB, and it holds 60 fps while
+dragging (median 16.7 ms, measured in-browser at world zoom and at 5x).
 
-| tier | transfer (gzip) | ms/frame | islands |
-|---|---|---|---|
-| land-110m | 20 kB | 3 | none of the above |
-| land-50m | 169 kB | 32 | all of the above |
-| land-10m | 806 kB | 265 | + Faroes and the rest |
+10m was tried and rejected: **9 fps**, and no amount of culling helps, because
+the visible set still contains continents. An idle-swap scheme — coarse while
+moving, fine when stopped — was also built and rejected: it worked and held
+60 fps, but the pop between resolutions is unpleasant to use.
 
-Culling to the visible hemisphere doesn't rescue it: at 2× only 46 of 4061
-polygons are visible, yet they still cost 104 ms, because a few of them are
-whole continents.
+> If you ever revisit 10m, note that **`world-atlas`'s `land-10m.json` is
+> broken as distributed**: it carries 3 degenerate zero-area polygons that
+> d3-geo reads as covering the whole sphere, so total land area computes to
+> 41.3 sr against a true ~2.9 and the globe renders as a solid disc. Drop
+> those 3 of 4061 polygons and it's fine.
 
-So detail is drawn **on idle**, never while moving. Any interaction swaps
-straight back to 110m so the next frame stays cheap, and 180 ms after you stop
-the detailed tier is drawn once. Dragging stays at a measured 60 fps; the
-one-off redraw is a single frame you don't notice because nothing is moving.
+Only `land-50m.json` is committed. To get the others back:
 
-Tiers load lazily: 110m ships with first paint, 50m is fetched a beat later,
-and 10m only once you zoom past 3× — so a visitor who never zooms in never
-downloads 800 kB. In the same view this takes the basemap from 75 landmasses
-to 788.
+```sh
+cp node_modules/world-atlas/land-110m.json public/data/
+```
 
 Geometry is **placeholder blobs**, generated from each island's coordinates:
 
