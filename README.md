@@ -3,7 +3,12 @@
 A bilingual literary atlas of islands that were believed to exist and did not.
 Astro, static output, French and English.
 
-Full spec in [`PLAN.md`](./PLAN.md).
+Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>.
+
+Working notes and decisions: [`CLAUDE.md`](./CLAUDE.md). Coordinate
+provenance: [`COORDINATES.md`](./COORDINATES.md). [`PLAN.md`](./PLAN.md) is the
+original build plan, kept as history — several of its decisions were later
+overturned, so don't read it as a spec.
 
 ## Run it
 
@@ -77,22 +82,21 @@ map labels are italic by the hydrography convention and a synthesised oblique
 looks wrong on a high-contrast face. That alone ruled out Theano Didot, which
 ships Regular only.
 
-## Publish to GitHub
+## Deploy
 
-```sh
-cd atlas-des-iles-fantomes
-git init -b main
-git add .
-git commit -m "Content structure and story page"
+Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>, on **Vercel**,
+imported from `etiennefd/atlas-des-iles-fantomes`. Every push to `main`
+redeploys. Static output, no adapter — framework preset Astro, build
+`npm run build`, output `dist`. There is no deploy config in the repo because
+none is needed.
 
-gh repo create atlas-des-iles-fantomes --private --source=. --push
-# or, without the gh CLI: create the repo on github.com, then
-# git remote add origin git@github.com:USER/atlas-des-iles-fantomes.git
-# git push -u origin main
-```
+Vercel serves at the root of a subdomain, which matters: everything here
+assumes root paths (`/data/land-50m.json`, `/iles/…`, `/fr/…`). A host that
+serves from a subdirectory — GitHub Pages under `/atlas-des-iles-fantomes/` —
+would need `base` set and every one of those paths rewritten.
 
-Then point Cloudflare Pages at the repo: build command `npm run build`, output
-directory `dist`.
+Note that Vercel's Hobby plan is for non-commercial use. If the atlas ever
+becomes commercial, that needs Pro, or a host without the restriction.
 
 ## The map
 

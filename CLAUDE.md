@@ -22,7 +22,7 @@ cp src/data/islands.geojson public/data/islands.geojson   # ← required, see be
 ## Architecture
 
 Astro 5, static output, French default locale. The map is the only JavaScript
-on the site (~33 kB gzipped); everything else ships zero JS.
+on the site (~35 kB gzipped); everything else ships zero JS.
 
 ```
 src/
@@ -195,12 +195,32 @@ interesting object than a clickable index.
 
 ## Current state
 
+**Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>** — Vercel, imported
+from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
+output `dist`, no adapter (static). Nothing to configure.
+
 - 34 islands with coordinates; 9 attested, 12 approximate, 10 conjectural
 - 3 stories seeded (`hy-brasil` fr+en, `crocker-land` fr) — Hy-Brasil is the
   only one with real prose; the rest are placeholders
-- 2 partial drafts (`nakanotorishima`, `nimrod`) with notices and map images
+- 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
 - All geometry is placeholder blobs
-- Map verified working: hover, tap-to-reveal on touch, zoom to 8×, reset
+- Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
+  tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
+
+### Known blemishes, live right now
+
+- **Three story images 404.** `/iles/hy-brasil-atlas-catalan.png`,
+  `/iles/nakanotorishima-pacifique-1941.png`, `/iles/nimrod-perthes-1906.png`
+  are referenced in frontmatter and don't exist, so every story page shows a
+  broken image icon — including Hy-Brasil, the one with real prose. Either add
+  the files to `public/iles/` or make the template skip a figure whose file is
+  missing (worth doing anyway before migrating 28 stories).
+- **`/` stalls for two seconds.** `Astro.redirect` in static mode compiles to
+  `<meta http-equiv="refresh" content="2;url=/fr/">`. A `vercel.json` 308 fixes
+  it. Sharing the `/fr/` URL sidesteps it.
+- **`site` is still `https://example.com`** in `astro.config.mjs`, and it is
+  already leaking into production as `<link rel="canonical">` on the redirect
+  page.
 
 ## Next, roughly in order
 
@@ -214,7 +234,8 @@ interesting object than a clickable index.
    indefinitely.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
-5. Domain, then Cloudflare Pages (`npm run build`, output `dist`).
+5. A real domain (Vercel is serving `atlas-des-iles-fantomes.vercel.app`
+   today; point `site` in `astro.config.mjs` at whatever it becomes).
 
 ## Open questions
 

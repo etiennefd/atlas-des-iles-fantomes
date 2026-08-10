@@ -1,7 +1,26 @@
-# Atlas des îles fantômes — build plan
+# Atlas des îles fantômes — build plan (HISTORICAL)
 
-**Status:** planning
-**Last updated:** 7 August 2026
+> **Status: superseded. Kept as a record of the original thinking, not as a
+> specification.** Written 7 August 2026, before any of it was built.
+>
+> **Read [`CLAUDE.md`](./CLAUDE.md) and [`README.md`](./README.md) instead** —
+> those describe the site as it actually is.
+>
+> Decisions below that were later overturned, all after building and comparing
+> the alternatives:
+>
+> | This document says | Actually |
+> |---|---|
+> | Van der Grinten projection | An orthographic **globe**; dragging rotates it |
+> | Natural Earth **110m** basemap | **50m** — 110m contains no small islands at all |
+> | Display face **Faune** | **Spectral throughout**; Faune's upright is a sans |
+> | Hosting: Cloudflare Pages or Netlify | **Vercel**, live and auto-deploying |
+> | Fitted to a −62°..84° latitude band | No band; the globe reaches both poles |
+>
+> What it still gets right, and why it's worth keeping: the content model
+> (metadata separate from geometry, many-to-many stories, the open-ended
+> `notice` array), the slug decision, and the observation that the real work is
+> drawing 50 island polygons rather than building the site.
 
 A bilingual literary atlas: a world map of islands that were believed to exist and
 did not, each linking to a short story. 28 stories written, 50 planned.
