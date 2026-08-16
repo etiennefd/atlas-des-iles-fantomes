@@ -139,6 +139,18 @@ zero-area polygons that d3-geo reads as the whole sphere, giving 41.3 sr of
 land against a true ~2.9 and rendering the globe as a solid disc. Worth
 knowing before blaming your own code.
 
+**The story importer must stay deterministic.** `scripts/import_posts.py`
+converts HTML to markdown with regexes over the small tag subset these posts
+actually use. That is deliberate: routing 47,000 words of literary prose
+through a model would risk silent paraphrase. It was validated by
+reconstructing Hy-Brasil and diffing against source — 51 paragraphs, 13,087
+characters, byte-identical. If you extend it, keep that check.
+
+One real trap it already handles: an asterisk used as a **footnote marker**
+followed by italic text converts to `**…*`, which markdown reads as bold-open
+and renders wrong (`kianida`). And Wikimedia URLs arrive already
+percent-encoded, so re-encoding them turns `%2C` into `%252C` and 404s.
+
 **`public/data/islands.geojson` is a copy.** The map fetches it at runtime from
 `public/`, not from `src/data/`. Regenerating geometry without copying it
 across is a silent no-op. Worth wiring into an npm script.
@@ -200,8 +212,9 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 9 attested, 12 approximate, 10 conjectural
-- 3 stories seeded (`hy-brasil` fr+en, `crocker-land` fr) — Hy-Brasil is the
-  only one with real prose; the rest are placeholders
+- **31 of 34 written in French** — all 28 blog posts imported verbatim,
+  47,269 words, with the 36 map plates from the posts in `public/iles/`
+- English has only `hy-brasil`, so 30 islands sit in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
 - All geometry is placeholder blobs
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
@@ -224,10 +237,11 @@ output `dist`, no adapter (static). Nothing to configure.
 
 ## Next, roughly in order
 
-1. **Migrate the 28 stories** from the blog. Étienne is doing this by hand and
-   wants to. Conventions: `//` scene breaks become `***` (renders as a centred
-   `//` dinkus); the bullet block becomes `notice:`; keep `source:` pointing at
-   the original post.
+1. ~~Migrate the 28 stories~~ **Done**, by `scripts/import_posts.py`, which
+   reads the WordPress REST API rather than the rendered page so the prose
+   arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
+   to preview one, `--all --images --force` to redo everything. If a post is
+   edited on the blog, re-run rather than hand-patching.
 2. **Trace real outlines**, starting with `californie` (should be a long N–S
    sliver), `coree` (a peninsula) and `frisland` (the Zeno lozenge) — the three
    where a placeholder blob actively misleads. Everything else can stay a blob
