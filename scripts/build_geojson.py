@@ -12,6 +12,7 @@ import os, json, math, glob, hashlib, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "..", "src", "content", "islands")
+OUTLINES = os.path.join(HERE, "..", "src", "data", "outlines")
 OUT = os.path.join(HERE, "..", "src", "data", "islands.geojson")
 
 # Rough apparent size in degrees, by kind. Deliberately small — these are
@@ -76,7 +77,7 @@ def wind_cw(pts):
     return pts + [pts[0]]
 
 
-features, skipped = [], []
+features, skipped, outlined = [], [], []
 for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
     iid = os.path.splitext(os.path.basename(path))[0]
     d = parse(path)
@@ -91,7 +92,16 @@ for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
         "confidence": d.get("coords_confidence", "unknown"),
         "placeholder": True,
     }
-    if kind == "reef":
+    traced = os.path.join(OUTLINES, iid + ".geojson")
+    if os.path.exists(traced):
+        # A hand-traced depiction beats a blob. scripts/trace_outline.py wrote
+        # it and already forced clockwise winding; provenance rides along.
+        f = json.load(open(traced, encoding="utf-8"))
+        geom = f["geometry"]
+        props["placeholder"] = False
+        props["traced_from"] = f["properties"].get("traced_from", "")
+        outlined.append(iid)
+    elif kind == "reef":
         geom = {"type": "Point", "coordinates": [lon, lat]}
     else:
         r = RADIUS[kind]
@@ -107,5 +117,7 @@ with open(OUT, "w", encoding="utf-8") as f:
     json.dump({"type": "FeatureCollection", "features": features}, f, indent=1)
 
 print(f"{len(features)} features written to {os.path.relpath(OUT, HERE)}")
+if outlined:
+    print(f"traced outlines used: {', '.join(outlined)}")
 if skipped:
     print("no coordinates yet: " + ", ".join(skipped))

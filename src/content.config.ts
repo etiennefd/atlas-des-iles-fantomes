@@ -54,6 +54,14 @@ const islands = defineCollection({
       .default("unknown"),
     /** Where the position came from, or why there isn't one. */
     coords_note: z.string().optional(),
+
+    /**
+     * Which depiction the traced outline in src/data/outlines/ comes from.
+     * The shape of a phantom island is one cartographer's claim, not a fact,
+     * so it gets provenance of its own — and it is often a *different* chart
+     * from the one the position came from.
+     */
+    outline_note: z.string().optional(),
   }),
 });
 

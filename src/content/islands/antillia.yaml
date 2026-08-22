@@ -7,3 +7,10 @@ span: [1424, 1500]
 coords_confidence: approximate
 coords_note: >-
   Pizzigano chart 1424, far west of Portugal; Satanazes just north.
+outline_note: >-
+  Shape traced from the Bartolomeo Pareto chart of 1455 — a tall rectangle with
+  one large bay and seven small ones. Note this is a *different* chart from the
+  Pizzigano of 1424 the position comes from. Sized at 140 x 475 km from that
+  chart's own scale, derived from three Iberian landmark pairs (2.9-3.5 km/px,
+  mean 3.19). No rotation applied: the plate is drawn to magnetic north, and
+  correcting the ~6 degrees made the island read as skewed rather than drawn.
