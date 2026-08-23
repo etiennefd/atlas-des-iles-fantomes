@@ -2,7 +2,7 @@ name_fr: "Antillia"
 name_en: "Antillia"
 kind: island
 ocean: atlantique-nord
-coords: [-35.2, 38.5]
+coords: [-35.2, 35.5]
 span: [1424, 1500]
 coords_confidence: approximate
 coords_note: >-
@@ -10,13 +10,18 @@ coords_note: >-
   Pizzigano chart of 1424 draws it: Antillia sits about 630 km west of the
   islands Pizzigano labels "capraria" and "louo" — medieval names for the
   Azores, which were well known by the 15th century. Anchoring on those and
-  using the chart's own scale gives roughly -35, and the literature's "200
-  miles west of the Azores" agrees. Latitude is the soft part, 37 to 41
-  depending on which real island "capraria" is taken to be.
+  using that chart's own scale gives roughly -35 for the longitude, and the
+  literature's "200 miles west of the Azores" agrees.
+  Latitude is a judgement rather than a measurement. The charts are soft on it
+  — anchoring gave anywhere from 37 to 41 depending on which real island
+  "capraria" is taken to be — so 35.5 is chosen for how it reads on the globe:
+  the island sits south-west of Iberia with its northern tip just above Santa
+  Maria, instead of overshooting Corvo and stretching towards Ireland. It also
+  suits the legend, in which the seven bishops sail west from Porto.
   Earlier values, both wrong: [-45.0, 32.0], too far out; and [-22.95, 38.14],
-  which came from extrapolating a transform fitted only on Madeira, the
-  Canaries and Iberia far past its calibration, landing Antillia absurdly
-  *east* of the Azores.
+  from extrapolating a transform fitted only on Madeira, the Canaries and
+  Iberia far past its calibration, which landed Antillia absurdly *east* of
+  the Azores.
 outline_note: >-
   Traced from the Albino de Canepa portolan of 1489, at full resolution
   (14383 px wide). Canepa draws Antillia as a golden coast band round a pale
