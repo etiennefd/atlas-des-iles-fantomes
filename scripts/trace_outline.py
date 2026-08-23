@@ -29,8 +29,10 @@ import argparse, json, math, os
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import binary_closing, binary_fill_holes, binary_opening
+from scipy.ndimage import binary_closing, binary_fill_holes
 from skimage.measure import approximate_polygon, find_contours, label, regionprops
+from skimage.morphology import binary_closing as binary_closing_sk
+from skimage.morphology import binary_opening, disk, square
 
 Image.MAX_IMAGE_PIXELS = None
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -71,10 +73,13 @@ def residuals(p, K, landmarks):
 
 
 # --- the island ------------------------------------------------------------
-def island_mask(img, mode, thr, bbox, close):
+def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
+    x0, y0 = (bbox[0], bbox[1]) if bbox else (0, 0)
+    if bbox:
+        img = img.crop(tuple(bbox))
     a = np.asarray(img.convert("RGB")).astype(int)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
@@ -82,16 +87,69 @@ def island_mask(img, mode, thr, bbox, close):
              "green": G - (R + B) / 2,
              "dark":  255 - (R + G + B) / 3}[mode]
     m = score > thr
-    if bbox:
-        x0, y0, x1, y1 = bbox
-        keep = np.zeros_like(m); keep[y0:y1, x0:x1] = True
-        m &= keep
+    if open_r:
+        # Squared bays need a square element: a disk cannot hold a right angle,
+        # and rounds every notch into a wave. (Canepa's north-west bay.)
+        el = square(open_r) if se == "square" else disk(open_r)
+        m = binary_opening(m, el)
     if not m.any():
         raise SystemExit("nothing selected — adjust --threshold/--mode/--bbox")
     lab = label(m)
     m = lab == max(regionprops(lab), key=lambda q: q.area).label
-    m = binary_fill_holes(binary_closing(m, np.ones((close, close))))
-    return binary_fill_holes(binary_opening(m, np.ones((5, 5))))
+    # disk(close), not a close x close box: the box is far weaker, and a gap
+    # left in the coast band means fill_holes cannot close the interior at all
+    # — the island comes out as a ring rather than a shape.
+    m = binary_fill_holes(binary_closing_sk(m, disk(close)))
+    return binary_fill_holes(m), (x0, y0)
+
+
+def manual(a, chart):
+    """No landmarks on this chart yet, so the chart gives only the silhouette;
+    size and position are set explicitly. Georeference it properly and this
+    path goes away."""
+    if not (a.height_km and a.centre):
+        raise SystemExit("this chart has no landmarks yet: pass --height-km and --centre")
+    lon, lat = [float(v) for v in a.centre.split(",")]
+    bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
+    mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
+                          a.threshold, bbox, a.closing, a.se, a.open_r)
+    ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
+                               a.tolerance)
+    if len(ring) > 3 and (ring[0] == ring[-1]).all():
+        ring = ring[:-1]
+    ys, xs = np.nonzero(mask)
+    cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
+    kmpx = a.height_km / (ys.max() - ys.min())
+    pts = []
+    for r, c in ring:
+        dlat = -(r - cy) * kmpx / 111.0
+        dlon = (c - cx) * kmpx / (111.32 * math.cos(math.radians(lat)))
+        pts.append([round(lon + dlon, 4), round(lat + dlat, 4)])
+    area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
+               pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
+    if area > 0:
+        pts = pts[::-1]
+    pts.append(pts[0])
+    lons = [q[0] for q in pts]; lats = [q[1] for q in pts]
+    km_w = (max(lons) - min(lons)) * 111.32 * math.cos(math.radians(lat))
+    print(f"{a.island}: {len(pts)-1} points   (silhouette only — {chart['name']} "
+          f"has no landmarks yet)")
+    print(f"  centre     {lon}, {lat}   (given)")
+    print(f"  extent     {km_w:.0f} x {a.height_km:.0f} km   (height given)")
+    feat = {"type": "Feature",
+            "properties": {"id": a.island, "traced_from": chart["name"],
+                           "source_url": chart.get("source_url", ""),
+                           "georeference": None,
+                           "scale_source": "height set by hand; chart not yet georeferenced",
+                           "centre": [lon, lat],
+                           "size_km": [round(km_w), round(a.height_km)]},
+            "geometry": {"type": "Polygon", "coordinates": [pts]}}
+    if a.dry_run:
+        print("\n(dry run — nothing written)"); return
+    os.makedirs(OUTDIR, exist_ok=True)
+    dest = os.path.join(OUTDIR, f"{a.island}.geojson")
+    json.dump(feat, open(dest, "w", encoding="utf-8"), indent=1)
+    print(f"  -> {os.path.relpath(dest, ROOT)}")
 
 
 def main():
@@ -102,6 +160,14 @@ def main():
     ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "dark"))
     ap.add_argument("--threshold", type=float, default=45.0)
     ap.add_argument("--closing", type=int, default=21)
+    ap.add_argument("--open", type=int, default=0, dest="open_r",
+                    help="opening radius, applied before anything else")
+    ap.add_argument("--se", default="disk", choices=("disk", "square"),
+                    help="structuring element; square preserves right angles")
+    ap.add_argument("--height-km", type=float,
+                    help="north-south extent in km. Use when the chart has no "
+                         "landmarks yet, so scale is set by hand rather than "
+                         "georeferenced.")
     ap.add_argument("--tolerance", type=float, default=2.0, help="simplify, px")
     ap.add_argument("--bbox", help="x0,y0,x1,y1 to restrict the search")
     ap.add_argument("--centre", help="lon,lat override. The chart still gives "
@@ -113,6 +179,8 @@ def main():
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
     lms = chart["landmarks"]
+    if not lms:
+        return manual(a, chart)
     lat0 = sum(m["lat"] for m in lms) / len(lms)
     p, K = fit_transform(lms, lat0)
     kmpx = math.hypot(p[0], p[1]) * 111.0
@@ -126,14 +194,14 @@ def main():
         print(f"     {name:14} {e:5.0f} km")
 
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
-    mask = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
-                       a.threshold, bbox, a.closing)
+    mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
+                                 a.threshold, bbox, a.closing, a.se, a.open_r)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
         ring = ring[:-1]
 
-    pts = [[round(v, 4) for v in to_lonlat(p, K, c, r)] for r, c in ring]
+    pts = [[round(v, 4) for v in to_lonlat(p, K, c + ox, r + oy)] for r, c in ring]
     # d3-geo reads polygons spherically: wound the wrong way, the island renders
     # as the whole planet except itself.
     area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
@@ -143,7 +211,8 @@ def main():
     pts.append(pts[0])
 
     ys, xs = np.nonzero(mask)
-    clon, clat = to_lonlat(p, K, (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2)
+    clon, clat = to_lonlat(p, K, (xs.min() + xs.max()) / 2 + ox,
+                           (ys.min() + ys.max()) / 2 + oy)
     moved = None
     if a.centre:
         tlon, tlat = [float(v) for v in a.centre.split(",")]

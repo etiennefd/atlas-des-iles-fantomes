@@ -18,11 +18,18 @@ coords_note: >-
   Canaries and Iberia far past its calibration, landing Antillia absurdly
   *east* of the Azores.
 outline_note: >-
-  Traced from the Pizzigano chart of 1424 — the first to name Antillia, and
-  the depiction later cartographers copied: Beccario 1435, Bianco 1436,
-  Pareto 1455, Benincasa, Roselli. An elongated mass canted NE-SW, deeply
-  bayed, carrying the seven cartouches of the Seven Cities, which are filled
-  as land when tracing because they are labels written on the island, not
-  lakes. 338 x 593 km by the chart's own scale, matching the contemporary
-  description of it as drawn on a similar scale to Portugal. Shape still to
-  be refined: the bays want more of the character they have on the chart.
+  Traced from the Albino de Canepa portolan of 1489, at full resolution
+  (14383 px wide). Canepa draws Antillia as a golden coast band round a pale
+  interior, so it is extracted by thresholding the band and filling, not by
+  picking out a colour wash — and the bays need a *square* structuring
+  element, because a disk cannot hold a right angle and rounds every notch
+  into a wave. All seven small bays survive, four down the east flank and
+  three down the west, plus the large arched bay at the south end.
+  Supersedes an earlier trace from Pizzigano 1424, whose Antillia is smaller
+  on the sheet and partly hidden under the seven cartouches of the Seven
+  Cities.
+  SCALE IS PROVISIONAL: the height is simply carried over from the Pizzigano
+  measurement (593 km), so the width follows from Canepa's aspect ratio and
+  comes out at 150 km. Canepa draws the island far more elongated than
+  Pizzigano did. Georeference the Canepa chart on its own landmarks to
+  replace this with a measured size.

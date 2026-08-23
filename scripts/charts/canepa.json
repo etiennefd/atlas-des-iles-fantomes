@@ -1,0 +1,7 @@
+{
+  "name": "Albino de Canepa, portolan chart, 1489",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Portolan_chart_by_Albino_de_Canepa_1489.jpg",
+  "licence": "public domain (the chart is from 1489)",
+  "note": "Full original is 14383x9876, 17 MB. Not committed: it is tracing input, and the URL reproduces it. Antillia is drawn as a golden coast band with a pale interior rather than a colour wash, so it is extracted by thresholding the band and filling, not by picking a fill colour.",
+  "landmarks": []
+}
