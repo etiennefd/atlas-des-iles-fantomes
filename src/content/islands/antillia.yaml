@@ -2,22 +2,27 @@ name_fr: "Antillia"
 name_en: "Antillia"
 kind: island
 ocean: atlantique-nord
-coords: [-22.95, 38.14]
+coords: [-35.2, 38.5]
 span: [1424, 1500]
 coords_confidence: approximate
 coords_note: >-
-  Read off the Pizzigano chart of 1424 itself, by georeferencing it on six
-  landmarks it also carries — Madeira, Lanzarote, Fuerteventura, Lisbon,
-  Sanlúcar, Málaga — which fit to an RMS of 47 km. The chart puts Antillia
-  about 1270 km west of Lisbon, near the longitude of the Azores. This
-  replaces an earlier [-45.0, 32.0], which was some 1900 km too far west.
-  Caveat: the island sits well west of every landmark, so the transform is
-  extrapolated there and the position is softer than the 47 km RMS suggests.
+  West of the Azores, which is where every account puts it and where the
+  Pizzigano chart of 1424 draws it: Antillia sits about 630 km west of the
+  islands Pizzigano labels "capraria" and "louo" — medieval names for the
+  Azores, which were well known by the 15th century. Anchoring on those and
+  using the chart's own scale gives roughly -35, and the literature's "200
+  miles west of the Azores" agrees. Latitude is the soft part, 37 to 41
+  depending on which real island "capraria" is taken to be.
+  Earlier values, both wrong: [-45.0, 32.0], too far out; and [-22.95, 38.14],
+  which came from extrapolating a transform fitted only on Madeira, the
+  Canaries and Iberia far past its calibration, landing Antillia absurdly
+  *east* of the Azores.
 outline_note: >-
   Traced from the Pizzigano chart of 1424 — the first to name Antillia, and
   the depiction later cartographers copied: Beccario 1435, Bianco 1436,
   Pareto 1455, Benincasa, Roselli. An elongated mass canted NE-SW, deeply
-  bayed, carrying the seven cartouches of the Seven Cities. Those cartouches
-  are filled as land when tracing: they are labels written on the island,
-  not lakes. 340 x 593 km by the chart's own scale, which matches the
-  contemporary description of it as being on a similar scale to Portugal.
+  bayed, carrying the seven cartouches of the Seven Cities, which are filled
+  as land when tracing because they are labels written on the island, not
+  lakes. 338 x 593 km by the chart's own scale, matching the contemporary
+  description of it as drawn on a similar scale to Portugal. Shape still to
+  be refined: the bays want more of the character they have on the chart.

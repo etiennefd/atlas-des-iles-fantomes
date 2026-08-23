@@ -104,6 +104,10 @@ def main():
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--tolerance", type=float, default=2.0, help="simplify, px")
     ap.add_argument("--bbox", help="x0,y0,x1,y1 to restrict the search")
+    ap.add_argument("--centre", help="lon,lat override. The chart still gives "
+                    "shape, size and orientation; use this where its own "
+                    "georeference is not trustworthy — typically the imagined "
+                    "ocean west of everything it actually surveyed.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -140,12 +144,22 @@ def main():
 
     ys, xs = np.nonzero(mask)
     clon, clat = to_lonlat(p, K, (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2)
+    moved = None
+    if a.centre:
+        tlon, tlat = [float(v) for v in a.centre.split(",")]
+        dlon, dlat = tlon - clon, tlat - clat
+        pts = [[round(q[0] + dlon, 4), round(q[1] + dlat, 4)] for q in pts]
+        moved = (round(clon, 2), round(clat, 2))
+        clon, clat = tlon, tlat
     lons = [q[0] for q in pts]; lats = [q[1] for q in pts]
     km_w = (max(lons) - min(lons)) * 111.32 * math.cos(math.radians(clat))
     km_h = (max(lats) - min(lats)) * 111.0
 
     print(f"\n{a.island}: {len(pts)-1} points")
-    print(f"  centre     {clon:.2f}, {clat:.2f}   (from the chart)")
+    if moved:
+        print(f"  centre     {clon:.2f}, {clat:.2f}   (override; chart put it at {moved[0]}, {moved[1]})")
+    else:
+        print(f"  centre     {clon:.2f}, {clat:.2f}   (from the chart)")
     print(f"  extent     {km_w:.0f} x {km_h:.0f} km")
     print(f"  lon {min(lons):.2f}..{max(lons):.2f}   lat {min(lats):.2f}..{max(lats):.2f}")
 
@@ -158,6 +172,7 @@ def main():
                                             "landmark_rms_km": round(rms),
                                             "landmarks": len(lms)},
                            "centre": [round(clon, 3), round(clat, 3)],
+                           "centre_from_chart": moved,
                            "size_km": [round(km_w), round(km_h)]},
             "geometry": {"type": "Polygon", "coordinates": [pts]}}
     if a.dry_run:
