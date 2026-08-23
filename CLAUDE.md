@@ -73,6 +73,11 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
   hydrography in italic — so italicising the phantoms quietly says "this is
   water." Keep it.
 - **The page background is the ocean.** No panel chrome floating over the map.
+- **An island's shape comes from the most famous or influential depiction**,
+  not the earliest, and *not* the plate that happens to illustrate its story —
+  those were picked as illustrations and Étienne does not endorse them as
+  sources. For Antillia the two coincided anyway: Pizzigano 1424 is both first
+  and the one everyone copied. Where they differ, influence wins.
 
 ## Data model
 
@@ -91,6 +96,11 @@ with `coords_note` recording provenance. **Ten islands are `conjectural`** —
 positions I inferred from context. Don't silently "correct" them; flag
 uncertainty to Étienne rather than guessing harder. Full table in
 `COORDINATES.md`.
+
+`outline_note` records which depiction a traced shape came from — a *separate*
+claim from the position, and frequently a different chart. Antillia's position
+comes from Pizzigano 1424 and its shape from Canepa 1489. Keep them distinct;
+conflating them is how the island ended up east of the Azores.
 
 `span` is a lossy `[start, end]` pair used **only** for the map hover label.
 Either element may be null for an open interval. Omit it entirely where dating
@@ -171,6 +181,72 @@ a point for a location behind the globe — it mirrors it onto the near disc —
 so without a `geoDistance > π/2` test you can hover an island through the
 earth.
 
+## Tracing island shapes
+
+Worked once, on `antillia`. Read this before doing the second one.
+
+A phantom island's shape is a claim, not a fact, so it carries provenance of
+its own in `outline_note` — often citing a *different* chart from the one the
+position came from.
+
+```sh
+python3 scripts/trace_outline.py antillia --chart canepa \
+    --image ~/scratch/charts/canepa-full.jpg \
+    --mode dark --threshold 115 --open 7 --se square --closing 3 \
+    --tolerance 3 --bbox 1000,5950,1560,7250 \
+    --height-km 593 --centre=-35.2,35.5
+python3 scripts/build_geojson.py && cp src/data/islands.geojson public/data/
+```
+
+Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
+prefers one over a blob, so **one island is a complete unit of work**. Chart
+landmarks and provenance live in `scripts/charts/{chart}.json`. **The chart
+rasters are deliberately not committed** — 3 to 17 MB each of pure tracing
+input, and the source URL reproduces them.
+
+**Two extraction modes, because charts differ.** A flat colour wash
+(Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
+An outlined coast round a pale interior (Canepa) needs `--mode dark` to catch
+the ink band, which is then closed and filled — the interior is the same
+parchment as the ocean, so it cannot be selected directly.
+
+**Scale and position come from georeferencing where the chart can support it.**
+Portolans carry real coastlines beside their invented islands, so landmarks fit
+a similarity transform giving km/pixel and the chart's own rotation. Six
+landmarks on Pizzigano fitted to RMS 47 km. But that only holds *inside the
+surveyed region*: everything west of the Canaries on these charts is imagined,
+and extrapolating a transform out there produced a confidently wrong answer
+(Antillia east of the Azores). Anchor on the nearest thing the chart actually
+drew instead.
+
+**Latitude may be a judgement.** Antillia's is: the charts supported anywhere
+from 37 to 41, so 35.5 was chosen for how it reads against real geography.
+That is legitimate and recorded as such. Aesthetics are allowed to decide what
+the evidence does not.
+
+### Traps, all of which cost real time
+
+**A disk-shaped structuring element cannot preserve a right angle.** Canepa
+draws squared bays; every opening radius turned one into a triangle, and no
+amount of tuning helped, because a disk rounds corners by construction. Use
+`--se square` where the coastline is rectilinear.
+
+**Close with `disk(n)`, not an `n × n` box.** The box is far weaker. A gap left
+anywhere in a coast band means `fill_holes` cannot close the interior, and the
+island comes out as a **ring** — same bounding box, a third of the pixels, and
+invisible unless you diff the mask.
+
+**Image y grows downward, latitude grows upward.** A similarity transform
+cannot express a reflection, so without flipping y first the fit absorbs it as
+a ~100° rotation and every residual is hundreds of km out. It looks like bad
+landmarks rather than bad algebra.
+
+**Settlement cartouches are labels, not lakes.** Names written on the island
+are holes in the colour wash and must be filled.
+
+**Look at the mask, not the numbers.** Every real fault here was invisible in
+the summary statistics and obvious the moment the mask was rendered.
+
 ## Design
 
 ```css
@@ -216,7 +292,7 @@ output `dist`, no adapter (static). Nothing to configure.
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
-- All geometry is placeholder blobs
+- Geometry is placeholder blobs except `antillia`, traced from Canepa 1489
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
@@ -242,10 +318,13 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines**, starting with `californie` (should be a long N–S
-   sliver), `coree` (a peninsula) and `frisland` (the Zeno lozenge) — the three
-   where a placeholder blob actively misleads. Everything else can stay a blob
-   indefinitely.
+2. **Trace real outlines.** `antillia` is done — see *Tracing island shapes*.
+   Next best candidates: `frisland` (the Zeno lozenge), `californie` (a long
+   N–S sliver) and `coree` (a peninsula), the three where a placeholder blob
+   actively misleads. Everything else can stay a blob indefinitely; an island
+   nobody agreed on the shape of should look vague.
+   Outstanding on `antillia`: its scale is inherited from a Pizzigano
+   measurement because `scripts/charts/canepa.json` has no landmarks yet.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
 5. A real domain (Vercel is serving `atlas-des-iles-fantomes.vercel.app`
