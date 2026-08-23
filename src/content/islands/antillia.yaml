@@ -2,15 +2,22 @@ name_fr: "Antillia"
 name_en: "Antillia"
 kind: island
 ocean: atlantique-nord
-coords: [-45.0, 32.0]
+coords: [-22.95, 38.14]
 span: [1424, 1500]
 coords_confidence: approximate
 coords_note: >-
-  Pizzigano chart 1424, far west of Portugal; Satanazes just north.
+  Read off the Pizzigano chart of 1424 itself, by georeferencing it on six
+  landmarks it also carries — Madeira, Lanzarote, Fuerteventura, Lisbon,
+  Sanlúcar, Málaga — which fit to an RMS of 47 km. The chart puts Antillia
+  about 1270 km west of Lisbon, near the longitude of the Azores. This
+  replaces an earlier [-45.0, 32.0], which was some 1900 km too far west.
+  Caveat: the island sits well west of every landmark, so the transform is
+  extrapolated there and the position is softer than the 47 km RMS suggests.
 outline_note: >-
-  Shape traced from the Bartolomeo Pareto chart of 1455 — a tall rectangle with
-  one large bay and seven small ones. Note this is a *different* chart from the
-  Pizzigano of 1424 the position comes from. Sized at 140 x 475 km from that
-  chart's own scale, derived from three Iberian landmark pairs (2.9-3.5 km/px,
-  mean 3.19). No rotation applied: the plate is drawn to magnetic north, and
-  correcting the ~6 degrees made the island read as skewed rather than drawn.
+  Traced from the Pizzigano chart of 1424 — the first to name Antillia, and
+  the depiction later cartographers copied: Beccario 1435, Bianco 1436,
+  Pareto 1455, Benincasa, Roselli. An elongated mass canted NE-SW, deeply
+  bayed, carrying the seven cartouches of the Seven Cities. Those cartouches
+  are filled as land when tracing: they are labels written on the island,
+  not lakes. 340 x 593 km by the chart's own scale, which matches the
+  contemporary description of it as being on a similar scale to Portugal.

@@ -1,0 +1,16 @@
+{
+  "name": "Zuane Pizzigano, nautical chart, 1424",
+  "holding": "James Ford Bell Library, University of Minnesota",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Pizzigano.jpg",
+  "licence": "public domain (the chart is from 1424)",
+  "image_sha256_prefix": "",
+  "note": "The chart itself is not committed — it is 3.4 MB of tracing input. Re-download from source_url into scratch when retracing.",
+  "landmarks": [
+    {"name": "Madeira",       "x": 1639, "y": 2051, "lon": -16.92, "lat": 32.74},
+    {"name": "Lanzarote",     "x": 1857, "y": 2290, "lon": -13.55, "lat": 29.03},
+    {"name": "Fuerteventura", "x": 1753, "y": 2366, "lon": -14.02, "lat": 28.36},
+    {"name": "Lisbon",        "x": 2025, "y": 1600, "lon":  -9.14, "lat": 38.72},
+    {"name": "Sanlucar",      "x": 2215, "y": 1705, "lon":  -6.35, "lat": 36.78},
+    {"name": "Malaga",        "x": 2320, "y": 1690, "lon":  -4.42, "lat": 36.72}
+  ]
+}
