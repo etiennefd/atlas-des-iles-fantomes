@@ -63,6 +63,31 @@ def blob(lon, lat, r, seed, n=24):
     return [wind_cw(pts)]
 
 
+def scale_to_size(f):
+    """`size_km` is the control, not a readout. Edit it, rebuild, and the
+    island changes size — scaled about its own centre so the position holds.
+    Without this the number sat in the file looking authoritative while the
+    coordinates quietly disagreed with it."""
+    geom = f["geometry"]
+    want = f.get("properties", {}).get("size_km")
+    if not want:
+        return geom
+    ring = geom["coordinates"][0]
+    lats = [p[1] for p in ring]
+    lons = [p[0] for p in ring]
+    cy = (min(lats) + max(lats)) / 2
+    cx = (min(lons) + max(lons)) / 2
+    have_km = (max(lats) - min(lats)) * 111.0
+    if have_km <= 0:
+        return geom
+    k = float(want[1]) / have_km
+    if abs(k - 1.0) < 1e-9:
+        return geom
+    scaled = [[round(cx + (x - cx) * k, 5), round(cy + (y - cy) * k, 5)]
+              for x, y in ring]
+    return {"type": "Polygon", "coordinates": [scaled]}
+
+
 def wind_cw(pts):
     """d3-geo reads polygons spherically: an exterior ring wound the wrong way
     means 'the whole planet except this bit', which renders as a disc covering
@@ -94,10 +119,11 @@ for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
     }
     traced = os.path.join(OUTLINES, iid + ".geojson")
     if os.path.exists(traced):
+        pass
         # A hand-traced depiction beats a blob. scripts/trace_outline.py wrote
         # it and already forced clockwise winding; provenance rides along.
         f = json.load(open(traced, encoding="utf-8"))
-        geom = f["geometry"]
+        geom = scale_to_size(f)
         props["placeholder"] = False
         props["traced_from"] = f["properties"].get("traced_from", "")
         outlined.append(iid)

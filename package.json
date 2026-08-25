@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "geo": "python3 scripts/build_geojson.py && cp src/data/islands.geojson public/data/islands.geojson"
   },
   "dependencies": {
     "astro": "^5.2.0",
