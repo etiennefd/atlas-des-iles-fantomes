@@ -2,9 +2,14 @@ name_fr: "L’île de Bermeja"
 name_en: "Bermeja"
 kind: island
 ocean: atlantique-nord
-coords: [-91.0, 22.5]
+coords: [-91.37, 22.55]
 span: [1539, 1921]
 coords_confidence: approximate
 coords_note: >-
-  Alonso de Santa Cruz 1539; c. 55 nautical miles off the NW Yucatan
-  coast. A seamount sits at 22 38.76 N 90 51.3 W.
+  22 33' N, 91 22' W — the position the sources give and the one the "Islote
+  Bermeja" pin in the story's own notice points at. First listed by Alonso de
+  Santa Cruz in El Yucatán e Islas Adyacentes, 1539, about 100 km off the
+  north coast of Yucatán, and carried on charts into the 20th century.
+  Was [-91.0, 22.5], some 38 km east of that.
+  Not to be confused with the seamount at 22 38.76 N 90 51.3 W, which is a
+  real feature about 55 km away and sometimes offered as the explanation.

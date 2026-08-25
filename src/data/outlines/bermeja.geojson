@@ -1,0 +1,81 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "bermeja",
+  "traced_from": "19th-century English chart of the Gulf of Mexico (unattributed)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Bermeja.jpg",
+  "georeference": null,
+  "scale_source": "height set by hand; chart not yet georeferenced",
+  "centre": [
+   -91.37,
+   22.55
+  ],
+  "size_km": [
+   31,
+   30
+  ]
+ },
+ "geometry": {
+  "type": "Polygon",
+  "coordinates": [
+   [
+    [
+     -91.2252,
+     22.4139
+    ],
+    [
+     -91.2801,
+     22.4276
+    ],
+    [
+     -91.3372,
+     22.4883
+    ],
+    [
+     -91.3732,
+     22.4981
+    ],
+    [
+     -91.481,
+     22.5686
+    ],
+    [
+     -91.5138,
+     22.6146
+    ],
+    [
+     -91.5201,
+     22.6753
+    ],
+    [
+     -91.4852,
+     22.6861
+    ],
+    [
+     -91.4112,
+     22.6744
+    ],
+    [
+     -91.2696,
+     22.6822
+    ],
+    [
+     -91.26,
+     22.6714
+    ],
+    [
+     -91.2664,
+     22.5696
+    ],
+    [
+     -91.2178,
+     22.4423
+    ],
+    [
+     -91.2252,
+     22.4139
+    ]
+   ]
+  ]
+ }
+}

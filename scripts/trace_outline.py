@@ -29,7 +29,7 @@ import argparse, json, math, os
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import binary_closing, binary_fill_holes
+from scipy.ndimage import binary_closing, binary_fill_holes, gaussian_filter
 from skimage.measure import approximate_polygon, find_contours, label, regionprops
 from skimage.morphology import binary_closing as binary_closing_sk
 from skimage.morphology import binary_opening, disk, square
@@ -73,20 +73,25 @@ def residuals(p, K, landmarks):
 
 
 # --- the island ------------------------------------------------------------
-def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0):
+def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
+                upsample=1, smooth=0.0, bright=False):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
     x0, y0 = (bbox[0], bbox[1]) if bbox else (0, 0)
     if bbox:
         img = img.crop(tuple(bbox))
+    if upsample > 1:
+        img = img.resize((img.width * upsample, img.height * upsample), Image.LANCZOS)
     a = np.asarray(img.convert("RGB")).astype(int)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
              "green": G - (R + B) / 2,
              "dark":  255 - (R + G + B) / 3}[mode]
-    m = score > thr
+    if smooth:
+        score = gaussian_filter(score.astype(float), smooth)
+    m = (score < thr) if bright else (score > thr)
     if open_r:
         # Squared bays need a square element: a disk cannot hold a right angle,
         # and rounds every notch into a wave. (Canepa's north-west bay.)
@@ -112,14 +117,15 @@ def manual(a, chart):
     lon, lat = [float(v) for v in a.centre.split(",")]
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
-                          a.threshold, bbox, a.closing, a.se, a.open_r)
+                          a.threshold, bbox, a.closing, a.se, a.open_r,
+                          a.upsample, a.smooth, a.bright)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
         ring = ring[:-1]
     ys, xs = np.nonzero(mask)
     cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
-    kmpx = a.height_km / (ys.max() - ys.min())
+    kmpx = a.height_km / (ys.max() - ys.min())   # already in upsampled px
     pts = []
     for r, c in ring:
         dlat = -(r - cy) * kmpx / 111.0
@@ -162,6 +168,17 @@ def main():
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--open", type=int, default=0, dest="open_r",
                     help="opening radius, applied before anything else")
+    ap.add_argument("--upsample", type=int, default=1,
+                    help="resample the crop before thresholding. A mark only "
+                         "20 px across quantises into axis-aligned steps; "
+                         "resampling lets the boundary follow the underlying "
+                         "grey values instead of pixel corners.")
+    ap.add_argument("--smooth", type=float, default=0.0,
+                    help="gaussian blur before thresholding, in upsampled px")
+    ap.add_argument("--bright", action="store_true",
+                    help="the island is the *pale* shape — engravers often "
+                         "leave a small island blank and hachure the shoal "
+                         "around it")
     ap.add_argument("--se", default="disk", choices=("disk", "square"),
                     help="structuring element; square preserves right angles")
     ap.add_argument("--height-km", type=float,
@@ -195,7 +212,8 @@ def main():
 
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
-                                 a.threshold, bbox, a.closing, a.se, a.open_r)
+                                 a.threshold, bbox, a.closing, a.se, a.open_r,
+                          a.upsample, a.smooth, a.bright)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
