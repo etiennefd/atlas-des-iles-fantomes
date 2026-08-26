@@ -2,10 +2,19 @@ name_fr: "L’île Nakanotori"
 name_en: "Nakanotorishima"
 kind: island
 ocean: pacifique-nord
-coords: [154.0, 30.1]
+coords: [154.42, 30.75]
 span: [1825, 1982]
 coords_confidence: approximate
 coords_note: >-
-  North Pacific, east of Japan. Charted around 30 N 154 E. Disproven by a
-  Japanese expedition in 1933 but kept appearing sporadically into the 1940s
-  and 1950s, and possibly as late as 1982.
+  30 45' N, 154 25' E — the position the sources give for Ganges Island.
+  North Pacific, east of Japan; annexed by Japan in 1908, declared missing in
+  1933, but kept appearing sporadically into the 1940s and 1950s, and possibly
+  as late as 1982. Was [154.0, 30.1], some 80 km south-west of that.
+outline_note: >-
+  Traced from Yamada Teizaburo's own survey sketch of the island, 1908
+  (National Archives of Japan, via Commons). Not a chart depiction: a
+  purported survey of the island itself, signed by the man who reported it,
+  with contour lines and four named hills and flats. The outermost closed
+  contour is the coastline. Size is set by hand — the sketch carries marginal
+  figures in ken that may or may not be its overall dimensions, and the
+  chart is not georeferenced.

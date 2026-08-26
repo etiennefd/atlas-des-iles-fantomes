@@ -74,10 +74,16 @@ def residuals(p, K, landmarks):
 
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
-                upsample=1, smooth=0.0, bright=False):
+                upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
+    if blank:
+        # A neatline running close to the coast is a hole-closing bridge
+        # waiting to happen: close the two together and the fill floods the
+        # water between them. Paint the rule out first, in source pixels.
+        img = img.convert("RGB")
+        img.paste((255, 255, 255), (0, blank[0], img.width, blank[1]))
     x0, y0 = (bbox[0], bbox[1]) if bbox else (0, 0)
     if bbox:
         img = img.crop(tuple(bbox))
@@ -105,7 +111,18 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     # left in the coast band means fill_holes cannot close the interior at all
     # — the island comes out as a ring rather than a shape.
     m = binary_fill_holes(binary_closing_sk(m, disk(close)))
-    return binary_fill_holes(m), (x0, y0)
+    m = binary_fill_holes(m)
+    if despeckle:
+        # Survey stations drawn *on* the coastline — a circle, a triangle —
+        # get absorbed by the fill and come out as warts. They are symbols,
+        # not headlands. Take only the residue an opening strips, and only the
+        # small pieces of it, so the rest of the coast is left untouched.
+        res = m & ~binary_opening(m, disk(6))
+        lab2 = label(res)
+        for q in regionprops(lab2):
+            if q.area < despeckle:
+                m[lab2 == q.label] = False
+    return m, (x0, y0)
 
 
 def manual(a, chart):
@@ -118,7 +135,7 @@ def manual(a, chart):
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                           a.threshold, bbox, a.closing, a.se, a.open_r,
-                          a.upsample, a.smooth, a.bright)
+                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -185,6 +202,13 @@ def main():
                     help="north-south extent in km. Use when the chart has no "
                          "landmarks yet, so scale is set by hand rather than "
                          "georeferenced.")
+    ap.add_argument("--blank-rows", dest="blank",
+                    help="y0,y1 band of the source to paint out before "
+                         "thresholding — use for a neatline the coast runs "
+                         "close enough to that closing would bridge them")
+    ap.add_argument("--despeckle", type=int, default=0,
+                    help="drop opening-residue blobs under N px: survey "
+                         "stations drawn on the coast, not headlands")
     ap.add_argument("--tolerance", type=float, default=2.0, help="simplify, px")
     ap.add_argument("--bbox", help="x0,y0,x1,y1 to restrict the search")
     ap.add_argument("--centre", help="lon,lat override. The chart still gives "
@@ -193,6 +217,7 @@ def main():
                     "ocean west of everything it actually surveyed.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
+    a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
     lms = chart["landmarks"]
@@ -213,7 +238,7 @@ def main():
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
-                          a.upsample, a.smooth, a.bright)
+                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():

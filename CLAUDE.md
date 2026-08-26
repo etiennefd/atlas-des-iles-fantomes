@@ -73,6 +73,12 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
   hydrography in italic — so italicising the phantoms quietly says "this is
   water." Keep it.
 - **The page background is the ocean.** No panel chrome floating over the map.
+- **A survey of the island beats a chart depiction of it**, where one exists.
+  `nakanotorishima` is traced from the sketch Yamada Teizaburō signed in 1908
+  as its discoverer: contour lines, four named hills and flats, transects and
+  marginal figures in *ken*. That is not the most influential depiction and is
+  meant not to be — for an island that never existed, the invention drawn in
+  detail by its inventor is a better source than anyone else's copy of it.
 - **An island's shape comes from the most famous or influential depiction**,
   not the earliest, and *not* the plate that happens to illustrate its story —
   those were picked as illustrations and Étienne does not endorse them as
@@ -241,6 +247,17 @@ cannot express a reflection, so without flipping y first the fit absorbs it as
 a ~100° rotation and every residual is hundreds of km out. It looks like bad
 landmarks rather than bad algebra.
 
+**A neatline the coast runs close to will bridge to it.** On Yamada's
+Nakanotorishima sketch the north coast passes 14 px from the frame rule; the
+closing joined the two, and `fill_holes` then flooded the water between them as
+if it were interior. `--blank-rows y0,y1` paints the rule out first.
+
+**Survey stations are symbols, not headlands.** A circle and a triangle drawn
+*on* Nakanotorishima's coastline were absorbed by the fill and came out as
+warts. `--despeckle N` removes only the residue an opening strips, and only the
+pieces under N px, so the rest of the coast is left byte-identical — verify by
+diffing against the mask you approved, not by eye.
+
 **Settlement cartouches are labels, not lakes.** Names written on the island
 are holes in the colour wash and must be filled.
 
@@ -292,7 +309,9 @@ output `dist`, no adapter (static). Nothing to configure.
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
-- Geometry is placeholder blobs except `antillia`, traced from Canepa 1489
+- Geometry is placeholder blobs except `antillia` (Canepa 1489), `bermeja`
+  (19th-c. English Gulf chart) and `nakanotorishima` (Yamada's own 1908 survey
+  sketch — see below)
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
