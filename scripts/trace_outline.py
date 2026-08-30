@@ -29,7 +29,9 @@ import argparse, json, math, os
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import binary_closing, binary_fill_holes, gaussian_filter
+from scipy.ndimage import (binary_closing, binary_dilation, binary_fill_holes,
+                           binary_propagation, find_objects, gaussian_filter,
+                           label as ndlabel, uniform_filter)
 from skimage.measure import approximate_polygon, find_contours, label, regionprops
 from skimage.morphology import binary_closing as binary_closing_sk
 from skimage.morphology import binary_opening, disk, square
@@ -125,6 +127,227 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     return m, (x0, y0)
 
 
+def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
+    """An island whose outline the engraver left open is still ringed by the
+    hatching that stands for water. Close that ring until it encircles the
+    island; the pale core inside it is the island."""
+    p = np.pad(local, pad)
+    best = None
+    for r in radii:
+        core = binary_fill_holes(binary_fill_holes(binary_closing_sk(p, disk(r))) & ~p)
+        core = core[pad:-pad, pad:-pad]
+        if seed is not None:
+            lab, _ = ndlabel(core)
+            k = lab[seed]
+            if not k:
+                continue
+            core = lab == k
+            # a leak through the ring swallows the sea; that is not an island
+            if core.sum() < 350 or core.sum() > 0.25 * core.size:
+                continue
+            if best is None or core.sum() > best.sum():
+                best = core
+        elif core.sum() >= 500:
+            best = core
+    return best
+
+
+def plate_mask(img, spec, reach, grow, sigma_main, sigma_islet, minpart, solidity):
+    """An engraved plate, where the land is bare parchment and so is the sea.
+
+    Nothing can be thresholded *for*, so the sea is flooded inward from the
+    border instead: its hatch strokes are short and disconnected, the coastline
+    is continuous, and everything the flood cannot reach is land.
+
+    That flood stops at the OUTER edge of the hatching, which is water, not
+    coast — so the hatching is then stripped back inward from the sea, through
+    itself, and no further than `reach`. The same convention draws hills
+    inland, so an unbounded strip eats the interior and a plain erosion eats a
+    small island whole."""
+    W, H = img.width, img.height
+    a = np.asarray(img.convert("L")).astype(int).copy()
+    for x0, y0, x1, y1 in spec.get("blank", []):
+        a[y0:y1, x0:x1] = 255
+
+    ink = binary_closing_sk(a < 150, disk(2))
+    free = ~ink
+    s0 = np.zeros_like(free)
+    s0[0, :] = free[0, :]; s0[-1, :] = free[-1, :]
+    s0[:, 0] = free[:, 0]; s0[:, -1] = free[:, -1]
+    sea = binary_propagation(s0, mask=free)
+    flood = binary_fill_holes(~sea)
+
+    band = binary_closing_sk(
+        uniform_filter((a < 165).astype(np.float32), 15) > 0.20, disk(3))
+
+    water = binary_dilation(sea, disk(2)) & band & flood
+    for _ in range(reach // 2):
+        water = binary_dilation(water, disk(2)) & band
+    land = binary_fill_holes(flood & ~water)
+    land = binary_dilation(land, disk(grow)) & flood
+
+    blab, _ = ndlabel(band)
+    for i, sl in enumerate(find_objects(blab), 1):
+        if sl is None:
+            continue
+        sub = (blab[sl] == i)
+        hh, ww = sub.shape
+        # islet-sized rings only: sealing the main island's coastal mesh costs
+        # minutes and buys nothing
+        if sub.sum() < 700 or hh > 650 or ww > 650:
+            continue
+        c = seal_core(sub, radii=(26, 44), pad=70)
+        if c is not None:
+            land[sl] |= c
+
+    seeds = spec.get("seeds", [])
+    field = spec.get("field")
+    if seeds:
+        edged = band.copy()
+        if field:
+            fx0, fy0, fx1, fy1 = field
+            edged[fy0-10:fy0, :] = True; edged[fy1:fy1+10, :] = True
+            edged[:, fx0-10:fx0] = True; edged[:, fx1:fx1+10] = True
+        for sx, sy in seeds:
+            R = 300
+            yl, yh = max(0, sy - R), min(H, sy + R)
+            xl, xh = max(0, sx - R), min(W, sx + R)
+            c = seal_core(edged[yl:yh, xl:xh], seed=(sy - yl, sx - xl))
+            if c is not None:
+                land[yl:yh, xl:xh] |= c
+
+    drop = spec.get("drop", [])
+    lab, _ = ndlabel(land)
+    parts, mirrored = [], 0
+    for r in regionprops(lab):
+        if r.area < minpart:
+            continue
+        # lettering in the sea fills exactly like a small island; only
+        # compactness tells them apart
+        if r.area < 50000 and r.solidity < solidity:
+            continue
+        cy, cx = r.centroid
+        if any(x0 <= cx <= x1 and y0 <= cy <= y1 for x0, y0, x1, y1 in drop):
+            continue
+        p = binary_fill_holes(lab == r.label)
+        p = gaussian_filter(p.astype(np.float32),
+                            sigma_main if r.area > 200000 else sigma_islet) > 0.5
+        if field:
+            y0, x0, y1, x1 = r.bbox
+            for axis, lim, near in ((1, field[0], x0 <= field[0] + 4),
+                                    (1, field[2], x1 >= field[2] - 4),
+                                    (0, field[1], y0 <= field[1] + 4),
+                                    (0, field[3], y1 >= field[3] - 4)):
+                if not near:
+                    continue
+                idx = np.nonzero(p)
+                on_cut = np.abs(idx[axis] - lim) <= 6
+                span = int(on_cut.sum() and (idx[1 - axis][on_cut].max()
+                                             - idx[1 - axis][on_cut].min())) or 40
+                ref = 2 * lim - idx[axis]
+                keep = (np.abs(ref - lim) <= span) & (ref >= 0) & (ref < p.shape[axis])
+                mir = np.zeros_like(p)
+                if axis == 1:
+                    mir[idx[0][keep], ref[keep]] = True
+                else:
+                    mir[ref[keep], idx[1][keep]] = True
+                # A wedge reflected in its own cut comes out an arrowhead, so
+                # the completion is rounded — and unioned, never substituted,
+                # so what the plate actually drew survives untouched.
+                whole = binary_fill_holes(p | mir)
+                p = binary_fill_holes(
+                    p | (gaussian_filter(whole.astype(np.float32), span * 0.18) > 0.5))
+                mirrored += 1
+        parts.append(p)
+    return parts, mirrored
+
+
+def plate(a, chart):
+    """A plate that carries its own latitude scale: size and latitude come
+    from the margins, and only longitude has to be supplied."""
+    spec = chart["plate"]
+    latspec = spec["latitude"]
+    if not a.centre:
+        raise SystemExit("pass --centre lon,lat: the plate gives latitude and "
+                         "scale, but longitude has to come from elsewhere")
+    tlon, tlat = [float(v) for v in a.centre.split(",")]
+    img = Image.open(os.path.expanduser(a.image))
+    parts, mirrored = plate_mask(img, spec, a.reach, a.grow, a.sigma,
+                                 a.sigma_islet, a.minpart, a.solidity)
+    if not parts:
+        raise SystemExit("no land found")
+
+    pxdeg = latspec["px_per_degree"]
+    ref_y, ref_lat = latspec["ref_y"], latspec["ref_lat"]
+    lat_of = lambda y: ref_lat + (ref_y - y) / pxdeg
+    # only latitude is ticked, so the drawing is read as a plan at equal linear
+    # scale both ways. Read instead as square degrees of a graticule the island
+    # would be half as wide; there is no graticule drawn, so this is the
+    # reading the plate supports.
+    kmpx = 111.13 / pxdeg
+
+    allmask = np.zeros((img.height, img.width), bool)
+    for p in parts:
+        allmask |= p
+    ys, xs = np.nonzero(allmask)
+    cx = (xs.min() + xs.max()) / 2
+    # anchor longitude on the main island, not on the group
+    main = max(parts, key=lambda p: p.sum())
+    mys, mxs = np.nonzero(main)
+    cx = (mxs.min() + mxs.max()) / 2
+    clat = (lat_of(mys.min()) + lat_of(mys.max())) / 2
+
+    rings = []
+    for p in sorted(parts, key=lambda q: -q.sum()):
+        ring = approximate_polygon(
+            max(find_contours(p.astype(float), 0.5), key=len), a.tolerance)
+        if len(ring) > 3 and (ring[0] == ring[-1]).all():
+            ring = ring[:-1]
+        if len(ring) < 4:
+            continue
+        pts = []
+        for r, c in ring:
+            lat = tlat + (lat_of(r) - clat)
+            lon = tlon + (c - cx) * kmpx / (111.32 * math.cos(math.radians(lat)))
+            pts.append([round(lon, 4), round(lat, 4)])
+        area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
+                   pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
+        if area > 0:
+            pts = pts[::-1]
+        pts.append(pts[0])
+        rings.append([pts])
+
+    lons = [q[0] for ring in rings for q in ring[0]]
+    lats = [q[1] for ring in rings for q in ring[0]]
+    mlon = [q[0] for q in rings[0][0]]; mlat = [q[1] for q in rings[0][0]]
+    km_w = (max(mlon) - min(mlon)) * 111.32 * math.cos(math.radians(tlat))
+    km_h = (max(mlat) - min(mlat)) * 111.0
+    print(f"{a.island}: {len(rings)} parts, {sum(len(r[0]) - 1 for r in rings)} points")
+    print(f"  latitude   from the plate: {min(lats):.2f}..{max(lats):.2f} N"
+          f"   ({pxdeg:.0f} px per degree)")
+    print(f"  main       {km_w:.0f} x {km_h:.0f} km   centre {tlon}, {tlat}")
+    print(f"  longitude  given ({mirrored} cut island(s) completed)")
+
+    feat = {"type": "Feature",
+            "properties": {"id": a.island, "traced_from": chart["name"],
+                           "source_url": chart.get("source_url", ""),
+                           "georeference": {"km_per_px": round(kmpx, 4),
+                                            "source": "the plate's own latitude ticks",
+                                            "landmark_rms_km": None,
+                                            "landmarks": 0},
+                           "scale_source": "the plate's latitude ticks, read as a "
+                                           "plan at equal linear scale both ways",
+                           "parts": len(rings),
+                           "centre": [tlon, tlat]},
+            "geometry": {"type": "MultiPolygon", "coordinates": rings}}
+    if a.dry_run:
+        print("\n(dry run — nothing written)"); return
+    os.makedirs(OUTDIR, exist_ok=True)
+    dest = os.path.join(OUTDIR, f"{a.island}.geojson")
+    json.dump(feat, open(dest, "w", encoding="utf-8"), indent=1)
+    print(f"  -> {os.path.relpath(dest, ROOT)}")
+
+
 def manual(a, chart):
     """No landmarks on this chart yet, so the chart gives only the silhouette;
     size and position are set explicitly. Georeference it properly and this
@@ -215,11 +438,27 @@ def main():
                     "shape, size and orientation; use this where its own "
                     "georeference is not trustworthy — typically the imagined "
                     "ocean west of everything it actually surveyed.")
+    ap.add_argument("--reach", type=int, default=46,
+                    help="plate mode: how far the water hatching is stripped "
+                         "inward from the sea, in px")
+    ap.add_argument("--grow", type=int, default=4,
+                    help="plate mode: px back out, to land on the drawn shore")
+    ap.add_argument("--sigma", type=float, default=8.0,
+                    help="plate mode: smoothing for the main island. The hatch "
+                         "strokes leave the raw edge furry")
+    ap.add_argument("--sigma-islet", type=float, default=3.0, dest="sigma_islet",
+                    help="plate mode: smoothing for small parts, which sigma "
+                         "for the main island would eat")
+    ap.add_argument("--minpart", type=int, default=900)
+    ap.add_argument("--solidity", type=float, default=0.75,
+                    help="plate mode: small parts below this are lettering")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
+    if "plate" in chart:
+        return plate(a, chart)
     lms = chart["landmarks"]
     if not lms:
         return manual(a, chart)

@@ -72,6 +72,22 @@ def scale_to_size(f):
     want = f.get("properties", {}).get("size_km")
     if not want:
         return geom
+    if geom["type"] == "MultiPolygon":
+        # a plate that drew the island's satellites too. Scale the group about
+        # the main island's centre so the archipelago keeps its arrangement.
+        polys = geom["coordinates"]
+        ring = max((p[0] for p in polys), key=len)
+        lats = [q[1] for q in ring]; lons = [q[0] for q in ring]
+        cy = (min(lats) + max(lats)) / 2; cx = (min(lons) + max(lons)) / 2
+        have_km = (max(lats) - min(lats)) * 111.0
+        if have_km <= 0:
+            return geom
+        k = float(want[1]) / have_km
+        if abs(k - 1.0) < 1e-9:
+            return geom
+        return {"type": "MultiPolygon", "coordinates": [
+            [[[round(cx + (x - cx) * k, 5), round(cy + (y - cy) * k, 5)]
+              for x, y in r] for r in poly] for poly in polys]}
     ring = geom["coordinates"][0]
     lats = [p[1] for p in ring]
     lons = [p[0] for p in ring]

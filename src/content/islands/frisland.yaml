@@ -2,9 +2,27 @@ name_fr: "Frisland"
 name_en: "Frisland"
 kind: island
 ocean: atlantique-nord
-coords: [-25.0, 62.5]
+coords: [-29.0, 63.02]
 span: [1558, 1660]
-coords_confidence: approximate
+coords_confidence: conjectural
 coords_note: >-
-  Zeno map 1558: south of Iceland. Reappeared off Labrador 1630; gone by
-  1652.
+  Latitude is not a guess: the 1562 plate ticks its own margins, and the
+  island sits between 61.4 and 64.7 N on it, centred 63.0. Longitude is,
+  because the plate ticks none. The Zeno map of 1558 puts Frisland south-west
+  of Iceland across open water, but it is distorted enough that a similarity
+  fit on Islanda, Estland, Norvegia, Scocia and Svecia lands at RMS 231 km
+  and returns a latitude four degrees off what the plate states — so its
+  longitude cannot be trusted either. -29 is chosen instead to satisfy what
+  every depiction agrees on: south-west of Iceland, clear water between them,
+  well north of Scotland. Was [-25.0, 62.5], which overlaps Iceland once the
+  island is drawn at the size the plate gives it.
+outline_note: >-
+  Traced from the 1562 plate that gives Frisland a whole sheet to itself
+  (BnF btv1b53093871d, after the Zeno map of 1558) — 23 parts: the main
+  island, DVI to the north, the archipelago off C. Nordei, and the southern
+  islets. Size comes from the plate's own latitude ticks, 726 px to the
+  degree, giving 287 x 368 km and 55,000 km2 for the main island. Only
+  latitude is ticked, so the drawing is read as a plan at equal linear scale
+  both ways; read as square degrees of a graticule it would be half as wide,
+  but no graticule is drawn. Four islands the plate's rules cut off are
+  completed by reflecting the visible part and rounding the invented end.

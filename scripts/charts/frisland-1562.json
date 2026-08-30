@@ -1,0 +1,24 @@
+{
+  "name": "Frisland, plate from an Italian atlas, 1562 (BnF btv1b53093871d)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Accipe..._lector..._Suetiae,_Gotiae,_Norvegiae,_Prusiae,_Pomeraniae,_ducatus_Megapolensis,_Frisiae,_Geldriae,_Altae_Marchiae,_Lusatiae..._descriptionem..._-_btv1b53093871d_(2_of_2).jpg",
+  "licence": "public domain (Bibliotheque nationale de France)",
+  "note": "A whole plate given over to Frisland alone, drawn from the Zeno map of 1558: towns, hills, capes, named coastal features, and two dozen satellite islands. Chosen over the Zeno map itself because it draws the island at plate size instead of as one shape among many. It carries its own latitude scale in the margins, so size and latitude come from the plate; only longitude has to come from elsewhere.",
+  "landmarks": [],
+  "plate": {
+    "latitude": {"px_per_degree": 726.0, "ref_y": 1590.0, "ref_lat": 63.0},
+    "field": [173, 123, 2225, 2965],
+    "blank": [
+      [0, 0, 2387, 122], [0, 3008, 2387, 3100], [0, 0, 172, 3100], [2268, 0, 2387, 3100],
+      [1745, 110, 2280, 545], [1780, 1450, 2240, 1915],
+      [1410, 725, 1590, 900], [290, 2800, 700, 3000], [1930, 2770, 2250, 3010]
+    ],
+    "drop": [
+      [150, 350, 700, 740], [1655, 2420, 2120, 2600],
+      [325, 2120, 625, 2300], [1490, 2180, 1840, 2360]
+    ],
+    "seeds": [[190, 2470], [248, 2632], [945, 2918], [1035, 2808], [818, 2985]],
+    "blank_note": "neatline and tick band, then the decorations that are not geography: the library cartouche, the great ship, the Forali ship, the fish, the pencilled shelfmarks.",
+    "drop_note": "the sea monster and three boats touch the coast, so painting them out cuts a channel and drains the island; they are discarded after extraction instead.",
+    "seeds_note": "islands whose outline the engraver left too open for any seal radius to close on its own, named by a point inside them. The islet just west of the P. Orlanda lettering resists even this and is left out."
+  }
+}

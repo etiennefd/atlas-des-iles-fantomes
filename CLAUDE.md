@@ -210,11 +210,60 @@ landmarks and provenance live in `scripts/charts/{chart}.json`. **The chart
 rasters are deliberately not committed** — 3 to 17 MB each of pure tracing
 input, and the source URL reproduces them.
 
-**Two extraction modes, because charts differ.** A flat colour wash
+**Three extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
 An outlined coast round a pale interior (Canepa) needs `--mode dark` to catch
 the ink band, which is then closed and filled — the interior is the same
 parchment as the ocean, so it cannot be selected directly.
+
+An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
+so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
+block in its JSON takes a different path — the sea is flooded inward from the
+border, since its hatch strokes are short and disconnected while the coastline
+is continuous, and everything the flood cannot reach is land. Its parameters
+live with the chart, not the island, because they describe the plate:
+
+    python3 scripts/trace_outline.py frisland --chart frisland-1562 \
+        --image ~/scratch/charts/frisland-1562.jpg \
+        --tolerance 1.5 --centre=-29.0,63.02
+
+**The hatching round a coast is water, not land.** This is the single biggest
+thing to get right on an engraved plate, and it is easy to miss: the flood
+stops at the *outer* edge of the hatch band, so every island comes out wearing
+its own sea — 14% too much area on Frisland's main island, and far more
+proportionally on a small one, since the band is a fixed ~35 px however small
+the island. `--reach` strips it back inward *from the sea, through the band
+itself*, stopping where the band stops. It has to be measured that way and not
+as a fixed erosion: the same convention draws hills inland, so a straight-line
+strip eats the interior (it took the northern half of DVI), and a plain
+erosion eats a small island whole. `--grow 4` then puts the edge on the drawn
+shoreline rather than a few px inside it.
+
+**Islets are drawn open and have to be sealed.** The main island's coastline is
+one continuous line, so the flood handles it; a small island's outline has
+gaps, and what comes out is its ring of hatching rather than its body. The fix
+is to close that ring until it encircles something, then take the pale core
+inside — which is the island. Where even that fails, `plate.seeds` in the
+chart JSON names a point inside the island by hand. One islet on the Frisland
+plate resists everything and is simply absent; that is recorded rather than
+faked.
+
+**Lettering in the sea fills exactly like a small island.** "Bmi" came out as a
+phantom island between two real ones. Only compactness separates them — real
+islets score 0.8–0.98 solidity, labels 0.4–0.67 — so small parts below 0.75
+are dropped.
+
+**Some decorations can be painted out and some cannot.** The cartouche, the
+great ship and the pencilled shelfmarks are safely blanked before extraction.
+The sea monster and three boats touch the coast, so blanking them cuts a
+channel and the flood drains the whole island; those are discarded after the
+fact by `plate.drop` instead. Check each one: the failure is silent and total.
+
+**An island the plate's own rules cut off** is completed by reflecting the
+visible part across the cut. Reflect a wedge and you get an arrowhead, so the
+completion is smoothed at 0.18 x the island's width at the cut — and *unioned*
+with the original, never substituted for it, or the rounding pulls the drawn
+coast in with it.
 
 **Scale and position come from georeferencing where the chart can support it.**
 Portolans carry real coastlines beside their invented islands, so landmarks fit
@@ -309,7 +358,8 @@ output `dist`, no adapter (static). Nothing to configure.
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
-- Geometry is placeholder blobs except `antillia` (Canepa 1489), `bermeja`
+- Geometry is placeholder blobs except `antillia` (Canepa 1489), `frisland`
+  (1562 plate, 23 parts — the first MultiPolygon), `bermeja`
   (19th-c. English Gulf chart) and `nakanotorishima` (Yamada's own 1908 survey
   sketch — see below)
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
