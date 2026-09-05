@@ -279,25 +279,37 @@ a:hover {
   stroke: none;
 }
 
+/* Every island is an outline until the cursor reaches it: a written one
+   drawn solid, an unwritten one dashed. The fill is what hover gives you, so
+   the map reads as a chart of coastlines rather than a field of blobs.
+   fill-opacity rather than `fill: none`, because a transition from `none`
+   does not animate. */
 .pmap__island {
   fill: var(--phantom);
+  fill-opacity: 0;
   stroke: var(--phantom);
-  stroke-width: 0.75;
+  stroke-width: 1.25;
   vector-effect: non-scaling-stroke;
-  transition: fill 0.15s ease;
+  transition: fill-opacity 0.15s ease, stroke-width 0.15s ease;
 }
-.pmap__island.is-translated { fill: none; stroke-width: 1.25; }
+/* A dashed coastline means the story is not available here: written but only
+   in the other language, or not written at all. Every island is drawn at the
+   same weight; the dash carries the state, not the line. */
+.pmap__island.is-translated { stroke-dasharray: 2 2; }
 .pmap__island.is-planned {
-  fill: none;
+  fill: var(--phantom-soft);
   stroke: var(--phantom-soft);
-  stroke-width: 1;
   stroke-dasharray: 2 2;
 }
-/* Misdrawn: a real place wrongly charted. No fill, so the true coastline
-   shows through underneath. */
-.pmap__island.kind-misdrawn { fill: none; stroke-width: 1.5; }
-.pmap__island.is-active { fill: var(--phantom); }
-.pmap__island.is-planned.is-active { fill: none; stroke: var(--phantom); }
+/* Misdrawn: a real place wrongly charted. Never fully opaque, so the true
+   coastline keeps showing through underneath. */
+.pmap__island.kind-misdrawn { stroke-width: 1.5; }
+/* A reef is a dot a few px across. There is no outline to read at that size,
+   so it stays filled. */
+.pmap__island.kind-reef { fill-opacity: 1; }
+.pmap__island.is-active { fill-opacity: 1; }
+.pmap__island.is-planned.is-active { fill-opacity: 0.55; }
+.pmap__island.kind-misdrawn.is-active { fill-opacity: 0.3; }
 
 .pmap__halo {
   fill: none;
