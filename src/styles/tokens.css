@@ -295,17 +295,20 @@ a:hover {
 /* A dashed coastline means the story is not available here. Written only in
    the other language and not written at all are the same thing to a reader
    standing in front of it, so they are drawn the same: one colour, one
-   weight, and the dash carries the whole state. */
+   weight, and the dash carries the whole state. What they fill with on hover
+   is the soft rose rather than the full burgundy — a translucent answer to a
+   dashed question. */
 .pmap__island.is-translated,
-.pmap__island.is-planned { stroke-dasharray: 2 2; }
-/* Misdrawn: a real place wrongly charted. Never fully opaque, so the true
-   coastline keeps showing through underneath. */
-.pmap__island.kind-misdrawn { stroke-width: 1.5; }
+.pmap__island.is-planned {
+  fill: var(--phantom-soft);
+  stroke-dasharray: 2 2;
+}
 /* A reef is a dot a few px across. There is no outline to read at that size,
    so it stays filled. */
 .pmap__island.kind-reef { fill-opacity: 1; }
 .pmap__island.is-active { fill-opacity: 1; }
-.pmap__island.kind-misdrawn.is-active { fill-opacity: 0.3; }
+.pmap__island.is-translated.is-active,
+.pmap__island.is-planned.is-active { fill-opacity: 0.55; }
 
 .pmap__halo {
   fill: none;
