@@ -20,18 +20,25 @@ npm run build
 
 ## What's here
 
-The content structure, the story page, and the map (see below). 34 islands
-have coordinates; 3 stories are written, 2 are partial drafts.
+The content structure, the story page, and the map (see below). **34 islands
+with coordinates, 31 with a story in French, 1 in English**, plus 2 partial
+drafts. Four islands have a real traced outline; the rest are placeholder
+blobs.
 
-Five of the islands exercise every rendering state:
+Islands that exercise every rendering state, useful when changing the map:
 
 | Island | State (fr) | State (en) | Why it's here |
 |---|---|---|---|
 | `hy-brasil` | available | available | The worked example. Real notice from the blog. |
 | `crocker-land` | available | translated | Many-to-many: one story, two islands |
-| `bradley-land` | available | translated | ″ |
-| `coree` | planned | planned | `kind: misdrawn` |
+| `frisland` | available | translated | Traced, and a MultiPolygon of 23 parts |
+| `coree` | available | translated | `kind: misdrawn` |
 | `thule` | planned | planned | Planned state, and a BCE date |
+| `ernest-legouve` | available | translated | `kind: reef` — a Point, not a polygon |
+
+On the map an island is an **outline** until you hover it, and a **dashed**
+outline means the story isn't available in the language you're reading. See
+`CLAUDE.md` for the full table.
 
 ## Adding a story
 
@@ -176,15 +183,16 @@ Only `land-50m.json` is committed. To get the others back:
 cp node_modules/world-atlas/land-110m.json public/data/
 ```
 
-Geometry is **placeholder blobs**, generated from each island's coordinates:
+Geometry is a **traced outline** where one exists in `src/data/outlines/`,
+and a **placeholder blob** generated from the island's coordinates otherwise:
 
 ```sh
-python3 scripts/build_geojson.py
-cp src/data/islands.geojson public/data/islands.geojson
+npm run geo    # rebuild, and copy to public/ — the map reads the copy
 ```
 
-Re-run that after editing any island's `coords`. Replace blobs with traced
-outlines one at a time — nothing else depends on the shapes.
+Re-run that after editing any island's `coords`, or a traced outline's
+`size_km`. Replace blobs with traced outlines one at a time — nothing else
+depends on the shapes.
 
 ### Winding order
 
@@ -200,6 +208,7 @@ import { geoArea } from "d3-geo";        // > 2*PI means inverted
 ## Next
 
 1. Verify the conjectural coordinates (see COORDINATES.md).
-2. Migrate the 28 stories.
-3. Trace real outlines, starting with californie, coree and frisland — the
-   three where a blob actively misleads.
+2. Trace real outlines. Four done — see *Adding an island* in `CLAUDE.md`,
+   which is the procedure to follow. `californie` and `coree` are next; both
+   are `misdrawn`, and will want the fictional outline to replace the real
+   land rather than sit on top of it.

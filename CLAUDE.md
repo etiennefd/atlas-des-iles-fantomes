@@ -15,8 +15,7 @@ npm run dev        # localhost:4321, redirects to /fr/
 npm run build
 npm run preview
 
-python3 scripts/build_geojson.py                    # regenerate island geometry
-cp src/data/islands.geojson public/data/islands.geojson   # ← required, see below
+npm run geo        # rebuild island geometry AND copy it to public/ — see Traps
 ```
 
 ## Architecture
@@ -91,11 +90,17 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
 
 Filename is the id. `kind` drives rendering:
 
-- `island` — filled burgundy polygon
-- `reef` — a Point; small dot, always haloed
-- `misdrawn` — a *real place wrongly charted* (Corée, Californie). Outline
-  only, no fill, so the true coastline shows through underneath. This is the
-  clearest visual statement of the project's thesis.
+- `island` — a polygon, or a MultiPolygon where the source draws the island's
+  satellites too (`frisland` has 23 parts)
+- `reef` — a Point; a small dot, filled even at rest, always haloed
+- `misdrawn` — a *real place wrongly charted* (Corée, Californie). **Currently
+  rendered exactly like `island`**, at rest and on hover. It used to be
+  outline-only so the true coastline showed through underneath, which was the
+  clearest visual statement of the project's thesis — but every island is an
+  outline at rest now, and Étienne has explicitly suspended the question:
+  *"The misdrawn category I haven't decided what to do with yet, so don't make
+  any design choices."* Don't invent a treatment. The open question is that
+  hover fills them opaquely, hiding the real coastline they exist to show.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
 with `coords_note` recording provenance. **Ten islands are `conjectural`** —
@@ -130,11 +135,24 @@ the hedging is the content.
 
 ### Island states, resolved in `lib/atlas.ts`
 
-| state | condition | rendering |
-|---|---|---|
-| `available` | non-draft story in the current language | solid burgundy |
-| `translated` | story only in the other language | burgundy outline, cross-language note on the page |
-| `planned` | no story, or draft only | dashed dusty-rose ring, label reads *à venir* |
+**Every island is an outline until the cursor reaches it**, and a dashed
+outline means the story is not available *here*. Written only in the other
+language and not written at all are deliberately indistinguishable — they are
+the same thing to a reader standing in front of the map, and an earlier
+attempt to separate them by line weight was rejected.
+
+| state | condition | at rest | on hover |
+|---|---|---|---|
+| `available` | non-draft story in the current language | solid burgundy outline | fills burgundy |
+| `translated` | story only in the other language | **dashed** burgundy outline | fills soft rose, 0.55 |
+| `planned` | no story, or draft only | **dashed** burgundy outline | fills soft rose, 0.55 |
+
+`translated` adds a cross-language note on the island's page; `planned` labels
+it *à venir*. The distinction lives in the words, not in the drawing.
+
+All of this is in `.pmap__island` in `src/styles/tokens.css`, driven by
+`fill-opacity` rather than `fill: none`, because a transition *from* `none`
+does not animate.
 
 ## Traps
 
@@ -187,28 +205,102 @@ a point for a location behind the globe — it mirrors it onto the near disc —
 so without a `geoDistance > π/2` test you can hover an island through the
 earth.
 
-## Tracing island shapes
+## Adding an island
 
-Worked once, on `antillia`. Read this before doing the second one.
+Done four times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`. Read
+this before the fifth — it is written so Étienne does not have to explain the
+project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
 its own in `outline_note` — often citing a *different* chart from the one the
 position came from.
 
+### How to work on one
+
+**One step at a time, shown and approved before the next.** Source, then
+shape, then size, then position. Doing all four and presenting the finished
+result throws the work away when step one was wrong, which it has been more
+than once. In his words: *"You need to validate with me each big step, because
+we're wasting time and work by doing the whole thing at once and getting it
+wrong."*
+
+**Put every render in the chat**, with SendUserFile. A file path is not a
+render. *"can you actually put the final image in the chat so I can see it?
+it's hard for me to give feedback."* And never draw an annotation over the
+thing under discussion — a circle marking the bay he is trying to look at
+makes the image useless.
+
+**Ask whenever taste is involved** rather than deciding and defending:
+*"You don't have good intuitions to give self-criticism so whenever you try
+something where taste might be involved, ask me."* Which depiction, how big,
+how smooth, whether an islet belongs, what colour anything is — all his. Give
+him the measurements and a recommendation, then stop.
+
+**Change only what he asked about.** Fixing a bay he approved while fixing the
+one he didn't is not a bonus.
+
+### The steps
+
+1. **Choose the source** — see the rules below on which depiction wins. Show
+   him the candidates and let him pick; he has overruled the default rule at
+   least once, for Nakanotorishima.
+2. **Fetch the raster at full resolution.** Ask the Commons API for the real
+   URL: hand-built `upload.wikimedia.org` paths return 2 kB error pages that
+   look like successful downloads. Put it in the scratchpad — rasters are
+   **deliberately not committed**, being 3–17 MB of pure input that the source
+   URL reproduces.
+3. **Write `scripts/charts/{chart}.json`** — name, source URL, licence, and a
+   `note` saying why this depiction and not another. Landmarks go here if the
+   chart carries real coastline; so do `plate` parameters if it is an
+   engraving.
+4. **Trace, then look at the mask drawn over the source.** Every real fault so
+   far was invisible in the summary statistics and obvious in the overlay.
+   Show him that overlay and the bare silhouette.
+5. **Scale, then place** — as separate steps, in that order, each on the
+   globe. `size_km` in the outline file is a control, not a readout: edit it,
+   re-run `npm run geo`, and the island changes size.
+6. **Record the reasoning** in `coords_note` and `outline_note`, including the
+   value you moved away from and why. These notes are the reason a later
+   session can tell a decision from an accident.
+7. **Verify in the browser**, then commit. `.claude/launch.json` defines a
+   `dev` server on 4321 for the preview pane. Two things to know: the pane's
+   screenshots can serve a stale frame, so read computed styles and DOM
+   attributes rather than trusting a picture that looks unchanged; and the
+   map's own render loop rewrites island classes every frame, so a class you
+   add by hand is stripped before a CSS transition finishes — set
+   `style.transition = 'none'` and read the value in the same tick.
+
+### The four worked examples
+
 ```sh
+# Antillia — a flat colour wash on a portolan, squared bays
 python3 scripts/trace_outline.py antillia --chart canepa \
     --image ~/scratch/charts/canepa-full.jpg \
     --mode dark --threshold 115 --open 7 --se square --closing 3 \
     --tolerance 3 --bbox 1000,5950,1560,7250 \
     --height-km 593 --centre=-35.2,35.5
-python3 scripts/build_geojson.py && cp src/data/islands.geojson public/data/
+
+# Bermeja — an islet left blank inside hachured shoal rings
+python3 scripts/trace_outline.py bermeja --chart gulf-english \
+    --image ~/scratch/charts/bermeja-a.jpg --mode dark --bright \
+    --upsample 4 --smooth 2 --height-km 10 --centre=-91.37,22.55
+
+# Nakanotorishima — a survey sketch, neatline close to the coast
+python3 scripts/trace_outline.py nakanotorishima --chart yamada \
+    --image ~/scratch/charts/naka-dedicated.gif \
+    --mode dark --threshold 115 --closing 3 --blank-rows 10,21 \
+    --despeckle 1200 --tolerance 1.5 --height-km 10 --centre=154.42,30.75
+
+# Frisland — an engraved plate; everything else lives in the chart JSON
+python3 scripts/trace_outline.py frisland --chart frisland-1562 \
+    --image ~/scratch/charts/frisland-1562.jpg \
+    --tolerance 1.5 --centre=-29.0,63.02
+
+npm run geo    # rebuild geometry AND copy it to public/ — both, always
 ```
 
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
-prefers one over a blob, so **one island is a complete unit of work**. Chart
-landmarks and provenance live in `scripts/charts/{chart}.json`. **The chart
-rasters are deliberately not committed** — 3 to 17 MB each of pure tracing
-input, and the source URL reproduces them.
+prefers one over a blob, so **one island is a complete unit of work**.
 
 **Three extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
@@ -221,11 +313,7 @@ so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
 block in its JSON takes a different path — the sea is flooded inward from the
 border, since its hatch strokes are short and disconnected while the coastline
 is continuous, and everything the flood cannot reach is land. Its parameters
-live with the chart, not the island, because they describe the plate:
-
-    python3 scripts/trace_outline.py frisland --chart frisland-1562 \
-        --image ~/scratch/charts/frisland-1562.jpg \
-        --tolerance 1.5 --centre=-29.0,63.02
+live with the chart, not the island, because they describe the plate.
 
 **The hatching round a coast is water, not land.** This is the single biggest
 thing to get right on an engraved plate, and it is easy to miss: the flood
@@ -353,7 +441,9 @@ interesting object than a clickable index.
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
-- 34 islands with coordinates; 9 attested, 12 approximate, 10 conjectural
+- 34 islands with coordinates; 10 attested, 12 approximate, 12 conjectural
+- 4 traced outlines, 30 placeholder blobs; 5 chart records in
+  `scripts/charts/`
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
@@ -387,13 +477,19 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines.** `antillia` is done — see *Tracing island shapes*.
-   Next best candidates: `frisland` (the Zeno lozenge), `californie` (a long
-   N–S sliver) and `coree` (a peninsula), the three where a placeholder blob
-   actively misleads. Everything else can stay a blob indefinitely; an island
-   nobody agreed on the shape of should look vague.
+2. **Trace real outlines** — see *Adding an island*. Four done: `antillia`,
+   `bermeja`, `nakanotorishima`, `frisland`. Next best candidates are
+   `californie` (a long N–S sliver) and `coree` (a peninsula), the two
+   remaining where a placeholder blob actively misleads. Both are `misdrawn`,
+   and Étienne has flagged that they will want the fictional outline to
+   *replace* the real land rather than sit on top of it — that mechanism does
+   not exist yet and is a separate piece of work from tracing them.
+   Everything else can stay a blob indefinitely; an island nobody agreed on
+   the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
+   Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map
+   fits at RMS 231 km and cannot support one.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
 5. A real domain (Vercel is serving `atlas-des-iles-fantomes.vercel.app`
@@ -401,9 +497,15 @@ output `dist`, no adapter (static). Nothing to configure.
 
 ## Open questions
 
-- At world zoom the map is ~31 faint rings and 3 burgundy shapes. Honest, but
-  possibly too quiet — the planned state may want more presence. Needs a human
-  eye, not a tweak decided in isolation.
+- **How `misdrawn` should render.** Suspended by Étienne in September 2026;
+  they draw as ordinary islands meanwhile. The specific problem: hover fills
+  them opaquely, which hides the real coastline they exist to show against.
+- **The map's resting weight.** Every island is now an unfilled outline, by
+  decision — the map is a chart of coastlines rather than a field of shapes,
+  and at world zoom nothing is solid. That was the answer to the older
+  "possibly too quiet" question, and it went further in that direction rather
+  than back. Worth re-examining once more islands have real outlines, since a
+  traced coastline reads very differently from a placeholder blob.
 - `kianida` (Black Sea) and `zanara` (Tyrrhenian) sit in enclosed seas, which
   reads oddly on a world map framed for oceans.
 - Whether the reefs post splits into separate island entries or stays one
@@ -413,6 +515,24 @@ output `dist`, no adapter (static). Nothing to configure.
 
 Étienne is technical and writes for *Asterisk*, *Works in Progress* and his own
 Substack. Explain reasoning, flag uncertainty rather than papering over it, and
-prefer showing a diff to handing over a pile of files. Verify rendering changes
-by actually running them — the winding-order bug was invisible until the map
-was screenshotted.
+prefer showing a diff to handing over a pile of files.
+
+**Verify; don't assert.** Measure rendering and performance in the real
+browser. The winding-order bug was invisible until the map was screenshotted;
+a font specimen praised a face that had silently fallen back to Times; a zoom
+drift was "measured" in the wrong coordinate space and the number was
+meaningless. Computed styles and `geoArea` beat confident description.
+
+**He decides.** *"I decide, not you."* Present the options, measure them
+honestly, recommend one — then wait. Don't remove or replace an option he is
+still weighing, however conclusive the data looks. This applies to anything
+where taste is in play, which on this project is most things.
+
+**Land one step, show it, stop.** Don't chain research into a change into a
+commit. The full version of this, and the quotes behind it, is in *Adding an
+island* — it is the working rhythm for the whole project, not just for
+tracing.
+
+**Corrections are cheap; defending a wrong claim is not.** Twice I told him a
+chart was at fault when the fault was mine, and he had to insist. If he says
+the drawing shows something, look again before disagreeing.
