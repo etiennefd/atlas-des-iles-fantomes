@@ -27,7 +27,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 1841. Keates 1860 and Stannard 1886 gave slightly different fixes. |
 | `emerald` | 162.2, −57.5 | Capt. William Elliot of the *Emerald*, December 1821: 57°30′S 162°12′E. |
 
-## Approximate (10)
+## Approximate (11)
 
 | id | position | basis |
 |---|---|---|
@@ -40,9 +40,10 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `californie` | −114.0, 28.0 | Baja drawn as an island. Placeholder is a blob; the real shape should be the long N–S sliver. |
 | `coree` | 127.5, 37.0 | Korea as an island on 16th–17th century European charts. |
 | `tuanaki` | −158.0, −23.5 | South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks proposed as a remnant. |
+| `kianida` | 29.62, 42.13 | Georeferenced from the Ulm 1482 sheet, not estimated: eleven coastal city dots from Histria round to Perinthus fit a similarity transform to RMS 35 km, and the island lies inside the ring they enclose. About 130 km off the Bulgarian coast, east of Burgas. Was 33.0, 43.5 — a guess, some 300 km ENE of where the map draws it. |
 | `elizabeth` | −70.0, −57.0 | Drake, October 1578, at latitude 57°S (Hakluyt: "57 and a terce"). **Longitude is unrecorded** — I used the Pactolus Bank area west of Cape Horn. |
 
-## Conjectural (10) — check these
+## Conjectural (9) — check these
 
 | id | position | reasoning |
 |---|---|---|
@@ -54,7 +55,6 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |
 | `juan-de-lisboa` | 55.0, −28.0 | SE of Madagascar on 17th–18th century charts. |
 | `dos-romeiros` | 57.0, −26.0 | Depicted alongside Juan de Lisboa; **relative position guessed entirely**. |
-| `kianida` | 33.0, 43.5 | Cianeis Insula, in the Black Sea on a 1467 map. Needed a new `mer-noire` ocean value. |
 | `los-jardines` | 150.0, 21.0 | **Sources conflict.** English Wikipedia: NE of the Marianas near Guam. German Wikipedia: east of the Marshalls. I used the former. |
 
 ## Unknown (3) — I need your notes

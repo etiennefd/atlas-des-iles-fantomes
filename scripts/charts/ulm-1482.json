@@ -1,0 +1,86 @@
+{
+  "name": "Nona Europe Tabula, Ptolemy's Cosmographia, Ulm 1482",
+  "source_url": "https://archive.org/details/cosmographia00ptol/page/n197",
+  "licence": "public domain (Boston Public Library / Norman B. Leventhal Map Center copy, CC PDM 1.0)",
+  "note": "Ptolemy's ninth map of Europe, ed. Nicolaus Germanus, cut by Johann Schnitzer, printed at Ulm by Lienhart Holle. Chosen over the Rome 1478 copperplate, which draws Cianeis quite differently — a blocky rectangle with one deep notch rather than a spiked star — and over the Germanus manuscript of c.1467 that the story page illustrates. Ulm is the printed form of that same Germanus recension, so the drawing is the manuscript's, four times larger and more widely reproduced: the first Ptolemy printed north of the Alps and the first with woodcut maps. This BPL copy is uncoloured, so the island's interior is the same bare parchment as the sea and cannot be selected directly — the ink band is thresholded, closed and filled, as on Canepa. The island's name is lettered inside it and fills as part of the interior. Full sheet is 4705x3337 via the archive.org IIIF endpoint; not committed, being tracing input the URL reproduces.",
+  "landmarks": [
+    {
+      "name": "Istropolis",
+      "x": 3500,
+      "y": 1110,
+      "lon": 28.774,
+      "lat": 44.547
+    },
+    {
+      "name": "Tomi",
+      "x": 3329,
+      "y": 1170,
+      "lon": 28.654,
+      "lat": 44.173
+    },
+    {
+      "name": "Callatis",
+      "x": 3262,
+      "y": 1274,
+      "lon": 28.583,
+      "lat": 43.817
+    },
+    {
+      "name": "Dionysopolis",
+      "x": 3265,
+      "y": 1345,
+      "lon": 28.158,
+      "lat": 43.416
+    },
+    {
+      "name": "Odessus",
+      "x": 3296,
+      "y": 1436,
+      "lon": 27.914,
+      "lat": 43.204
+    },
+    {
+      "name": "Mesembria",
+      "x": 3257,
+      "y": 1531,
+      "lon": 27.73,
+      "lat": 42.659
+    },
+    {
+      "name": "Anchialus",
+      "x": 3293,
+      "y": 1601,
+      "lon": 27.633,
+      "lat": 42.554
+    },
+    {
+      "name": "Apollonia",
+      "x": 3327,
+      "y": 1659,
+      "lon": 27.696,
+      "lat": 42.423
+    },
+    {
+      "name": "Byzantium",
+      "x": 3614,
+      "y": 2087,
+      "lon": 28.976,
+      "lat": 41.013
+    },
+    {
+      "name": "Selymbria",
+      "x": 3381,
+      "y": 2231,
+      "lon": 28.246,
+      "lat": 41.073
+    },
+    {
+      "name": "Perinthus",
+      "x": 3325,
+      "y": 2338,
+      "lon": 27.955,
+      "lat": 40.972
+    }
+  ],
+  "landmark_note": "City dots on the Pontic and Propontic coasts, which this sheet draws from real knowledge alongside its invented island; modern positions are the classical sites (Histria, Constanta, Mangalia, Balchik, Varna, Nessebar, Pomorie, Sozopol, Istanbul, Silivri, Marmara Ereglisi). Kianida sits inside the ring these enclose, which is the case the transform is good for — unlike Antillia out in the open Atlantic. Cross-check: the sheet's own marginal ladder gives 330 px per degree of latitude (0.337 km/px) against the fit's 0.322, agreeing to 5%."
+}

@@ -2,9 +2,39 @@ name_fr: "Kianida"
 name_en: "Kianida"
 kind: island
 ocean: mer-noire
-coords: [33.0, 43.5]
+coords: [29.62, 42.13]
 span: [1467, 1600]
-coords_confidence: conjectural
+coords_confidence: approximate
 coords_note: >-
-  Cianeis Insula, shown in the Black Sea on a 1467 map. Ocean field needs
-  a 'mer-noire' value adding.
+  Cianeis Insula, drawn out at sea in the western Black Sea on Ptolemy's ninth
+  map of Europe. The position is georeferenced from the Ulm 1482 sheet rather
+  than estimated: eleven city dots on the Pontic and Propontic coasts that the
+  same sheet draws from real knowledge — Histria, Tomi, Callatis,
+  Dionysopolis, Odessus, Mesembria, Anchialus, Apollonia, Byzantium,
+  Selymbria, Perinthus — fit a similarity transform to RMS 35 km, and the
+  island sits inside the ring they enclose, which is where such a fit can be
+  trusted. That puts it about 130 km off the Bulgarian coast, roughly east of
+  Burgas and north-east of the Bosphorus.
+  Supersedes [33.0, 43.5], a conjectural guess at "somewhere in the Black
+  Sea" that sat some 300 km east-north-east of where the map actually draws
+  the island.
+outline_note: >-
+  Traced from the Ulm 1482 woodcut of the Nona Europe Tabula (Nicolaus
+  Germanus' recension, cut by Johann Schnitzer), at the full 4705 px of the
+  Boston Public Library copy — the island is 195 px across there, against 85
+  on the Rome 1478 copperplate and 55 on the Germanus manuscript the story
+  page illustrates. Rome 1478 draws a quite different island, blockier and
+  with one deep notch instead of points; Ulm was preferred as the more widely
+  reproduced depiction, and it is the printed form of the same drawing the
+  manuscript carries.
+  The copy is uncoloured, so the island's interior is the same bare parchment
+  as the sea and cannot be selected directly: the ink band is thresholded,
+  closed and filled, as on Canepa. The name lettered inside the island fills
+  as interior, which is correct — it is a label, not a lake.
+  Scale and position both come from the landmark fit, not by hand: 0.322 km
+  per pixel, giving 62 x 40 km. The sheet's own marginal ladder is an
+  independent check — 330 px per degree of latitude, so 0.337 km/px, agreeing
+  to 5%. The fit's -6.2 degree rotation is real and not an artefact: this is a
+  Donis trapezoidal projection, and measuring the meridians' convergence off
+  the top and bottom ladders gives about 4 degrees of lean at the island's
+  position.
