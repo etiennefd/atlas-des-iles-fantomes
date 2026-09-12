@@ -1,0 +1,39 @@
+{
+  "name": "Atlas catalan, attributed to Cresques Abraham, 1375 — westernmost panel",
+  "holding": "Bibliothèque nationale de France, Département des Manuscrits, Espagnol 30",
+  "source_url": "https://gallica.bnf.fr/iiif/ark:/12148/btv1b55002481n/f6/3654,3262,2300,2400/full/0/native.jpg",
+  "licence": "public domain (the atlas is from 1375); BnF/Gallica digitisation",
+  "note": "Sheet f6 is the westernmost map panel: the open Atlantic, with Iceland at its north end, Ireland on its eastern edge, and Madeira and the Canaries at its south end. The Gallica IIIF scan is 6454x15862 for the whole panel, against 5862x3780 for four panels together in the Commons file, so Brasil is drawn at 358 px here instead of 86. THE SCAN IS ALREADY NORTH-UP — do not rotate it. The panel's labels run in several directions, as portolan labels do, so legible text is not a cue to orientation; I rotated it 180 on that basis and had to back it out. The checks that settle it are geographic: Iceland at the top, the Canaries at the bottom, and Brasil west (left) of Ireland. Chosen over Pizzigano 1424, which bisects the circle with a channel, and over Canepa 1489, which draws a plain red disc at 203 px; Etienne picked this one.",
+  "landmark_note": "SCALE ONLY — deliberately NOT under \"landmarks\", so trace_outline.py takes the manual path and does not try to place the island with them. The four Canaries the panel names and draws in the right order, segmented by their colour wash and taken at the centroid; they fit a similarity to RMS 10 km at 0.2013 km/px, so the chart places them well. But they sit about 9000 px south of Brasil, and feeding them to the georeferenced path does two wrong things at once: it puts Brasil at 44.6N by extrapolating the southern fit northward — the same mistake that put Antillia east of the Azores — and it maps pixels through a plane fitted at 28N, which turns the drawn circle into a 51 x 73 km ellipse once it is read at 51N. The circle is the whole point of this island, so size comes from km/px and the shape is carried across unchanged. Cross-check that the scale is honest: the chart's own real islands come out near true size at 0.2013 km/px — Tenerife x1.04, Fuerteventura x0.95, Gran Canaria x1.34.",
+  "scale_landmarks": [
+    {
+      "name": "El Hierro",
+      "x": 2053,
+      "y": 14170,
+      "lon": -18.0,
+      "lat": 27.73
+    },
+    {
+      "name": "La Gomera",
+      "x": 2387,
+      "y": 13942,
+      "lon": -17.11,
+      "lat": 28.1
+    },
+    {
+      "name": "Tenerife",
+      "x": 2750,
+      "y": 13882,
+      "lon": -16.61,
+      "lat": 28.27
+    },
+    {
+      "name": "Fuerteventura",
+      "x": 3948,
+      "y": 13765,
+      "lon": -14.02,
+      "lat": 28.36
+    }
+  ],
+  "landmarks": []
+}

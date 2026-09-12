@@ -8,3 +8,36 @@ coords_confidence: approximate
 coords_note: >-
   West of Ireland; position varied across charts. Last mention 1865 as
   Brasil Rock.
+  Kept deliberately. The Catalan Atlas, read on its own, would put the island
+  roughly 160 km west and 100 km south of Ireland, near [-12.4, 52.5] — about
+  200 km from the value here, and well inside the scatter of five centuries of
+  charts that made this position "approximate" in the first place. That
+  reading is also weakly determined: Ireland is the only real land near
+  Brasil on the panel and the panel's eastern edge cuts it, so there is no
+  firm anchor to measure from. One chart is not a reason to overturn a
+  position chosen from all of them.
+outline_note: >-
+  Traced from the Catalan Atlas of 1375 (BnF, Espagnol 30), sheet f6, via the
+  Gallica IIIF scan — 6454 px for the panel, where Brasil is drawn 358 px
+  across, against 86 px in the four-panel Commons file. Étienne chose this
+  depiction over Pizzigano 1424, which bisects the circle with a channel, and
+  over Canepa 1489, which draws a plain red disc.
+  Extraction needed a new mode. The Catalan Atlas draws its sea as blue
+  hatching exactly as dark as the violet wash, and its rhumb lines in red ink
+  that scores higher on redness than the island does, so neither `dark` nor
+  `red` separates it; violet is the one hue that raises R and B while lowering
+  G, which clears both at once. `--mode magenta` separates at 7 sigma.
+  A green rhumb line is drawn straight across the island. Below about sigma 12
+  it cuts the disc in two and the largest-component step silently discards the
+  lower half — the mask looked merely dented rather than broken. Smoothing at
+  sigma 16 erases the line without moving the coast: the extent is identical
+  at sigma 12, 16, 20 and 24.
+  AND IT IS A CIRCLE, which is the point of the island: aspect 0.986, radius
+  179.1 +/- 6.3 px, so 3.5% out of round, the residual being vellum wear and
+  uneven pigment on the rim rather than anything drawn. Kianida, for contrast,
+  varies by about 30%.
+  Size is measured, position is not. The four Canaries at the panel's south
+  end fit a similarity to RMS 10 km at 0.2013 km/px, giving 72 x 73 km; the
+  chart's own real islands come out near true size at that scale, so it is an
+  honest like-for-like reading. Those landmarks are recorded under
+  `scale_landmarks` rather than `landmarks` on purpose — see the chart JSON.

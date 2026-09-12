@@ -96,6 +96,14 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
              "green": G - (R + B) / 2,
+             # A violet wash on parchment is neither dark enough nor red enough
+             # to threshold: the Catalan Atlas draws its sea in blue hatching,
+             # which is exactly as dark as the wash, and its rhumb lines in red
+             # ink, which scores higher on "red" than the island does. Violet
+             # is the one hue that pushes R and B up while pulling G down, so
+             # it separates from both at once. (Brasil: 7 sigma, against 1 for
+             # "dark".)
+             "magenta": (R + B) / 2 - G,
              "dark":  255 - (R + G + B) / 3}[mode]
     if smooth:
         score = gaussian_filter(score.astype(float), smooth)
@@ -403,7 +411,7 @@ def main():
     ap.add_argument("island")
     ap.add_argument("--chart", required=True, help="scripts/charts/<name>.json")
     ap.add_argument("--image", required=True, help="local copy of the chart raster")
-    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "dark"))
+    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark"))
     ap.add_argument("--threshold", type=float, default=45.0)
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--open", type=int, default=0, dest="open_r",
