@@ -207,8 +207,9 @@ earth.
 
 ## Adding an island
 
-Done four times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`. Read
-this before the fifth — it is written so Étienne does not have to explain the
+Done seven times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+`kianida`, `hy-brasil`, `groclant`. Read
+this before the eighth — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -296,14 +297,41 @@ python3 scripts/trace_outline.py frisland --chart frisland-1562 \
     --image ~/scratch/charts/frisland-1562.jpg \
     --tolerance 1.5 --centre=-29.0,63.02
 
+# Kianida — a woodcut ink band; the sheet's own landmarks give scale AND place
+python3 scripts/trace_outline.py kianida --chart ulm-1482 \
+    --image ~/scratch/charts/ulm-1482-nona-europe.jpg \
+    --mode dark --threshold 75 --closing 3 --tolerance 1.5 \
+    --bbox 3570,1660,3900,1930
+
+# Hy-Brasil — a violet wash the other modes cannot see
+python3 scripts/trace_outline.py hy-brasil --chart catalan-atlas \
+    --image ~/scratch/charts/catalan-f6-atlantic.jpg \
+    --mode magenta --threshold 7 --smooth 16 --closing 20 \
+    --tolerance 1.5 --bbox 1450,620,1960,1150 \
+    --height-km 73 --centre=-15.0,51.5
+
+# Groclant — a polar projection, and an island moved because it hit real land
+python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
+    --image ~/scratch/charts/ortelius-north.jpg \
+    --mode blue --bright --threshold=-45 --smooth 3 --closing 5 \
+    --tolerance 1.5 --bbox 980,100,1800,740 \
+    --turn -32.5 --scale 0.91 --centre=-67.75,73.95
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
+node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
 
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
-**Three extraction modes, because charts differ.** A flat colour wash
+**Four extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
+A *violet* wash needs `--mode magenta`, which is `(R+B)/2 - G`: the Catalan
+Atlas draws its sea in blue hatching exactly as dark as the wash and its rhumb
+lines in red ink that scores higher on redness than the island does, so
+neither `dark` nor `red` separates Brasil at all, while magenta clears both at
+7 sigma. Note also that `--mode blue --bright` is the negated blue score, i.e.
+*yellow* — that is how Ortelius' Groclandt comes out, no new mode required.
 An outlined coast round a pale interior (Canepa) needs `--mode dark` to catch
 the ink band, which is then closed and filled — the interior is the same
 parchment as the ocean, so it cannot be selected directly.
@@ -362,6 +390,30 @@ and extrapolating a transform out there produced a confidently wrong answer
 (Antillia east of the Azores). Anchor on the nearest thing the chart actually
 drew instead.
 
+**A polar projection needs the `polar` block, not landmarks.** Ortelius and
+Mercator draw the Arctic on a polar azimuthal projection whose pole falls off
+the sheet, and a similarity transform cannot represent it. At Groclandt's spot
+on Ortelius 1570 geographic north lies **54.6 degrees off page-up**, so placing
+the island by its centre and an isotropic scale sets it down rotated by that
+much. A chart JSON carrying a `polar` block — pole pixel, radial scale k,
+reference meridian, law — takes a path that inverts every vertex through the
+projection instead. Fit it by least squares on landmarks (twelve on Ortelius,
+RMS 208 km; stereographic beat equidistant, 208 against 227).
+
+**`--turn` and `--scale` exist for when the island has to be moved, and both
+are liberties.** They rotate and resize about the island's own centre in a
+spherical azimuthal-equidistant plane, so a turn is a rigid rotation *on the
+ground* rather than in degrees — at 74 N those are very different things. Both
+are recorded in the outline as `turned_deg` and `scaled_by` and printed as
+"liberties" at trace time, so they cannot be taken quietly. Say why in
+`coords_note`.
+
+**The `polar` path deliberately does not emit `size_km`.** That key is a
+control: `build_geojson` rescales the island until its latitude span matches
+it. But a rotated island's pixel height is not its latitude span, and feeding
+the measured size back in inflated Groclant by 35%. It writes
+`size_km_measured` instead, and its geometry passes through untouched.
+
 **Latitude may be a judgement.** Antillia's is: the charts supported anywhere
 from 37 to 41, so 35.5 was chosen for how it reads against real geography.
 That is legitimate and recorded as such. Aesthetics are allowed to decide what
@@ -398,8 +450,28 @@ diffing against the mask you approved, not by eye.
 **Settlement cartouches are labels, not lakes.** Names written on the island
 are holes in the colour wash and must be filled.
 
+**A line drawn across an island truncates it, and the result looks like a
+coastline.** This has now cost time on two charts running — a green rhumb line
+over Brasil on the Catalan Atlas, the graticule over Groclandt on Ortelius —
+with an identical signature both times. The line depresses the score along its
+path, the mask splits, the largest-component step silently discards the
+smaller piece, and what comes back is a smaller island **with a straight chord
+where the line crossed**, which reads perfectly well as a real coast. The tell
+is that *the complete island is the LARGER mask*, which inverts the usual
+instinct that a tighter threshold is a safer one. Fixes: enough smoothing to
+erase the line (sigma 16 on Brasil, where the extent then stopped moving from
+sigma 12 to 24), or a threshold low enough to keep the darkened wash (-45 on
+Groclandt, a flat plateau at every sigma). Sweep the parameter and take the
+range where the extent stops changing.
+
 **Look at the mask, not the numbers.** Every real fault here was invisible in
 the summary statistics and obvious the moment the mask was rendered.
+
+**The map cannot show you an overlap with real land**, so run
+`node scripts/check_overlap.mjs <id>`. An island is a thin outline and the
+basemap a dark fill, so where the outline crosses a coast it disappears into
+that fill and the shape still reads as sitting in water. Groclant was
+rendered, inspected and approved three times while lying across Ellesmere.
 
 ## Design
 
@@ -441,8 +513,8 @@ interesting object than a clickable index.
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
-- 34 islands with coordinates; 10 attested, 12 approximate, 12 conjectural
-- 4 traced outlines, 30 placeholder blobs; 5 chart records in
+- 34 islands with coordinates; 10 attested, 14 approximate, 10 conjectural
+- 7 traced outlines, 27 placeholder blobs; 8 chart records in
   `scripts/charts/`
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -450,8 +522,11 @@ output `dist`, no adapter (static). Nothing to configure.
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
 - Geometry is placeholder blobs except `antillia` (Canepa 1489), `frisland`
   (1562 plate, 23 parts — the first MultiPolygon), `bermeja`
-  (19th-c. English Gulf chart) and `nakanotorishima` (Yamada's own 1908 survey
-  sketch — see below)
+  (19th-c. English Gulf chart), `nakanotorishima` (Yamada's own 1908 survey
+  sketch — see below), `kianida` (Ulm 1482, fully georeferenced from the
+  sheet's landmarks), `hy-brasil` (Catalan Atlas 1375 — a circle, 0.992 aspect
+  and 3.5% out of round, which is the point of that island) and `groclant`
+  (Ortelius 1570, on a fitted polar projection, then moved into Baffin Bay)
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
@@ -477,8 +552,9 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Four done: `antillia`,
-   `bermeja`, `nakanotorishima`, `frisland`. Next best candidates are
+2. **Trace real outlines** — see *Adding an island*. Seven done: `antillia`,
+   `bermeja`, `nakanotorishima`, `frisland`, `kianida`, `hy-brasil`,
+   `groclant`. Next best candidates are
    `californie` (a long N–S sliver) and `coree` (a peninsula), the two
    remaining where a placeholder blob actively misleads. Both are `misdrawn`,
    and Étienne has flagged that they will want the fictional outline to
