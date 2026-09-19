@@ -218,12 +218,24 @@ position came from.
 
 ### How to work on one
 
-**One step at a time, shown and approved before the next.** Source, then
-shape, then size, then position. Doing all four and presenting the finished
-result throws the work away when step one was wrong, which it has been more
-than once. In his words: *"You need to validate with me each big step, because
-we're wasting time and work by doing the whole thing at once and getting it
-wrong."*
+**One gate, not five — revised September 2026**, after Kianida, Hy-Brasil and
+Groclant: *"I think we have learned quite a bit on the process and I can let
+you be more autonomous."* The gate is **the source**. Bring two or three
+candidates with crops and pixel sizes, and let him pick — that one earns its
+keep, because he has overruled the recommendation twice and the shape changed
+materially both times. After that, run to completion: trace, scale, position,
+verify, notes, commit. Report the finished island with its numbers and an
+explicit list of any liberties taken.
+
+Come back mid-way for exactly two things: **a genuine taste call** (the
+shrink-versus-turn question on Groclant), and **an island that cannot be
+placed without lying on real land**. Nothing else.
+
+The older rule was one approval per step — *"You need to validate with me each
+big step, because we're wasting time and work by doing the whole thing at once
+and getting it wrong."* It was right while the process was still being learned
+and the failures were unknown. The three scripts below now catch the failures
+that made it necessary.
 
 **Put every render in the chat**, with SendUserFile. A file path is not a
 render. *"can you actually put the final image in the chat so I can see it?
@@ -239,6 +251,41 @@ him the measurements and a recommendation, then stop.
 
 **Change only what he asked about.** Fixing a bay he approved while fixing the
 one he didn't is not a bonus.
+
+### The tools
+
+Three scripts exist because each was hand-written three times, badly, before
+it was written once properly. Use them; the failures they catch are silent.
+
+```sh
+# which mode and threshold? and is a line cutting the island in half?
+python3 scripts/probe_extraction.py --image ~/scratch/charts/x.jpg \
+    --bbox 980,100,1800,740
+
+# where can it sit without lying on real land, and at what turn and scale?
+node scripts/place_island.mjs groclant --turn -35,-25,2.5 --scale 0.88,0.96,0.02
+
+# draw it, with any overlap on land dotted in orange — before writing it
+node scripts/preview_island.mjs groclant --turn -32.5 --scale 0.91 \
+    --centre=-67.75,73.95
+
+# and afterwards, the bare question
+node scripts/check_overlap.mjs groclant
+```
+
+`probe_extraction.py` reports a d-prime per mode against the frame's border,
+sweeps the threshold, and prints the plateaux — the ranges where the extent
+stops moving, which is where the answer is. Its **SPLIT** warning is the one
+to read: it fires when the largest connected part holds under 98% of the mask,
+which is what a line drawn across an island does.
+
+`place_island.mjs` searches centre, `--turn` and `--scale` together against a
+cached land raster and prints the exact trace_outline flags. It works from the
+island's own stored `turned_deg`/`scaled_by`, so it tests the geometry that
+will actually be written — rotating about the wrong origin is a 20-40 km error,
+enough to ground a large island.
+
+`preview_island.mjs` always dots the land overlap, which is why it exists.
 
 ### The steps
 
