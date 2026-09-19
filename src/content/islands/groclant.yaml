@@ -2,8 +2,53 @@ name_fr: "Groclant"
 name_en: "Groclant"
 kind: island
 ocean: arctique
-coords: [-45.0, 72.0]
+coords: [-67.75, 73.95]
 span: [1507, 1700]
-coords_confidence: conjectural
+coords_confidence: approximate
 coords_note: >-
-  Groclandia, northwest of Greenland on Ruysch/Mercator maps.
+  Groclandia, north-west of Greenland. Ortelius' 1570 northern map is drawn on
+  a polar azimuthal projection whose pole falls off the top of the plate;
+  fitting it on twelve landmarks — mostly named town symbols in Britain, the
+  Low Countries and Scandinavia, to RMS 208 km — puts Groclandt's centre at
+  [-58.6, 77.5]. Supersedes [-45.0, 72.0], a conjectural guess.
+  THE POSITION HERE IS NOT THAT READING. The chart's own answer covers northern
+  Greenland and reaches Ellesmere, which is not a fitting error: Ortelius draws
+  the island where real land turns out to be, unsurprising if Groclant is a
+  doubling of Greenland itself (Groclant / Groenlant), the usual explanation.
+  It has been moved into Baffin Bay — the nearest open water of any size — as
+  a deliberate liberty, the Arctic on these maps being too inaccurate to be
+  worth preserving to the degree.
+  Two further liberties, recorded in the outline as `turned_deg` and
+  `scaled_by`: turned -32.5 degrees and reduced to 91%. Neither alone would do.
+  Baffin Bay is about 450 km across at its widest against an island measuring
+  697 x 532 km, so at the chart's own bearing it must come down to 75% to fit,
+  and at full measured size it must turn at least 45 degrees. Anticlockwise is
+  much the cheaper direction, laying the boomerang along the bay rather than
+  across it: -30 degrees holds 94% where +30 holds only 76%. Étienne chose the
+  bearing and the final position by eye.
+  The clear water is tight — at this bearing and size the island fits in a band
+  roughly 1 degree of longitude by 0.5 of latitude, and a quarter-degree in the
+  wrong direction grounds it. Verified at 0 of 9603 sample points on land.
+outline_note: >-
+  Traced from Abraham Ortelius, Septentrionalium Regionum Descriptio, 1570,
+  from the Theatrum Orbis Terrarum. Groclandt is drawn as a boomerang — a long
+  north-west limb, a narrow waist, a broad southern lobe — in a bold yellow
+  wash, 682 x 521 px on the 6044 x 4506 scan, the largest island traced for
+  this atlas so far. Chosen over Mercator's 1595 polar map, which draws a
+  slimmer two-lobed peanut, and his 1569 world map, which draws a fat lobe
+  joined to the mainland; the three differ enough that the choice changes the
+  island.
+  The yellow wash is (R+G)/2 - B, exactly the negated blue score, so
+  `--mode blue --bright` isolates it with no new extraction mode.
+  THE THRESHOLD IS NOT FREE, despite the wash separating enormously. The map's
+  graticule is drawn across the island and the yellow beneath those lines
+  scores higher, so at -60 or -85 the meridians cut the wash, the
+  largest-component step keeps one piece, and the outline comes back at
+  497x436 with straight chords where a line crossed — which reads perfectly
+  well as a coastline. The complete island is the LARGER mask. -45 sits on a
+  plateau: 682x521 to 682x523 at every smoothing from sigma 0 to 6.
+  Every vertex is inverted through the fitted projection rather than placed by
+  centre and scale: at the spot Ortelius drew it, geographic north lies 54.6
+  degrees off page-up, so an isotropic placement would have set the island
+  down rotated by that much. The chart's own scale is 1.0134 km/px, giving
+  691 x 528 km before the 0.91 reduction and 629 x 480 km after.

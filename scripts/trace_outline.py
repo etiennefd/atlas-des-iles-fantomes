@@ -356,6 +356,161 @@ def plate(a, chart):
     print(f"  -> {os.path.relpath(dest, ROOT)}")
 
 
+# --- placing an island somewhere other than where the chart drew it ---------
+R_EARTH = 6371.0
+
+
+def aeqd_fwd(lon0, lat0, lon, lat):
+    """Azimuthal equidistant about (lon0, lat0), in km. Distances from the
+    centre are true, so rotating and scaling in this plane is a rigid turn and
+    a uniform resize *on the ground* rather than in degrees — which at 74 N
+    are not the same thing at all."""
+    p0, p1 = math.radians(lat0), math.radians(lat)
+    dl = math.radians(lon - lon0)
+    cosc = math.sin(p0) * math.sin(p1) + math.cos(p0) * math.cos(p1) * math.cos(dl)
+    cosc = max(-1.0, min(1.0, cosc))
+    c = math.acos(cosc)
+    k = 1.0 if abs(c) < 1e-12 else c / math.sin(c)
+    x = k * math.cos(p1) * math.sin(dl)
+    y = k * (math.cos(p0) * math.sin(p1) - math.sin(p0) * math.cos(p1) * math.cos(dl))
+    return x * R_EARTH, y * R_EARTH
+
+
+def aeqd_inv(lon0, lat0, x, y):
+    p0 = math.radians(lat0)
+    x, y = x / R_EARTH, y / R_EARTH
+    rho = math.hypot(x, y)
+    if rho < 1e-12:
+        return lon0, lat0
+    c = rho
+    lat = math.asin(math.cos(c) * math.sin(p0) + y * math.sin(c) * math.cos(p0) / rho)
+    lon = math.radians(lon0) + math.atan2(
+        x * math.sin(c), rho * math.cos(c) * math.cos(p0) - y * math.sin(c) * math.sin(p0))
+    return math.degrees(lon), math.degrees(lat)
+
+
+def reposition(pts, clon, clat, turn, scale, centre):
+    """Turn and/or resize an island about its own centre, then set it down at
+    `centre`. Returns (pts, new centre). All three are liberties and the
+    caller is expected to record them."""
+    tlon, tlat = centre if centre else (clon, clat)
+    if turn == 0 and scale == 1.0 and not centre:
+        return pts, (clon, clat)
+    th = math.radians(turn)
+    cs, sn = math.cos(th), math.sin(th)
+    out = []
+    for lon, lat in pts:
+        x, y = aeqd_fwd(clon, clat, lon, lat)
+        x, y = (x * cs - y * sn) * scale, (x * sn + y * cs) * scale
+        out.append([round(v, 4) for v in aeqd_inv(tlon, tlat, x, y)])
+    return out, (tlon, tlat)
+
+
+def polar(a, chart):
+    """A map drawn on a polar azimuthal projection, where the meridians
+    converge on a pole that is usually off the sheet.
+
+    A similarity cannot express this. At Groclandt's place on Ortelius 1570 the
+    pole lies up and to the right, so geographic north points 55 degrees off
+    page-up; placing the island by its centre and an isotropic scale would set
+    it down rotated by that much. Every vertex is inverted through the
+    projection instead, which carries the rotation and the convergence with it.
+
+    The fitted parameters live in the chart JSON because they describe the
+    plate, not the island — the same reason `plate` blocks do."""
+    spec = chart["polar"]
+    x0, y0 = spec["pole_px"]
+    k, lon0 = spec["k"], spec["lon0"]
+    stereo = spec.get("law", "stereographic").startswith("stereo")
+
+    def inv(px, py):
+        dx, dy = px - x0, py - y0
+        r = math.hypot(dx, dy)
+        co = 2 * math.degrees(math.atan(r / k)) if stereo else r / k
+        return lon0 + math.degrees(math.atan2(dx, dy)), 90.0 - co
+
+    def km_per_px(lat):
+        if not stereo:
+            return 111.13 / k
+        co = 90.0 - lat
+        return 111.13 / (k * math.radians(1) / 2 /
+                         math.cos(math.radians(co / 2)) ** 2)
+
+    bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
+    mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
+                                 a.threshold, bbox, a.closing, a.se, a.open_r,
+                                 a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
+    ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
+                               a.tolerance)
+    if len(ring) > 3 and (ring[0] == ring[-1]).all():
+        ring = ring[:-1]
+    pts = [[round(v, 4) for v in inv(c + ox, r + oy)] for r, c in ring]
+
+    ys, xs = np.nonzero(mask)
+    clon, clat = inv((xs.min() + xs.max()) / 2 + ox, (ys.min() + ys.max()) / 2 + oy)
+    chart_said = (round(clon, 2), round(clat, 2))
+    target = [float(v) for v in a.centre.split(",")] if a.centre else None
+    pts, (clon, clat) = reposition(pts, clon, clat, a.turn, a.scale, target)
+    moved = chart_said if (target or a.turn or a.scale != 1.0) else None
+    # d3-geo reads polygons spherically: wound the wrong way, the island
+    # renders as the whole planet except itself.
+    area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
+               pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
+    if area > 0:
+        pts = pts[::-1]
+    pts.append(pts[0])
+
+    kmpx = km_per_px(clat)
+    w_km = (xs.max() - xs.min() + 1) * kmpx * a.scale
+    h_km = (ys.max() - ys.min() + 1) * kmpx * a.scale
+    north_off = math.degrees(math.atan2(x0 - ((xs.min() + xs.max()) / 2 + ox),
+                                        ((ys.min() + ys.max()) / 2 + oy) - y0))
+    print(f"{a.island}: {len(pts)-1} points   ({chart['name']})")
+    print(f"  projection {'stereographic' if stereo else 'equidistant'} polar, "
+          f"pole at px ({x0:.0f}, {y0:.0f}), RMS {spec.get('landmark_rms_km','?')} km "
+          f"on {spec.get('landmarks','?')} landmarks")
+    if moved:
+        print(f"  centre     {clon:.2f}, {clat:.2f}   (override; chart put it at {moved[0]}, {moved[1]})")
+    else:
+        print(f"  centre     {clon:.2f}, {clat:.2f}   (from the chart)")
+    if a.turn or a.scale != 1.0:
+        print(f"  liberties  turned {a.turn:+.0f} deg, scaled x{a.scale:.2f}")
+    print(f"  extent     {w_km:.0f} x {h_km:.0f} km   at {kmpx:.4f} km/px")
+    print(f"  north lies {north_off:+.1f} deg off page-up here")
+    lons = [q[0] for q in pts]; lats = [q[1] for q in pts]
+    print(f"  lon {min(lons):.2f}..{max(lons):.2f}   lat {min(lats):.2f}..{max(lats):.2f}")
+
+    feat = {"type": "Feature",
+            "properties": {"id": a.island, "traced_from": chart["name"],
+                           "source_url": chart.get("source_url", ""),
+                           "georeference": {
+                               "projection": "stereographic polar" if stereo else "equidistant polar",
+                               "pole_px": [x0, y0], "k": k, "lon0": lon0,
+                               "km_per_px": round(kmpx, 4),
+                               "north_offset_deg": round(north_off, 1),
+                               "landmark_rms_km": spec.get("landmark_rms_km"),
+                               "landmarks": spec.get("landmarks")},
+                           "scale_source": "the chart's own graticule, fitted on coastal landmarks",
+                           "centre": [round(clon, 3), round(clat, 3)],
+                           "centre_from_chart": moved,
+                           "turned_deg": a.turn or None,
+                           "scaled_by": a.scale if a.scale != 1.0 else None,
+                           # NOT "size_km". That key is a control: build_geojson
+                           # rescales the island until its latitude span matches
+                           # it. Here the geometry is already true, and the
+                           # island is rotated against the graticule, so its
+                           # pixel height is not its latitude span — feeding the
+                           # measured size back in inflated Groclandt by 35%.
+                           "size_km_measured": [round(w_km), round(h_km)]},
+            "geometry": {"type": "Polygon", "coordinates": [pts]}}
+    if a.dry_run:
+        print("\n(dry run — nothing written)"); return
+    os.makedirs(OUTDIR, exist_ok=True)
+    dest = os.path.join(OUTDIR, f"{a.island}.geojson")
+    json.dump(feat, open(dest, "w", encoding="utf-8"), indent=1)
+    print(f"  -> {os.path.relpath(dest, ROOT)}")
+
+
 def manual(a, chart):
     """No landmarks on this chart yet, so the chart gives only the silhouette;
     size and position are set explicitly. Georeference it properly and this
@@ -460,6 +615,11 @@ def main():
     ap.add_argument("--minpart", type=int, default=900)
     ap.add_argument("--solidity", type=float, default=0.75,
                     help="plate mode: small parts below this are lettering")
+    ap.add_argument("--turn", type=float, default=0.0,
+                    help="degrees to rotate the island about its own centre, "
+                         "clockwise. A liberty — record why in coords_note.")
+    ap.add_argument("--scale", type=float, default=1.0,
+                    help="resize the island about its own centre. Also a liberty.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
@@ -467,6 +627,8 @@ def main():
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
     if "plate" in chart:
         return plate(a, chart)
+    if "polar" in chart:
+        return polar(a, chart)
     lms = chart["landmarks"]
     if not lms:
         return manual(a, chart)
@@ -532,6 +694,8 @@ def main():
                                             "landmarks": len(lms)},
                            "centre": [round(clon, 3), round(clat, 3)],
                            "centre_from_chart": moved,
+                           "turned_deg": a.turn or None,
+                           "scaled_by": a.scale if a.scale != 1.0 else None,
                            "size_km": [round(km_w), round(km_h)]},
             "geometry": {"type": "Polygon", "coordinates": [pts]}}
     if a.dry_run:

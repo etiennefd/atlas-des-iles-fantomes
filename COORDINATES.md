@@ -27,7 +27,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 1841. Keates 1860 and Stannard 1886 gave slightly different fixes. |
 | `emerald` | 162.2, −57.5 | Capt. William Elliot of the *Emerald*, December 1821: 57°30′S 162°12′E. |
 
-## Approximate (11)
+## Approximate (12)
 
 | id | position | basis |
 |---|---|---|
@@ -41,16 +41,16 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `coree` | 127.5, 37.0 | Korea as an island on 16th–17th century European charts. |
 | `tuanaki` | −158.0, −23.5 | South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks proposed as a remnant. |
 | `kianida` | 29.62, 42.13 | Georeferenced from the Ulm 1482 sheet, not estimated: eleven coastal city dots from Histria round to Perinthus fit a similarity transform to RMS 35 km, and the island lies inside the ring they enclose. About 130 km off the Bulgarian coast, east of Burgas. Was 33.0, 43.5 — a guess, some 300 km ENE of where the map draws it. |
+| `groclant` | −67.75, 73.95 | Ortelius 1570, fitted on twelve landmarks to RMS 208 km, puts it at −58.6, 77.5 — on northern Greenland and Ellesmere. **Moved into Baffin Bay by hand**, turned −32.5° and reduced to 91%, because nothing at the chart's bearing fits above 75% and nothing at full size fits between −60° and +45°. Anticlockwise is the cheap direction. Was −45.0, 72.0, a guess entirely inside the ice sheet. |
 | `elizabeth` | −70.0, −57.0 | Drake, October 1578, at latitude 57°S (Hakluyt: "57 and a terce"). **Longitude is unrecorded** — I used the Pactolus Bank area west of Cape Horn. |
 
-## Conjectural (9) — check these
+## Conjectural (8) — check these
 
 | id | position | reasoning |
 |---|---|---|
 | `saint-brendan` | −25.0, 30.0 | Wandered constantly for a millennium. Pick whichever depiction your story uses. |
 | `bacalao` | −52.0, 47.5 | Terra dos Bacalhaus, Newfoundland region. Highly variable. |
 | `ile-des-demons` | −55.5, 51.5 | Usually off the northern tip of Newfoundland, near Quirpon. Often conflated with Satanazes. |
-| `groclant` | −45.0, 72.0 | Groclandia, NW of Greenland on Ruysch and Mercator. |
 | `thule` | −19.0, 64.0 | Pytheas, c. 330 BCE. Variously Iceland, Norway, Shetland. Placed on Iceland here. |
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |
 | `juan-de-lisboa` | 55.0, −28.0 | SE of Madagascar on 17th–18th century charts. |

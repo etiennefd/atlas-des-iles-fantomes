@@ -1,0 +1,107 @@
+{
+  "name": "Abraham Ortelius, Septentrionalium Regionum Descriptio, 1570",
+  "holding": "from the Theatrum Orbis Terrarum",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Ortelius,_Abraham_Septentrionalivm_regionvm_descrip.jpg",
+  "licence": "public domain (the map is from 1570)",
+  "note": "Groclandt is drawn here as a boomerang — a long north-west limb, a narrow waist, a broad southern lobe — in a bold yellow wash on a stippled grey sea, about 470 px across on the 6044x4506 scan. Chosen over Mercator's 1595 polar map, which draws a slimmer two-lobed peanut at 300x380 px on an uncoloured engraving, and over Mercator's 1569 world map, which draws a fat rounded lobe joined to the mainland and survives only in an 833 px scan. The three differ enough that the choice changes the island; Etienne picked this one. The Theatrum was the best-selling atlas in Europe for decades, so this is a widely seen depiction even though the 1595 Mercator is the more canonical Arctic sheet.",
+  "extraction_note": "The yellow wash is (R+G)/2 - B, which is exactly the negated blue score, so `--mode blue --bright` isolates it with no new mode. The wash itself separates enormously — Groclandt -115 to -124, the stippled sea -2 to -10, Greenland's green wash -15, Estotiland's pink -31 — but the threshold is NOT free, because the map's graticule is drawn across the island and the darkened yellow under those lines scores higher. At -60 or -85 the lines cut the wash and the largest-component step keeps only a piece: the outline comes back 497x436 or 457x428 with straight chords where a meridian crossed, which reads as a plausible coastline rather than as damage. The complete island is the LARGER mask. -45 sits on a flat plateau: 682x521 to 682x523 at every smoothing from sigma 0 to 6, single connected part from sigma 3 up. Below -35 it starts eating the coastline ink.",
+  "landmarks": [
+    {
+      "name": "London",
+      "x": 2875,
+      "y": 4008,
+      "lon": -0.13,
+      "lat": 51.51
+    },
+    {
+      "name": "Dublin",
+      "x": 2225,
+      "y": 3680,
+      "lon": -6.26,
+      "lat": 53.35
+    },
+    {
+      "name": "Norwich",
+      "x": 2966,
+      "y": 3854,
+      "lon": 1.3,
+      "lat": 52.63
+    },
+    {
+      "name": "Bristol",
+      "x": 2602,
+      "y": 4008,
+      "lon": -2.59,
+      "lat": 51.45
+    },
+    {
+      "name": "York",
+      "x": 2624,
+      "y": 3680,
+      "lon": -1.08,
+      "lat": 53.96
+    },
+    {
+      "name": "Amsterdam",
+      "x": 3252,
+      "y": 3891,
+      "lon": 4.9,
+      "lat": 52.37
+    },
+    {
+      "name": "Shetland",
+      "x": 2847,
+      "y": 2838,
+      "lon": -1.3,
+      "lat": 60.3
+    },
+    {
+      "name": "Orkney",
+      "x": 2641,
+      "y": 3032,
+      "lon": -3.0,
+      "lat": 59.0
+    },
+    {
+      "name": "Faroes",
+      "x": 2353,
+      "y": 2568,
+      "lon": -6.9,
+      "lat": 62.0
+    },
+    {
+      "name": "Vardo",
+      "x": 3710,
+      "y": 1565,
+      "lon": 31.1,
+      "lat": 70.37
+    },
+    {
+      "name": "Vyborg",
+      "x": 3837,
+      "y": 2130,
+      "lon": 28.75,
+      "lat": 60.71
+    },
+    {
+      "name": "Iceland",
+      "x": 1765,
+      "y": 1870,
+      "lon": -18.6,
+      "lat": 64.9
+    }
+  ],
+  "polar": {
+    "law": "stereographic",
+    "pole_px": [
+      2490.0,
+      -392.0
+    ],
+    "k": 12320.8,
+    "lon0": -4.0,
+    "landmark_rms_km": 208,
+    "landmarks": 12
+  },
+  "polar_note": "Ortelius draws the north on a polar azimuthal projection whose pole falls off the top of the sheet, so a similarity transform cannot represent it: at Groclandt's position geographic north points 55 degrees off page-up, and placing the island by centre-and-scale would set it down rotated by that much. Fitted by least squares on the twelve landmarks below, solving for pole pixel, radial scale, and the longitude of the reference meridian. Stereographic beats equidistant, 208 km RMS against 227. Two landmarks carry most of the error and both are Ortelius' own: Vyborg 423 km (his Baltic is stretched) and Iceland 388 km (he sets it too far west). The British towns, which are point symbols rather than eyeballed centroids, all fall between 86 and 132 km.",
+  "landmark_note": "Named town symbols wherever possible — they are points, not judgements. The island groups (Shetland, Orkney, Faroes) and Iceland are drawn-centroid estimates and are correspondingly weaker. WATCH THE LABELS: on a first pass I read Shetland and the Faroes off their engraved names rather than off the islands themselves and put both more than 600 px wrong, which quietly inflated the fit to 292 km RMS."
+}
