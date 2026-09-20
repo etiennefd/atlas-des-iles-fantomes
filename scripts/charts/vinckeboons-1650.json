@@ -1,0 +1,67 @@
+{
+  "name": "Joan Vinckeboons, chart of California as an island, c. 1650",
+  "holding": "Library of Congress, Geography and Map Division",
+  "source_url": "https://commons.wikimedia.org/wiki/File:California_island_Vinckeboons5.jpg",
+  "licence": "public domain (the chart is c. 1650)",
+  "note": "8359x5800. Draws California as a full island, the Gulf continuing north into a strait that runs off the top of the sheet, and the mainland coast alongside — both in the same pale green wash, so one extraction yields both. It labels real places along the phantom island's coast (C. Blanco, P. Sn Francisco Draco, Punta de los Reyes, Monterey, Canal de Sta Barbara), which is what makes it georeferenceable: the island IS Baja plus Alta California, so its own headlands have modern positions. Latitude ladders run down both margins.",
+  "extraction_note": "The wash is pale and the sheet is covered in rhumb lines, so `dark` is useless — the line network scores higher than the land. Green separates cleanly: island +11, mainland +16, open ocean -2. Sample the ocean away from the compass rose, which is dark enough to look like land.",
+  "landmarks": [
+    {
+      "name": "C. Blanco",
+      "x": 2560,
+      "y": 990,
+      "lon": -124.56,
+      "lat": 42.84
+    },
+    {
+      "name": "Drakes Bay",
+      "x": 3062,
+      "y": 1655,
+      "lon": -122.98,
+      "lat": 38.02
+    },
+    {
+      "name": "Monterey",
+      "x": 3262,
+      "y": 2108,
+      "lon": -121.89,
+      "lat": 36.6
+    },
+    {
+      "name": "Sta Barbara Ch.",
+      "x": 4046,
+      "y": 2369,
+      "lon": -119.8,
+      "lat": 34.2
+    },
+    {
+      "name": "Pta Magdalena",
+      "x": 6006,
+      "y": 4228,
+      "lon": -112.1,
+      "lat": 24.6
+    },
+    {
+      "name": "C. de S. Lucas",
+      "x": 6829,
+      "y": 4506,
+      "lon": -109.91,
+      "lat": 22.88
+    },
+    {
+      "name": "Culiacan",
+      "x": 6571,
+      "y": 3506,
+      "lon": -107.39,
+      "lat": 24.81
+    },
+    {
+      "name": "Compostella",
+      "x": 7594,
+      "y": 4899,
+      "lon": -104.9,
+      "lat": 21.24
+    }
+  ],
+  "landmark_note": "Named headlands the chart itself writes along the phantom island's coast, plus two mainland towns. This works because California-as-an-island is a MISDRAWING of real land, not an invention: its capes are Cape Blanco, Drakes Bay, Monterey, the Santa Barbara Channel, Bahia Magdalena and Cabo San Lucas, all of which have modern positions. Read off scaled crops, so good to roughly +/- 50 px on an 8359 px sheet."
+}

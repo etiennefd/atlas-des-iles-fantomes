@@ -76,7 +76,8 @@ def residuals(p, K, landmarks):
 
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
-                upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0):
+                upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
+                seed=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -116,7 +117,19 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     if not m.any():
         raise SystemExit("nothing selected — adjust --threshold/--mode/--bbox")
     lab = label(m)
-    m = lab == max(regionprops(lab), key=lambda q: q.area).label
+    if seed is None:
+        m = lab == max(regionprops(lab), key=lambda q: q.area).label
+    else:
+        # Two landmasses can share one wash. Vinckeboons paints the phantom
+        # island and the American mainland the same green, and the mainland is
+        # the bigger of the two, so "largest component" quietly traces the
+        # wrong continent. --seed names a pixel inside the one you want.
+        sx, sy = seed
+        k = lab[sy - y0, sx - x0]
+        if not k:
+            raise SystemExit(f"--seed {sx},{sy} is not on the mask — "
+                             "check it lies inside the island, in source pixels")
+        m = lab == k
     # disk(close), not a close x close box: the box is far weaker, and a gap
     # left in the coast band means fill_holes cannot close the interior at all
     # — the island comes out as a ring rather than a shape.
@@ -439,7 +452,8 @@ def polar(a, chart):
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
-                                 a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
+                                 a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
+                                 a.seed)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -521,7 +535,8 @@ def manual(a, chart):
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                           a.threshold, bbox, a.closing, a.se, a.open_r,
-                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
+                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
+                          a.seed)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -615,6 +630,8 @@ def main():
     ap.add_argument("--minpart", type=int, default=900)
     ap.add_argument("--solidity", type=float, default=0.75,
                     help="plate mode: small parts below this are lettering")
+    ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
+                    "want, when it is not the largest one sharing the wash")
     ap.add_argument("--turn", type=float, default=0.0,
                     help="degrees to rotate the island about its own centre, "
                          "clockwise. A liberty — record why in coords_note.")
@@ -623,6 +640,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
     a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
+    a.seed = tuple(int(v) for v in a.seed.split(",")) if a.seed else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
     if "plate" in chart:
@@ -647,7 +665,8 @@ def main():
     bbox = [int(v) for v in a.bbox.split(",")] if a.bbox else None
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
-                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle)
+                          a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
+                          a.seed)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():

@@ -389,3 +389,9 @@ a:hover {
   margin: 0.5rem auto 3rem;
   color: var(--land);
 }
+
+/* A misdrawn island is real land drawn wrong, so the basemap simply does not
+   carry the real coastline where its chart disagreed — build_misdrawn.py cuts
+   it out and the phantom stands in its place permanently. That means a
+   misdrawn island needs no special styling at all: it is an outline at rest
+   and fills burgundy on hover, exactly like every other phantom. */

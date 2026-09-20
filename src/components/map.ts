@@ -27,6 +27,8 @@ type Cfg = {
   meta: IslandMeta[];
   landUrl: string;
   islandsUrl: string;
+  /** Regions where a `misdrawn` island's chart overrides the real coastline. */
+  misdrawnUrl?: string;
 };
 
 // Screen-space radius below which an island gets a halo ring.
@@ -53,11 +55,39 @@ export async function mount(cfg: Cfg) {
   const { root, meta } = cfg;
   const byId = new Map(meta.map((m) => [m.id, m]));
 
-  const [landTopo, islands] = await Promise.all([
+  const [landTopo, islands, misdrawn] = await Promise.all([
     fetch(cfg.landUrl).then((r) => r.json()),
     fetch(cfg.islandsUrl).then((r) => r.json()),
+    cfg.misdrawnUrl
+      ? fetch(cfg.misdrawnUrl).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      : Promise.resolve(null),
   ]);
   const land = feature(landTopo, landTopo.objects.land);
+
+  // A misdrawn island is real land drawn wrong, so showing what its chart
+  // claimed means removing the real coastline there, not drawing over it —
+  // and removing the island's own footprint is not enough, because the claim
+  // is that an isthmus is a strait. build_misdrawn.py supplies both the
+  // footprint and the corridor that opens the water.
+  // Always applied, not revealed on hover: the atlas simply does not carry the
+  // real coastline where a chart disagreed with it. Étienne: "we won't see the
+  // real California ever. This is fine, we don't really care about the real
+  // land on this map." That holds only while no two misdrawn regions overlap
+  // and nothing else of interest sits inside one — true today.
+  const eraseFeats = misdrawn?.features ?? [];
+  const eraseAll = eraseFeats.length
+    ? {
+        type: "Feature",
+        geometry: {
+          type: "MultiPolygon",
+          coordinates: eraseFeats.flatMap((f: any) =>
+            f.geometry.type === "MultiPolygon"
+              ? f.geometry.coordinates
+              : [f.geometry.coordinates]
+          ),
+        },
+      }
+    : null;
 
   // Keep only islands we have metadata for, and sort so planned ones sit
   // underneath — a faint ring should never occlude a written island.
@@ -119,6 +149,20 @@ export async function mount(cfg: Cfg) {
 
   const landPath = el("path", { class: "pmap__landpath" });
   gLand.append(landPath);
+
+  // The erase regions live in a <mask> so the land is genuinely cut away
+  // rather than painted over: painting would also cover the island outlines
+  // and halos that fall inside the region.
+  const defs = el("defs");
+  const maskEl = el("mask", { id: "pmap-misdrawn", maskUnits: "userSpaceOnUse",
+                              x: "-1e5", y: "-1e5", width: "2e5", height: "2e5" });
+  const maskAll = el("rect", { x: "-1e5", y: "-1e5", width: "2e5", height: "2e5",
+                               fill: "white" });
+  const maskCut = el("path", { fill: "black" }) as SVGPathElement;
+  maskEl.append(maskAll, maskCut);
+  defs.append(maskEl);
+  svg.append(defs);
+  if (eraseAll) landPath.setAttribute("mask", "url(#pmap-misdrawn)");
 
   // One <path> per island so each can be hit-tested and styled individually.
   const shapes = new Map<string, SVGPathElement>();
@@ -246,6 +290,7 @@ export async function mount(cfg: Cfg) {
     gRoot.setAttribute("transform", `translate(${offX},${offY}) scale(${k})`);
     spherePath.setAttribute("d", path({ type: "Sphere" } as any) ?? "");
     landPath.setAttribute("d", path(land as any) ?? "");
+    if (eraseAll) maskCut.setAttribute("d", path(eraseAll as any) ?? "");
     project();
     updateHalosAndLabels();
     rebuildVoronoi();
@@ -318,7 +363,12 @@ export async function mount(cfg: Cfg) {
     if (i == null || i < 0) return null;
     const a = anchors[i];
     const d = Math.hypot(a.x * k + offX - mx, a.y * k + offY - my);
-    return d <= CUTOFF ? a.id : null;
+    // A fixed radius round the centroid is fine for a blob and useless for
+    // California, which is 2200 km long: most of the island was not hoverable
+    // and the target felt arbitrary. Reach out to the island's own apparent
+    // size where that is bigger.
+    const reach = Math.max(CUTOFF, a.sizePx * k * 0.6);
+    return d <= reach ? a.id : null;
   }
 
   function pointerPos(e: PointerEvent | MouseEvent) {
