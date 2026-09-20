@@ -44,6 +44,30 @@ CHARTS = os.path.join(HERE, "charts")
 
 
 # --- georeference ---------------------------------------------------------
+def component_rings(mask, tolerance):
+    """One outer ring per connected piece of the mask, biggest first.
+
+    A chart that draws an island usually draws its satellites too, in the same
+    wash — Vinckeboons gives California a scatter of them down the Santa
+    Barbara Channel and in the Gulf. Taking only the largest contour throws
+    them away, and a phantom archipelago is more interesting than a phantom
+    blob. (Frisland already comes in 23 parts, from the plate path.)
+    """
+    lab = label(mask)
+    out = []
+    for r in sorted(regionprops(lab), key=lambda q: -q.area):
+        piece = binary_fill_holes(lab == r.label)
+        cs = find_contours(piece.astype(float), 0.5)
+        if not cs:
+            continue
+        ring = approximate_polygon(max(cs, key=len), tolerance)
+        if len(ring) > 3 and (ring[0] == ring[-1]).all():
+            ring = ring[:-1]
+        if len(ring) >= 4:
+            out.append(ring)
+    return out
+
+
 def fit_transform(landmarks, lat0):
     """Least-squares similarity from chart pixels to a local lon*cos(lat0)/lat
     plane. Image y grows downward and latitude grows upward, so y is flipped
@@ -77,7 +101,7 @@ def residuals(p, K, landmarks):
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
-                seed=None):
+                seed=None, satellites=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -117,6 +141,21 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     if not m.any():
         raise SystemExit("nothing selected — adjust --threshold/--mode/--bbox")
     lab = label(m)
+    keep = None
+    if satellites:
+        lo, hi = satellites
+        keep = np.zeros_like(m)
+        H, W = m.shape
+        for r in regionprops(lab):
+            if not (lo <= r.area <= hi):
+                continue
+            ry0, rx0, ry1, rx1 = r.bbox
+            # a piece touching the crop edge is a clipped mainland fragment,
+            # not an island the chart drew. (Named ry0/rx0, not y0/x0 — those
+            # are the crop origin the seed lookup needs.)
+            if ry0 == 0 or rx0 == 0 or ry1 >= H or rx1 >= W:
+                continue
+            keep |= lab == r.label
     if seed is None:
         m = lab == max(regionprops(lab), key=lambda q: q.area).label
     else:
@@ -130,6 +169,8 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
             raise SystemExit(f"--seed {sx},{sy} is not on the mask — "
                              "check it lies inside the island, in source pixels")
         m = lab == k
+    if keep is not None:
+        m = m | keep
     # disk(close), not a close x close box: the box is far weaker, and a gap
     # left in the coast band means fill_holes cannot close the interior at all
     # — the island comes out as a ring rather than a shape.
@@ -630,6 +671,11 @@ def main():
     ap.add_argument("--minpart", type=int, default=900)
     ap.add_argument("--solidity", type=float, default=0.75,
                     help="plate mode: small parts below this are lettering")
+    ap.add_argument("--drop-parts", dest="drop_parts",
+                    help="indices of satellites to discard, as printed by a previous "
+                         "run — for pieces the georeference lands on real ground")
+    ap.add_argument("--satellites", help="MIN,MAX component area in px — also keep "
+                    "the chart's smaller islands, as extra parts of the same feature")
     ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
                     "want, when it is not the largest one sharing the wash")
     ap.add_argument("--turn", type=float, default=0.0,
@@ -641,6 +687,8 @@ def main():
     a = ap.parse_args()
     a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
     a.seed = tuple(int(v) for v in a.seed.split(",")) if a.seed else None
+    a.satellites = tuple(int(v) for v in a.satellites.split(",")) if a.satellites else None
+    a.drop_parts = tuple(int(v) for v in a.drop_parts.split(",")) if a.drop_parts else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
     if "plate" in chart:
@@ -666,20 +714,31 @@ def main():
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed)
-    ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
-                               a.tolerance)
-    if len(ring) > 3 and (ring[0] == ring[-1]).all():
-        ring = ring[:-1]
-
-    pts = [[round(v, 4) for v in to_lonlat(p, K, c + ox, r + oy)] for r, c in ring]
-    # d3-geo reads polygons spherically: wound the wrong way, the island renders
-    # as the whole planet except itself.
-    area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
-               pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
-    if area > 0:
-        pts = pts[::-1]
-    pts.append(pts[0])
+                          a.seed, a.satellites)
+    rings = []
+    for ring in component_rings(mask, a.tolerance):
+        pass
+    kept = []
+    for idx, ring in enumerate(component_rings(mask, a.tolerance)):
+        q = [[round(v, 4) for v in to_lonlat(p, K, c + ox, r + oy)] for r, c in ring]
+        # d3-geo reads polygons spherically: wound the wrong way, the island
+        # renders as the whole planet except itself.
+        area = sum(q[i][0] * q[(i + 1) % len(q)][1] -
+                   q[(i + 1) % len(q)][0] * q[i][1] for i in range(len(q)))
+        if area > 0:
+            q = q[::-1]
+        q.append(q[0])
+        clon = sum(v[0] for v in q[:-1]) / (len(q) - 1)
+        clat = sum(v[1] for v in q[:-1]) / (len(q) - 1)
+        kept.append((idx, q, clon, clat))
+    dropped = set(a.drop_parts or ())
+    if a.satellites:
+        print("  satellites:")
+        for idx, q, clon, clat in kept[1:]:
+            mark = "  DROPPED" if idx in dropped else ""
+            print(f"     [{idx:2}] {clon:8.2f}, {clat:6.2f}{mark}")
+    rings = [q for idx, q, _, _ in kept if idx not in dropped]
+    pts = rings[0]
 
     ys, xs = np.nonzero(mask)
     clon, clat = to_lonlat(p, K, (xs.min() + xs.max()) / 2 + ox,
@@ -716,7 +775,12 @@ def main():
                            "turned_deg": a.turn or None,
                            "scaled_by": a.scale if a.scale != 1.0 else None,
                            "size_km": [round(km_w), round(km_h)]},
-            "geometry": {"type": "Polygon", "coordinates": [pts]}}
+            "geometry": ({"type": "Polygon", "coordinates": [pts]} if len(rings) == 1
+                         else {"type": "MultiPolygon",
+                               "coordinates": [[r] for r in rings]})}
+    if len(rings) > 1:
+        feat["properties"]["parts"] = len(rings)
+        print(f"  parts      {len(rings)} (main island plus {len(rings)-1} satellites)")
     if a.dry_run:
         print("\n(dry run — nothing written)")
         return

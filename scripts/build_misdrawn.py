@@ -14,7 +14,12 @@ is already sea there and widening would eat mainland Mexico.
 
 Writes public/data/misdrawn.geojson, which map.ts uses to mask the land layer.
 """
-import json, os
+import json, math, os
+
+import numpy as np
+from scipy.ndimage import distance_transform_edt
+from skimage.draw import polygon as draw_polygon
+from skimage.measure import approximate_polygon, find_contours
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
@@ -24,7 +29,8 @@ OUT = os.path.join(ROOT, "public", "data", "misdrawn.geojson")
 SPEC = {
     "californie": dict(mainland="californie-mainland",
                        gulf_mouth_lat=22.6,
-                       north_open=(-127.5, 44.6)),
+                       north_open=(-127.5, 44.6),
+                       grow_km=70.0),
 }
 
 
@@ -39,6 +45,40 @@ def wind_cw(ring):
     if area > 0:
         r = r[::-1]
     return r + [r[0]]
+
+
+def footprint(parts, km, step=0.02):
+    """The island's own area, grown a little, as the region to cut out.
+
+    Grown because the real coast is not the charted one: leave the footprint
+    at exactly the traced outline and small real islands survive just outside
+    it — Cedros, the Channel Islands, specks of Baja's shore — and sit there
+    in dark grey under the phantom. Done on a raster, because offsetting a
+    coastline vertex by vertex self-intersects on every concave bay and leaves
+    unerased shards stranded in the new sea.
+    """
+    lons = [p[0] for q in parts for p in q]
+    lats = [p[1] for q in parts for p in q]
+    pad = km / 100.0 + 1.0
+    lo0, lo1 = min(lons) - pad * 1.6, max(lons) + pad * 1.6
+    la0, la1 = min(lats) - pad, max(lats) + pad
+    nx = int((lo1 - lo0) / step) + 1
+    ny = int((la1 - la0) / step) + 1
+    grid = np.zeros((ny, nx), bool)
+    for q in parts:
+        rr, cc = draw_polygon([(p[1] - la0) / step for p in q],
+                              [(p[0] - lo0) / step for p in q], grid.shape)
+        grid[rr, cc] = True
+    lat0 = (la0 + la1) / 2
+    dist = distance_transform_edt(
+        ~grid, sampling=(111.0 * step, 111.32 * math.cos(math.radians(lat0)) * step))
+    mask = grid | (dist <= km)
+    out = []
+    for c in find_contours(mask.astype(float), 0.5):
+        c = approximate_polygon(c, 1.5)
+        if len(c) >= 4:
+            out.append(wind_cw([[lo0 + x * step, la0 + y * step] for y, x in c]))
+    return out
 
 
 def flank(ring, side):
@@ -96,14 +136,18 @@ for iid, spec in SPEC.items():
     if not (os.path.exists(src) and os.path.exists(mnl)):
         print(f"  {iid}: needs both {iid}.geojson and {spec['mainland']}.geojson")
         continue
-    island = json.load(open(src, encoding="utf-8"))["geometry"]["coordinates"][0]
+    g = json.load(open(src, encoding="utf-8"))["geometry"]
+    parts = ([p[0] for p in g["coordinates"]] if g["type"] == "MultiPolygon"
+             else [g["coordinates"][0]])
+    main = max(parts, key=len)
     mainland = json.load(open(mnl, encoding="utf-8"))["geometry"]["coordinates"][0]
-    ch = strait(island, mainland, spec)
+
+    rings = footprint(parts, spec["grow_km"]) + [strait(main, mainland, spec)]
     feats.append({"type": "Feature",
                   "properties": {"id": iid, "part": "erase"},
                   "geometry": {"type": "MultiPolygon",
-                               "coordinates": [[wind_cw(island)], [ch]]}})
-    print(f"  {iid}: island {len(island)} pts + strait {len(ch)} pts")
+                               "coordinates": [[r] for r in rings]}})
+    print(f"  {iid}: {len(parts)} island part(s) -> {len(rings)} erase ring(s)")
 
 json.dump({"type": "FeatureCollection", "features": feats},
           open(OUT, "w", encoding="utf-8"))

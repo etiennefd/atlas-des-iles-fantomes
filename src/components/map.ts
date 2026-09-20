@@ -357,18 +357,34 @@ export async function mount(cfg: Cfg) {
     }
   }
 
+  // Point-in-shape first. Proximity alone is wrong for a big island: a radius
+  // round the centroid either misses most of California or, if widened to
+  // cover it, claims a slab of open Pacific and the fake sea as well. Small
+  // blobs still need the proximity fallback — at world zoom they are a couple
+  // of pixels across and nobody can point at them.
+  function inShape(mx: number, my: number): string | null {
+    // gRoot carries translate(offX,offY) scale(k), so undoing it is all that
+    // stands between viewBox coordinates and the paths' own user space.
+    const pt = svg.createSVGPoint();
+    pt.x = (mx - offX) / k;
+    pt.y = (my - offY) / k;
+    for (let i = feats.length - 1; i >= 0; i--) {
+      const id = feats[i].properties.id as string;
+      const el = shapes.get(id);
+      if (el && el.isPointInFill(pt)) return id;
+    }
+    return null;
+  }
+
   function nearest(mx: number, my: number): string | null {
+    const hit = inShape(mx, my);
+    if (hit) return hit;
     if (!delaunay) return null;
     const i = delaunay.find(mx, my);
     if (i == null || i < 0) return null;
     const a = anchors[i];
     const d = Math.hypot(a.x * k + offX - mx, a.y * k + offY - my);
-    // A fixed radius round the centroid is fine for a blob and useless for
-    // California, which is 2200 km long: most of the island was not hoverable
-    // and the target felt arbitrary. Reach out to the island's own apparent
-    // size where that is bigger.
-    const reach = Math.max(CUTOFF, a.sizePx * k * 0.6);
-    return d <= reach ? a.id : null;
+    return d <= CUTOFF ? a.id : null;
   }
 
   function pointerPos(e: PointerEvent | MouseEvent) {
