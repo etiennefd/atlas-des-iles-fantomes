@@ -2,9 +2,41 @@ name_fr: "L’île de Californie"
 name_en: "The Island of California"
 kind: misdrawn
 ocean: pacifique-nord
-coords: [-114.0, 28.0]
+coords: [-116.65, 32.8]
 span: [1510, 1747]
 coords_confidence: approximate
 coords_note: >-
   Baja California drawn as an island. Ferdinand VII’s 1747 decree
   conventionally ends it.
+  The position is not chosen but derived: the island IS real land, so its own
+  headlands have modern coordinates, and Vinckeboons names them along the
+  coast he draws. Eight landmarks — Cape Blanco, Drakes Bay, Monterey, the
+  Santa Barbara Channel, Bahía Magdalena, Cabo San Lucas, plus Culiacán and
+  Compostela on the mainland — fit a similarity to RMS 127 km, putting the
+  centre at [-116.65, 32.80] and the island at 22.5-42.1 N, essentially on the
+  real coast, which is correct. Supersedes [-114.0, 28.0], a point chosen for
+  a placeholder blob.
+  The -15.6 degree chart rotation is real, not absorbed error: it holds
+  between -15.6 and -17.5 across three different landmark subsets. A plane
+  chart oriented on magnetic north.
+outline_note: >-
+  Traced from Joan Vinckeboons' chart of California as an island, c. 1650
+  (Library of Congress), at 8359 x 5800. `--mode green`: the wash is pale and
+  the sheet is covered in rhumb lines, so `dark` is useless — the line network
+  scores higher than the land does.
+  TWO LANDMASSES SHARE THE WASH. Vinckeboons paints the American mainland the
+  same green, and the mainland is the larger of the two, so "largest
+  component" quietly traces the wrong continent. `--seed 3500,1500` names the
+  island instead. The mainland is traced separately, as
+  `californie-mainland.geojson`, and is not an island — it supplies the far
+  shore of the strait.
+  16 parts: the main island plus 15 of the satellites Vinckeboons scatters
+  down the Santa Barbara Channel and through the Gulf. Two more were dropped
+  (`--drop-parts 8,9`): the fit lands them 200 km inland in Arizona, where
+  their erase buffer punched white holes in the real continent.
+  THIS ISLAND IS RENDERED BY REPLACING THE BASEMAP, not by drawing over it —
+  see scripts/build_misdrawn.py and the `misdrawn` notes in CLAUDE.md. The
+  atlas simply does not carry the real California. Roughly 900 km of the
+  strait's northern shore exists on no chart at all, and is a real coastline
+  borrowed from Oregon rather than invented; that is recorded in
+  src/data/borrowed/oregon.json.

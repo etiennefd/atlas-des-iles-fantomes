@@ -37,7 +37,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `buss` | −25.0, 57.0 | Charted between Ireland and Frisland at about 57°N. |
 | `antillia` | −45.0, 32.0 | Pizzigano chart, 1424: far west of Portugal, with Satanazes just north. |
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
-| `californie` | −114.0, 28.0 | Baja drawn as an island. Placeholder is a blob; the real shape should be the long N–S sliver. |
+| `californie` | −116.65, 32.8 | Derived, not chosen: the island is real land, so its own headlands have modern positions and Vinckeboons names them. Eight landmarks fit to RMS 127 km. Traced from Vinckeboons c. 1650, 16 parts. Was −114.0, 28.0, a point for a placeholder blob. |
 | `coree` | 127.5, 37.0 | Korea as an island on 16th–17th century European charts. |
 | `tuanaki` | −158.0, −23.5 | South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks proposed as a remnant. |
 | `kianida` | 29.62, 42.13 | Georeferenced from the Ulm 1482 sheet, not estimated: eleven coastal city dots from Histria round to Perinthus fit a similarity transform to RMS 35 km, and the island lies inside the ring they enclose. About 130 km off the Bulgarian coast, east of Burgas. Was 33.0, 43.5 — a guess, some 300 km ENE of where the map draws it. |

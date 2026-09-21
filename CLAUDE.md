@@ -93,14 +93,14 @@ Filename is the id. `kind` drives rendering:
 - `island` — a polygon, or a MultiPolygon where the source draws the island's
   satellites too (`frisland` has 23 parts)
 - `reef` — a Point; a small dot, filled even at rest, always haloed
-- `misdrawn` — a *real place wrongly charted* (Corée, Californie). **Currently
-  rendered exactly like `island`**, at rest and on hover. It used to be
-  outline-only so the true coastline showed through underneath, which was the
-  clearest visual statement of the project's thesis — but every island is an
-  outline at rest now, and Étienne has explicitly suspended the question:
-  *"The misdrawn category I haven't decided what to do with yet, so don't make
-  any design choices."* Don't invent a treatment. The open question is that
-  hover fills them opaquely, hiding the real coastline they exist to show.
+- `misdrawn` — a *real place wrongly charted* (Corée, Californie). **The
+  basemap is replaced where its chart disagreed**, permanently, not on hover:
+  the atlas simply does not carry the real California. Étienne, September
+  2026: *"we won't see the real California ever. This is fine, we don't
+  really care about the real land on this map."* Once the basemap is cut, a
+  misdrawn island needs no special styling at all — outline at rest, burgundy
+  on hover, like every other phantom. See **Replacing the basemap** below.
+  That supersedes the older suspension of the question.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
 with `coords_note` recording provenance. **Ten islands are `conjectural`** —
@@ -132,6 +132,61 @@ the hedging is the content.
 `draft: true` keeps the notice and images live while leaving the island
 `planned` on the map. Used for partial drafts (currently `nakanotorishima`,
 `nimrod`).
+
+### Replacing the basemap, for `misdrawn` islands
+
+A misdrawn island is not an invention, it is real land drawn wrong, so showing
+what its chart claimed means **removing the real coastline there**. Two things
+took a while to understand and are worth not rediscovering.
+
+**Erasing the island's own footprint is not enough.** Baja is land in both
+readings; the claim is that the *isthmus is a strait*. So water has to be
+opened east of the phantom coast as well, or nothing has changed. The pieces:
+
+```sh
+python3 scripts/build_misdrawn.py      # -> public/data/misdrawn.geojson
+```
+
+It writes two rings per island — the island's footprint, grown a little, and
+the strait — and `map.ts` cuts the land layer with an SVG `<mask>` built from
+them. A mask rather than painting water over the top, because paint would also
+cover the island outlines and halos that fall inside the region.
+
+**The strait is built as a ring**, not as a region to subtract: the island's
+east shore going south, across the mouth of the Gulf, then the chart's own
+mainland coast coming back north. Carving only that plus the footprint leaves
+the real mainland *real* — its coast east of the channel is the genuine one,
+with no seam where a patch would have ended.
+
+**Grow the footprint** (70 km for Californie) or small real islands survive
+just outside the traced outline — Cedros, the Channel Islands, specks of
+Baja's shore — and sit in dark grey under the phantom. Do it on a raster: a
+vertex-by-vertex offset self-intersects on every concave bay and leaves
+unerased shards stranded in the new sea.
+
+**Where no chart reaches, borrow a coastline.** Californie's strait has to
+meet the real Oregon coast and no chart of the island goes there — Vinckeboons
+and the 1650 French sheet stop near 41.4 N, Senex runs his off the plate. That
+is ~900 km with no source, and a smooth arc across it looks exactly like what
+it is. `scripts/borrow_coast.mjs` lifts a real stretch out of Natural Earth
+and `build_misdrawn.py` lays its *roughness* along a path of our choosing. It
+is a fabrication either way; this one is at least made of coastline, and it is
+committed as data with its own provenance in `src/data/borrowed/`.
+
+Three traps, all paid for:
+
+- **Stop following the chart's mainland before its head.** Vinckeboons bends
+  that coast east to −111.5, so carrying it to the top opened a 370 km swathe
+  of water across the north and a bay that served nothing. Above
+  `mainland_to_lat` the shore is a collar offset from the island instead.
+- **Orient an outward offset by testing the polygon, not by pointing away from
+  the centroid.** On a 2200 km island the centroid is hundreds of km south of
+  the northern tip, so "away from the centroid" sends the whole collar due
+  north and the strait came out 1300 km wide.
+- **De-mean a borrowed coastline before using it.** The Oregon stretch bulges
+  one way by up to 108 km with a 44 km bias; laid raw against a 200 km collar
+  it pushes the shore clean across the strait and folds the ring inside out.
+  Take the roughness, not the bend.
 
 ### Island states, resolved in `lib/atlas.ts`
 
@@ -286,6 +341,21 @@ will actually be written — rotating about the wrong origin is a 20-40 km error
 enough to ground a large island.
 
 `preview_island.mjs` always dots the land overlap, which is why it exists.
+
+Three flags on `trace_outline.py` earn a mention, all added for Californie and
+all general:
+
+- `--seed x,y` names which landmass you want, in source pixels, when it is not
+  the largest one sharing a wash. Vinckeboons paints the phantom island and
+  the American mainland the same green and the mainland is bigger, so the
+  default quietly traces the wrong continent.
+- `--satellites MIN,MAX` keeps the chart's smaller islands as extra parts of
+  the same feature — a phantom archipelago is more interesting than a phantom
+  blob. Components touching the crop edge are skipped, being clipped mainland
+  rather than islands.
+- `--drop-parts i,j` discards satellites the georeference lands on real
+  ground. Every part's centroid is printed so the choice is auditable. Two of
+  Vinckeboons' Gulf islands come out 200 km inland in Arizona.
 
 ### The steps
 
@@ -561,8 +631,10 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 10 attested, 14 approximate, 10 conjectural
-- 7 traced outlines, 27 placeholder blobs; 8 chart records in
+- 8 traced outlines, 26 placeholder blobs; 9 chart records in
   `scripts/charts/`
+- `californie` replaces the basemap rather than drawing over it — the only
+  island that does, so far
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
@@ -601,12 +673,11 @@ output `dist`, no adapter (static). Nothing to configure.
    edited on the blog, re-run rather than hand-patching.
 2. **Trace real outlines** — see *Adding an island*. Seven done: `antillia`,
    `bermeja`, `nakanotorishima`, `frisland`, `kianida`, `hy-brasil`,
-   `groclant`. Next best candidates are
-   `californie` (a long N–S sliver) and `coree` (a peninsula), the two
-   remaining where a placeholder blob actively misleads. Both are `misdrawn`,
-   and Étienne has flagged that they will want the fictional outline to
-   *replace* the real land rather than sit on top of it — that mechanism does
-   not exist yet and is a separate piece of work from tracing them.
+   `groclant`, `californie`. **`coree` is the last one where a placeholder
+   blob actively misleads**, and the mechanism it needs now exists — see
+   *Replacing the basemap*. It will want its own chart, its own erase region,
+   and probably no borrowed coast, being a peninsula rather than a 2000 km
+   island.
    Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
@@ -620,9 +691,14 @@ output `dist`, no adapter (static). Nothing to configure.
 
 ## Open questions
 
-- **How `misdrawn` should render.** Suspended by Étienne in September 2026;
-  they draw as ordinary islands meanwhile. The specific problem: hover fills
-  them opaquely, which hides the real coastline they exist to show against.
+- **Whether the real land should ghost through in pale grey at rest**, hidden
+  on hover, so the disagreement can be seen. Étienne raised it in September
+  2026 and has not decided. Arguments made at the time: it inverts the hover
+  convention, which everywhere else *adds* rather than removes; it only
+  applies to two islands out of thirty-four, so it is discoverable by
+  accident; it needs a fifth value in a four-value palette; and at world zoom
+  it is invisible. Alternatives floated were ghosting *on* hover instead, or
+  putting the comparison on the story page inset rather than the globe.
 - **The map's resting weight.** Every island is now an unfilled outline, by
   decision — the map is a chart of coastlines rather than a field of shapes,
   and at world zoom nothing is solid. That was the answer to the older
