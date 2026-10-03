@@ -38,7 +38,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `antillia` | −45.0, 32.0 | Pizzigano chart, 1424: far west of Portugal, with Satanazes just north. |
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
 | `californie` | −116.65, 32.8 | Derived, not chosen: the island is real land, so its own headlands have modern positions and Vinckeboons names them. Eight landmarks fit to RMS 127 km. Traced from Vinckeboons c. 1650, 16 parts. Was −114.0, 28.0, a point for a placeholder blob. |
-| `coree` | 127.5, 37.0 | Korea as an island on 16th–17th century European charts. |
+| `coree` | 127.52, 37.64 | Derived, not chosen, as for Californie: six landmarks round Korea (Tsushima, Hirado, Gotō, Kagoshima Bay, Cape Sata, the Ningbo coast) fit Hondius' copy of Teixeira 1595 to RMS 35 km. The island lands at 33.1–42.4 N, about a degree south of the real peninsula. 4 parts. Was 127.5, 37.0, a point for a placeholder blob. |
 | `tuanaki` | −158.0, −23.5 | South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks proposed as a remnant. |
 | `kianida` | 29.62, 42.13 | Georeferenced from the Ulm 1482 sheet, not estimated: eleven coastal city dots from Histria round to Perinthus fit a similarity transform to RMS 35 km, and the island lies inside the ring they enclose. About 130 km off the Bulgarian coast, east of Burgas. Was 33.0, 43.5 — a guess, some 300 km ENE of where the map draws it. |
 | `groclant` | −67.75, 73.95 | Ortelius 1570, fitted on twelve landmarks to RMS 208 km, puts it at −58.6, 77.5 — on northern Greenland and Ellesmere. **Moved into Baffin Bay by hand**, turned −32.5° and reduced to 91%, because nothing at the chart's bearing fits above 75% and nothing at full size fits between −60° and +45°. Anticlockwise is the cheap direction. Was −45.0, 72.0, a guess entirely inside the ice sheet. |
@@ -82,7 +82,8 @@ work when one island is inland from every ocean.
 **Three of the placeholder blobs are misleading in shape**, not just position:
 `californie` should be a long N–S sliver, `coree` a peninsula-shaped mass,
 and `frisland` the distinctive Zeno lozenge. Those three would repay tracing
-first, because their shapes carry the argument.
+first, because their shapes carry the argument. All three are now traced; Corée
+came out a thin island rather than a peninsula, which is the point of it.
 
 ---
 

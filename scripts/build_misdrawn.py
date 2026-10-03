@@ -35,6 +35,14 @@ SPEC = {
                        rough=0.35,
                        borrow="oregon",
                        grow_km=70.0),
+    # Korea needs no strait built from the chart: Teixeira runs the island off
+    # the top of the frame and draws no mainland coast to cut against. The
+    # real peninsula is erased whole instead — it is exactly North plus South
+    # Korea — so the new shore is the Yalu–Tumen border, grown a few km to
+    # swallow the slivers where the country outlines sit inside land-50m's
+    # coast. Only the island's north tip, which pokes ~90 km into China,
+    # needs the footprint to open water round it.
+    "coree": dict(countries="korea", country_grow_km=6.0, grow_km=30.0),
 }
 
 
@@ -51,7 +59,7 @@ def wind_cw(ring):
     return r + [r[0]]
 
 
-def footprint(parts, km, step=0.02):
+def footprint(parts, km, step=0.02, also=()):
     """The island's own area, grown a little, as the region to cut out.
 
     Grown because the real coast is not the charted one: leave the footprint
@@ -61,22 +69,25 @@ def footprint(parts, km, step=0.02):
     coastline vertex by vertex self-intersects on every concave bay and leaves
     unerased shards stranded in the new sea.
     """
-    lons = [p[0] for q in parts for p in q]
-    lats = [p[1] for q in parts for p in q]
-    pad = km / 100.0 + 1.0
+    groups = [(parts, km)] + list(also)
+    lons = [p[0] for g, _ in groups for q in g for p in q]
+    lats = [p[1] for g, _ in groups for q in g for p in q]
+    pad = max(k for _, k in groups) / 100.0 + 1.0
     lo0, lo1 = min(lons) - pad * 1.6, max(lons) + pad * 1.6
     la0, la1 = min(lats) - pad, max(lats) + pad
     nx = int((lo1 - lo0) / step) + 1
     ny = int((la1 - la0) / step) + 1
-    grid = np.zeros((ny, nx), bool)
-    for q in parts:
-        rr, cc = draw_polygon([(p[1] - la0) / step for p in q],
-                              [(p[0] - lo0) / step for p in q], grid.shape)
-        grid[rr, cc] = True
     lat0 = (la0 + la1) / 2
-    dist = distance_transform_edt(
-        ~grid, sampling=(111.0 * step, 111.32 * math.cos(math.radians(lat0)) * step))
-    mask = grid | (dist <= km)
+    mask = np.zeros((ny, nx), bool)
+    for rings, grow in groups:
+        grid = np.zeros((ny, nx), bool)
+        for q in rings:
+            rr, cc = draw_polygon([(p[1] - la0) / step for p in q],
+                                  [(p[0] - lo0) / step for p in q], grid.shape)
+            grid[rr, cc] = True
+        dist = distance_transform_edt(
+            ~grid, sampling=(111.0 * step, 111.32 * math.cos(math.radians(lat0)) * step))
+        mask |= grid | (dist <= grow)
     out = []
     for c in find_contours(mask.astype(float), 0.5):
         c = approximate_polygon(c, 1.5)
@@ -280,17 +291,26 @@ def strait(island, mainland, spec):
 feats = []
 for iid, spec in SPEC.items():
     src = os.path.join(ROOT, "src", "data", "outlines", f"{iid}.geojson")
-    mnl = os.path.join(ROOT, "src", "data", "outlines", f"{spec['mainland']}.geojson")
-    if not (os.path.exists(src) and os.path.exists(mnl)):
-        print(f"  {iid}: needs both {iid}.geojson and {spec['mainland']}.geojson")
+    if not os.path.exists(src):
+        print(f"  {iid}: needs {iid}.geojson")
         continue
     g = json.load(open(src, encoding="utf-8"))["geometry"]
     parts = ([p[0] for p in g["coordinates"]] if g["type"] == "MultiPolygon"
              else [g["coordinates"][0]])
-    main = max(parts, key=len)
-    mainland = json.load(open(mnl, encoding="utf-8"))["geometry"]["coordinates"][0]
-
-    rings = footprint(parts, spec["grow_km"]) + [strait(main, mainland, spec)]
+    if "countries" in spec:
+        cty = json.load(open(os.path.join(ROOT, "src", "data", "borrowed",
+                                          spec["countries"] + ".json"), encoding="utf-8"))
+        outer = [p[0] for p in cty["coordinates"]]
+        rings = footprint(parts, spec["grow_km"],
+                          also=[(outer, spec["country_grow_km"])])
+    else:
+        mnl = os.path.join(ROOT, "src", "data", "outlines", f"{spec['mainland']}.geojson")
+        if not os.path.exists(mnl):
+            print(f"  {iid}: needs {spec['mainland']}.geojson")
+            continue
+        main = max(parts, key=len)
+        mainland = json.load(open(mnl, encoding="utf-8"))["geometry"]["coordinates"][0]
+        rings = footprint(parts, spec["grow_km"]) + [strait(main, mainland, spec)]
     feats.append({"type": "Feature",
                   "properties": {"id": iid, "part": "erase"},
                   "geometry": {"type": "MultiPolygon",

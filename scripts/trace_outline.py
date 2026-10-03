@@ -109,14 +109,20 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # A neatline running close to the coast is a hole-closing bridge
         # waiting to happen: close the two together and the fill floods the
         # water between them. Paint the rule out first, in source pixels.
+        # Lettering that crosses the coast walls part of the island off from
+        # an ink flood: "Punta dos ladronas" on Corea's tail breaks it into
+        # dozens of pockets between the strokes. A box does the same job there.
         img = img.convert("RGB")
-        img.paste((255, 255, 255), (0, blank[0], img.width, blank[1]))
+        for bx0, by0, bx1, by1 in blank:
+            img.paste((255, 255, 255), (bx0, by0, bx1 or img.width, by1))
     x0, y0 = (bbox[0], bbox[1]) if bbox else (0, 0)
     if bbox:
         img = img.crop(tuple(bbox))
     if upsample > 1:
         img = img.resize((img.width * upsample, img.height * upsample), Image.LANCZOS)
     a = np.asarray(img.convert("RGB")).astype(int)
+    if mode == "ink":
+        return ink_mask(a, thr, close, seed, (x0, y0)), (x0, y0)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
@@ -163,7 +169,7 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # island and the American mainland the same green, and the mainland is
         # the bigger of the two, so "largest component" quietly traces the
         # wrong continent. --seed names a pixel inside the one you want.
-        sx, sy = seed
+        sx, sy = seed[0]
         k = lab[sy - y0, sx - x0]
         if not k:
             raise SystemExit(f"--seed {sx},{sy} is not on the mask — "
@@ -187,6 +193,35 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
             if q.area < despeckle:
                 m[lab2 == q.label] = False
     return m, (x0, y0)
+
+
+def ink_mask(a, thr, close, seeds, origin):
+    """Flood the island outward from points inside it, stopped by the inked
+    coastline.
+
+    For a hand-coloured engraving where colour cannot separate land from sea.
+    Hondius washes Corea pale green and then tints every coast's sea band
+    blue-green as well, so no hue mode reaches even one sigma. What does
+    separate them is that the coast is one continuous engraved line, while
+    the island's interior is smooth wash. Rivers, lettering and town symbols
+    inside are ink too, but holes are filled afterwards, and a river that
+    cuts a peninsula off needs a seed of its own (Corij, on Corea's tail).
+    """
+    if not seeds:
+        raise SystemExit("--mode ink needs --seed: a point inside each piece")
+    ox, oy = origin
+    gray = a.mean(axis=2)
+    ink = binary_closing_sk(gray < thr, disk(2))
+    start = np.zeros_like(ink)
+    for sx, sy in seeds:
+        if ink[sy - oy, sx - ox]:
+            raise SystemExit(f"--seed {sx},{sy} is on ink — move it into the wash")
+        start[sy - oy, sx - ox] = True
+    m = binary_propagation(start, mask=~ink)
+    if m.mean() > 0.6:
+        raise SystemExit("the flood leaked into the sea — a gap in the coast "
+                         "line; raise --threshold")
+    return binary_fill_holes(binary_closing_sk(m, disk(close)))
 
 
 def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
@@ -622,7 +657,9 @@ def main():
     ap.add_argument("island")
     ap.add_argument("--chart", required=True, help="scripts/charts/<name>.json")
     ap.add_argument("--image", required=True, help="local copy of the chart raster")
-    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark"))
+    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink"),
+                    help="ink: flood from --seed, stopped by the engraved coast; "
+                         "--threshold is then the grey level below which a pixel is ink")
     ap.add_argument("--threshold", type=float, default=45.0)
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--open", type=int, default=0, dest="open_r",
@@ -648,6 +685,10 @@ def main():
                     help="y0,y1 band of the source to paint out before "
                          "thresholding — use for a neatline the coast runs "
                          "close enough to that closing would bridge them")
+    ap.add_argument("--blank-box", dest="blank_box",
+                    help="x0,y0,x1,y1 box(es) of the source to paint out, "
+                         "separated by ';' — for lettering written across a "
+                         "coast. Keep the box off the coastline itself.")
     ap.add_argument("--despeckle", type=int, default=0,
                     help="drop opening-residue blobs under N px: survey "
                          "stations drawn on the coast, not headlands")
@@ -677,7 +718,8 @@ def main():
     ap.add_argument("--satellites", help="MIN,MAX component area in px — also keep "
                     "the chart's smaller islands, as extra parts of the same feature")
     ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
-                    "want, when it is not the largest one sharing the wash")
+                    "want, when it is not the largest one sharing the wash. "
+                    "--mode ink takes several, separated by ';'")
     ap.add_argument("--turn", type=float, default=0.0,
                     help="degrees to rotate the island about its own centre, "
                          "clockwise. A liberty — record why in coords_note.")
@@ -685,8 +727,15 @@ def main():
                     help="resize the island about its own centre. Also a liberty.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
-    a.blank = [int(v) for v in a.blank.split(",")] if a.blank else None
-    a.seed = tuple(int(v) for v in a.seed.split(",")) if a.seed else None
+    if a.blank:
+        by0, by1 = (int(v) for v in a.blank.split(","))
+        a.blank = [(0, by0, None, by1)]          # whole rows
+    else:
+        a.blank = []
+    if a.blank_box:
+        a.blank += [tuple(int(v) for v in b.split(",")) for b in a.blank_box.split(";")]
+    a.seed = ([tuple(int(v) for v in s.split(",")) for s in a.seed.split(";")]
+              if a.seed else None)
     a.satellites = tuple(int(v) for v in a.satellites.split(",")) if a.satellites else None
     a.drop_parts = tuple(int(v) for v in a.drop_parts.split(",")) if a.drop_parts else None
 

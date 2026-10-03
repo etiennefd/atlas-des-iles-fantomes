@@ -2,9 +2,57 @@ name_fr: "La Corée"
 name_en: "Korea"
 kind: misdrawn
 ocean: pacifique-nord
-coords: [127.5, 37.0]
+coords: [127.52, 37.64]
 span: [1568, 1700]
 coords_confidence: approximate
 coords_note: >-
   Korea depicted as an island on European charts of the 16th-17th
   centuries.
+  The position is derived, not chosen, as for Californie: the island is real
+  land drawn wrong, so the chart is georeferenced on the real places around
+  it. Six landmarks — Tsushima (Ceuxima), Hirado (Firando), the largest of
+  the Gotō islands, the head of Kagoshima Bay, Cape Sata and the Ningbo coast
+  (Liampo) — fit a similarity to RMS 35 km at 0.217 km/px, rotation -3.3
+  degrees, putting the island at 33.1-42.4 N and its three islets just below,
+  centre [127.52, 37.64]. The real peninsula runs 34.3-43.0 N, so Teixeira's
+  Korea sits about a degree south of it, reaching down past Jeju. Supersedes [127.5, 37.0], a point
+  chosen for a placeholder blob.
+  All six landmarks lie south of Korea, so the north end is extrapolated about
+  900 km. It agrees with the chart's own latitude ladder to within a degree
+  (the fit puts Hondius' 30 and 35 marks at 30.6 and 35.8) and moves under
+  0.3 degrees across landmark subsets. Rejected landmarks, with reasons, are in
+  scripts/charts/hondius-iaponia.json.
+outline_note: >-
+  Shape: Luís Teixeira, 'Iaponiae Insulae Descriptio', published by Ortelius
+  in 1595 — the first printed European map of Japan and the model that put
+  Korea on European maps as an island ('Corea Insula') for sixty years.
+  Traced from Jodocus Hondius' re-engraving of it (Mercator–Hondius atlas;
+  Commons impression c. 1619) at 12101 x 9659, because the Ortelius scan
+  gives the island only ~270 x 1080 px against ~1230 x 4850 here. Chosen in
+  October 2026 over Blaeu 1635 and over Linschoten's round island of 1596,
+  the plate that illustrates the story.
+  `--mode ink`: no colour separates the island — Hondius washes it pale green
+  and tints the sea along every coast blue-green too — so it is flooded from
+  seeds inside it and stopped by the engraved coastline. `--closing 16`, not
+  8: at 8 the three rivers on the east coast came out as long inlets. The
+  lettering 'Punta dos ladronas' crosses the coast at the tail and walls the
+  tip off from the flood, so it is painted out with `--blank-box` first.
+  THE NORTH END IS THE FRAME. Teixeira runs the island straight through the
+  top border; Hondius caps it with a small round end inside the degree band.
+  The flood stops at the inner neatline, so the end shown is the frame's,
+  and Hondius' cap (~16 km) is not included. Nobody drew where this island
+  ends.
+  Four parts: the island plus the three islets Hondius labels 'Ilhas dos
+  ladrones' off the tail, each seeded by hand (Étienne, October 2026: keep
+  the islets). They land at about 33.0 N, roughly where the real Jeju was. The
+  smallest comes out as only its pale core, ~3 km across.
+  THIS ISLAND IS RENDERED BY REPLACING THE BASEMAP, like Californie, but the
+  erase region is built differently: the whole real peninsula — North plus
+  South Korea from Natural Earth 50m, lifted into src/data/borrowed/korea.json
+  — plus the island's own footprint grown 30 km. The new mainland shore is
+  therefore the real Yalu–Tumen border, except round the island's north tip,
+  which pokes ~90 km into China and is cleared by the footprint — 30 km,
+  chosen by Étienne over 60 and 100. That bay's shore is a smooth offset of
+  the island, the one invented coastline here, ~200 km long. Jeju and
+  Ulleungdo go with the peninsula; Tsushima, which the chart draws as
+  Ceuxima, stays.

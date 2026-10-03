@@ -173,8 +173,25 @@ and `build_misdrawn.py` lays its *roughness* along a path of our choosing. It
 is a fabrication either way; this one is at least made of coastline, and it is
 committed as data with its own provenance in `src/data/borrowed/`.
 
-Three traps, all paid for:
+**Where the chart draws no mainland, erase the real country.** Korea is the
+second case and the opposite one: Teixeira runs the island straight off the top
+of his frame and draws no continent to cut a strait against. But the claim is
+plain — the real peninsula is not there — and the real peninsula is exactly
+North plus South Korea. `scripts/lift_country.mjs korea -- 408 410` lifts them
+from `countries-50m` into `src/data/borrowed/korea.json`, and a spec with
+`countries=` erases them grown 6 km, plus the island's footprint grown 30 km.
+The new mainland shore is then the real Yalu–Tumen border, which is where a
+strait would have had to run; only the island's north tip, poking ~90 km into
+China, gets an invented shore. No borrowed coast was needed.
 
+Four traps, all paid for:
+
+- **The land and country layers disagree on islets.** Baengnyeong-do is in
+  `land-50m` and in no country of `countries-50m`, so erasing South Korea left
+  it standing alone in the new Yellow Sea. `lift_country.mjs` now takes any
+  land polygon no country covers whose nearest country is one being lifted.
+  Check by testing every land polygon near the region against the erase rings;
+  a render at world zoom does not show a 59 km² island.
 - **Stop following the chart's mainland before its head.** Vinckeboons bends
   that coast east to −111.5, so carrying it to the top opened a 370 km swathe
   of water across the north and a bay that served nothing. Above
@@ -262,9 +279,9 @@ earth.
 
 ## Adding an island
 
-Done seven times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
-`kianida`, `hy-brasil`, `groclant`. Read
-this before the eighth — it is written so Étienne does not have to explain the
+Done nine times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+`kianida`, `hy-brasil`, `groclant`, `californie`, `coree`. Read
+this before the tenth — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -388,7 +405,7 @@ all general:
    add by hand is stripped before a CSS transition finishes — set
    `style.transition = 'none'` and read the value in the same tick.
 
-### The four worked examples
+### The worked examples
 
 ```sh
 # Antillia — a flat colour wash on a portolan, squared bays
@@ -434,6 +451,13 @@ python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
     --tolerance 1.5 --bbox 980,100,1800,740 \
     --turn -32.5 --scale 0.91 --centre=-67.75,73.95
 
+# Corée — no colour separates it, so flood from inside, stopped by the coast
+python3 scripts/trace_outline.py coree --chart hondius-iaponia \
+    --image ~/scratch/charts/coree-iaponia-1619.jpg \
+    --mode ink --threshold 130 --closing 16 --tolerance 3 \
+    --bbox 3100,560,4600,6300 --blank-box 3598,5465,3668,5698 \
+    --seed "3700,2500;3600,5300;3630,5600;3719,5737;3598,5779;3730,5814"
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -441,7 +465,7 @@ node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
-**Four extraction modes, because charts differ.** A flat colour wash
+**Five extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
 A *violet* wash needs `--mode magenta`, which is `(R+B)/2 - G`: the Catalan
 Atlas draws its sea in blue hatching exactly as dark as the wash and its rhumb
@@ -452,6 +476,19 @@ neither `dark` nor `red` separates Brasil at all, while magenta clears both at
 An outlined coast round a pale interior (Canepa) needs `--mode dark` to catch
 the ink band, which is then closed and filled — the interior is the same
 parchment as the ocean, so it cannot be selected directly.
+
+A **hand-coloured engraving** can defeat every hue mode at once. Hondius washes
+Corea pale green and then tints the sea along every coast blue-green too, so
+nothing scored above d-prime 0.5. `--mode ink` floods outward from `--seed`
+points inside the island and stops at the engraved coastline, which is
+continuous where the sea's stipple and hatching are not. Three things to know.
+A river drawn from the coast is ink too, and the flood runs up it as a long
+inlet unless `--closing` is wider than the river (16 on Corea; at 8 three
+rivers came out as inlets). A town symbol or a river that cuts off a peninsula
+needs a seed of its own, and so does every islet you want kept. And lettering
+written *across* a coast walls off whatever lies beyond it, broken into dozens
+of pockets between the strokes that no number of seeds will collect — paint it
+out with `--blank-box`, keeping the box clear of the coastline itself.
 
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
 so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
@@ -631,10 +668,9 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 10 attested, 14 approximate, 10 conjectural
-- 8 traced outlines, 26 placeholder blobs; 9 chart records in
+- 9 traced outlines, 25 placeholder blobs; 10 chart records in
   `scripts/charts/`
-- `californie` replaces the basemap rather than drawing over it — the only
-  island that does, so far
+- `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
@@ -645,7 +681,9 @@ output `dist`, no adapter (static). Nothing to configure.
   sketch — see below), `kianida` (Ulm 1482, fully georeferenced from the
   sheet's landmarks), `hy-brasil` (Catalan Atlas 1375 — a circle, 0.992 aspect
   and 3.5% out of round, which is the point of that island) and `groclant`
-  (Ortelius 1570, on a fitted polar projection, then moved into Baffin Bay)
+  (Ortelius 1570, on a fitted polar projection, then moved into Baffin Bay),
+  `californie` (Vinckeboons c. 1650) and `coree` (Teixeira 1595, traced from
+  Hondius' re-engraving; the real Korea is erased whole)
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
@@ -671,14 +709,10 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Seven done: `antillia`,
+2. **Trace real outlines** — see *Adding an island*. Nine done: `antillia`,
    `bermeja`, `nakanotorishima`, `frisland`, `kianida`, `hy-brasil`,
-   `groclant`, `californie`. **`coree` is the last one where a placeholder
-   blob actively misleads**, and the mechanism it needs now exists — see
-   *Replacing the basemap*. It will want its own chart, its own erase region,
-   and probably no borrowed coast, being a peninsula rather than a 2000 km
-   island.
-   Everything else can stay a blob indefinitely; an island nobody agreed on
+   `groclant`, `californie`, `coree`. No placeholder blob now actively
+   misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.

@@ -1,0 +1,16 @@
+{
+  "name": "Jodocus Hondius, Iaponia, after Luís Teixeira (Mercator–Hondius atlas, first 1606; this impression c. 1619)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Iaponia.jpg",
+  "licence": "public domain (17th century)",
+  "note": "12101x9659. Hondius' re-engraving of Teixeira's map of Japan, published by Ortelius in 1595 — the model that put Korea on European maps as an island, 'Corea Insula', and was copied for sixty years until Martini restored the peninsula in 1655. Teixeira's shape is the source; this impression is used because it is four to five times the resolution of the available Ortelius scan (Corea ~1230 x 4850 px against ~270 x 1080), and because Hondius closes the island's north end with a small cap inside the degree band, where Teixeira runs it straight through the frame. Hondius also engraves on the island itself that whether it is an island or part of the continent is not yet established. Chosen in October 2026 over Blaeu 1635 (a different, later and less copied model) and Linschoten 1596 (the round island illustrating the story).",
+  "extraction_note": "No hue mode separates the island: it is washed pale green and the sea along every coast is tinted blue-green as well (best d-prime 0.5). `--mode ink` floods from seeds inside the island, stopped by the engraved coastline. The river at Corij cuts the tail off, so it needs its own seed. The flood stops at the inner neatline, so Hondius' cap in the degree band (~80 px, ~16 km) is not included.",
+  "landmarks": [
+    {"name": "Ceuxima (Tsushima)", "x": 4656, "y": 5033, "lon": 129.33, "lat": 34.42},
+    {"name": "Firando (Hirado)", "x": 4870, "y": 5410, "lon": 129.50, "lat": 33.33},
+    {"name": "Goto (largest drawn)", "x": 4364, "y": 5905, "lon": 128.85, "lat": 32.75},
+    {"name": "Kagoshima Bay head", "x": 5440, "y": 6450, "lon": 130.73, "lat": 31.72},
+    {"name": "Cape Sata", "x": 5600, "y": 6830, "lon": 130.66, "lat": 31.00},
+    {"name": "Liampo (Ningbo coast)", "x": 1690, "y": 7400, "lon": 121.72, "lat": 29.95}
+  ],
+  "landmarks_note": "All south of Korea, so its north end is extrapolated about 900 km. Two candidates rejected: the islet labelled 'Ogoto' gives a 121 km residual where the largest island of the same group gives 49, so the label sits by a minor islet; and Sado pulls the fit to RMS 79 km and +4 degrees of rotation, because Teixeira's Honshu runs east-west and everything on it is displaced. Check against the latitude ladder: the fit puts Hondius' 30 and 35 marks at 30.6 and 35.8."
+}
