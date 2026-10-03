@@ -79,10 +79,14 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
   meant not to be — for an island that never existed, the invention drawn in
   detail by its inventor is a better source than anyone else's copy of it.
 - **An island's shape comes from the most famous or influential depiction**,
-  not the earliest, and *not* the plate that happens to illustrate its story —
-  those were picked as illustrations and Étienne does not endorse them as
-  sources. For Antillia the two coincided anyway: Pizzigano 1424 is both first
-  and the one everyone copied. Where they differ, influence wins.
+  not the earliest. For Antillia the two coincided anyway: Pizzigano 1424 is
+  both first and the one everyone copied. Where they differ, influence wins.
+  The plate that illustrates the story is a candidate like any other, often a
+  strong one — but not the default: it was picked as an illustration, not
+  vetted as a source, so it goes in the line-up with the others. An earlier
+  version of this note said "*not* the story's plate", and that was read as
+  excluding it; Étienne, October 2026: "the map included in the story is a
+  strong candidate."
 
 ## Data model
 
