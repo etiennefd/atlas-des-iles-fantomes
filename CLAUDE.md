@@ -283,9 +283,9 @@ earth.
 
 ## Adding an island
 
-Done nine times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
-`kianida`, `hy-brasil`, `groclant`, `californie`, `coree`. Read
-this before the tenth — it is written so Étienne does not have to explain the
+Done ten times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+`kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`. Read
+this before the eleventh — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -447,6 +447,13 @@ python3 scripts/trace_outline.py hy-brasil --chart catalan-atlas \
     --mode magenta --threshold 7 --smooth 16 --closing 20 \
     --tolerance 1.5 --bbox 1450,620,1960,1150 \
     --height-km 73 --centre=-15.0,51.5
+
+# Mayda — gold leaf on the same panel; yellow is blue --bright
+python3 scripts/trace_outline.py mayda --chart catalan-atlas \
+    --image ~/scratch/charts/catalan-f6-mayda.jpg \
+    --mode blue --bright --threshold=-40 --smooth 3 --closing 5 \
+    --tolerance 1.5 --bbox 200,50,850,650 \
+    --height-km 59.6 --centre=-20.0,47.0
 
 # Groclant — a polar projection, and an island moved because it hit real land
 python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
@@ -672,7 +679,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 10 attested, 14 approximate, 10 conjectural
-- 9 traced outlines, 25 placeholder blobs; 10 chart records in
+- 10 traced outlines, 24 placeholder blobs; 10 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -687,7 +694,8 @@ output `dist`, no adapter (static). Nothing to configure.
   and 3.5% out of round, which is the point of that island) and `groclant`
   (Ortelius 1570, on a fitted polar projection, then moved into Baffin Bay),
   `californie` (Vinckeboons c. 1650) and `coree` (Teixeira 1595, traced from
-  Hondius' re-engraving; the real Korea is erased whole)
+  Hondius' re-engraving; the real Korea is erased whole) and `mayda` (the
+  gilded crescent "Insula de mam" on the Catalan Atlas, Hy-Brasil's panel)
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
@@ -713,9 +721,9 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Nine done: `antillia`,
+2. **Trace real outlines** — see *Adding an island*. Ten done: `antillia`,
    `bermeja`, `nakanotorishima`, `frisland`, `kianida`, `hy-brasil`,
-   `groclant`, `californie`, `coree`. No placeholder blob now actively
+   `groclant`, `californie`, `coree`, `mayda`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano

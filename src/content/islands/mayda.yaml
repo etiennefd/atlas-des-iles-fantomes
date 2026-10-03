@@ -8,3 +8,31 @@ coords_confidence: approximate
 coords_note: >-
   Babcock: open Atlantic far west of lower Brittany, SW of Ireland, c.
   46-48 deg N. Position migrated westward over time.
+  Kept deliberately when the shape was traced from the Catalan Atlas, as for
+  Hy-Brasil from the same panel. Read on its own the panel is weakly
+  determined here: Ireland is the only real land near, its edge is cut by the
+  panel border, and anchoring on Ireland's south-west tip or on Brasil gives
+  answers 3 degrees apart (about [-13.4, 49.5] and [-16.5, 48.3]). Wyld's
+  1869 Atlantic telegraph chart, the story's plate and the island's last
+  appearance, marks "Mayda?" with a cross at about [-18.3, 46.3]. Both
+  readings sit within the scatter that makes this position approximate, and
+  neither is reason to overturn it.
+outline_note: >-
+  Traced from the Catalan Atlas of 1375 (BnF, Espagnol 30), sheet f6, where it
+  is labelled "Insula de mam" — "Mam" being one of Mayda's names. A gilded
+  crescent, the shape Mayda keeps through two centuries of portolans, already
+  a crescent as "Brazir" on Pizzigano 1367. Chosen by Étienne in October 2026
+  over Pizzigano 1367 (the first appearance, but only in Jomard's 1849
+  facsimile, ~45 px), Mercator 1569 (a shapeless islet "Maida", with
+  "Vlaenderen" drawn separately), Blaeu 1649 ("As Maydas", a blob) and Wyld
+  1869 (a cross).
+  Raster: Gallica IIIF, region 3400,6100,1100,1000 of f6 at native size.
+  `--mode blue --bright` (yellow): gold against blue wave hatching, d-prime
+  3.4. No plateau — the extent grows from 290 to 307 px between thresholds
+  -50 and -31 because the gold fades into a brown shadow wash along the
+  concave side. -40 sits on the gold's edge: -50 notches where the gold has
+  flaked, -31 starts taking the shadow, which is up to 30 px thick at the
+  lower horn and is sea, not land. Two small nicks on the concave shore are
+  flaked gold rather than drawn bays, ~2-3 km each, left as traced.
+  Size from the panel's own scale, 0.2013 km/px fitted on four Canaries (see
+  scripts/charts/catalan-atlas.json): 296 px tall, so 59.6 km, 61 x 60 km.
