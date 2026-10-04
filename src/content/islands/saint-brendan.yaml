@@ -2,9 +2,33 @@ name_fr: "L’île de Saint-Brendan"
 name_en: "Saint Brendan’s Island"
 kind: island
 ocean: atlantique-nord
-coords: [-25.0, 30.0]
-span: [null, 1759]
-coords_confidence: conjectural
+coords: [-28.68, 52.12]
+coords_confidence: approximate
 coords_note: >-
-  Position wandered constantly across a millennium of charts. Verify
-  against whichever depiction the story uses.
+  The northern Saint-Brendan: the island of the Navigatio as the printed
+  atlases carried it, in the open Atlantic west of Ireland. Split from the
+  Canarian San Borondón (`san-borondon`) in October 2026; this entry keeps
+  the slug and the story, which is about the Irish monk. Was [-25.0, 30.0]
+  and conjectural — a compromise between the two traditions that belonged to
+  neither — with a span of [?, 1759] that was San Borondón's and moved there.
+  NO SPAN for now: when the northern island stopped being charted has not
+  been researched, and a guess would sit on every hover.
+  Position read off Mercator's own graticule. Latitude from the one-degree
+  ladder on the meridian bar beside the island (52.12 N); longitude by holding
+  the graticule's scale and fitting only the offset on eight points of
+  Ireland, Wales and Cornwall (s.d. 0.54 degrees; Irish towns land within
+  20-70 km). That gives [-28.68, 52.12], some 1300 km west of Ireland. It is
+  one chart's position for an island whose position wandered, so
+  approximate rather than attested.
+outline_note: >-
+  Traced from Gerard Mercator's world map of 1569, sheet 4 ('S. Brandain'),
+  10930 x 8370 TIF, the most influential printed depiction of this tradition
+  — Ortelius copied it. Chosen by Étienne in October 2026 over Honorius
+  Philoponus 1621 (the whale engraving, an illustration with no scale or
+  position) and Delisle 1707 (the Canarian island, now `san-borondon`).
+  `--mode dark --threshold 155 --smooth 2`: a dark engraved shape on a
+  stippled sea. Below ~145 the rhumb lines that touch the north-west coast
+  are taken in as spurs; 145-160 the extent holds (203 x 144 to 198 x 142).
+  `--despeckle 60` drops an 8 km spur where a rhumb line touches the
+  north-east coast (54 px) and a few specks of a few px; nothing else moves.
+  Size from the graticule, 0.825 km/px at 52 N: 164 x 116 km.

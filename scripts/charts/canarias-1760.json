@@ -1,0 +1,18 @@
+{
+  "name": "Plan de las Afortunadas Islas del Reyno de Canarias, manuscript, c. 1760 (Ministerio de Defensa, Ar.G-T.4-C.1-2)",
+  "holding": "Archivo Cartográfico y de Estudios Geográficos del Centro Geográfico del Ejército, Madrid",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Ar.Gbis-T.4-C.1_2_(2).jpg",
+  "licence": "CC BY-SA 4.0 (Ministerio de Defensa, via Wikimedia Commons)",
+  "note": "8425x6062. A manuscript chart of the whole archipelago that adds San Borondón ('S. Borondon') west of La Palma and El Hierro, drawn in the same brown wash and relief hatching as the real islands, at the same scale. Its title matches Pedro Agustín del Castillo's well-known 1686 map of the Canaries and it may be a copy of it; that is not established, so it is cited here as an anonymous chart of c. 1760 (the catalogue date). Chosen in October 2026 for the Canarian San Borondón over Delisle 1707 (the story's plate: a 35 px blob, 'en ce parage quelques auteurs ont placé…'), because it is the only depiction of the Canarian island with a drawn shape at a traceable size, and because every real Canary is on the sheet to georeference it.",
+  "landmarks_note": "Centroids of the seven real islands, segmented from their wash (dark > 110 at 1/4 scale, opened with disk 7 to drop rhumb lines and lettering). They fit a similarity to RMS 14 km at 0.0731 km/px with a +9.5 degree rotation — a chart oriented on magnetic north, which in the Canaries in the 18th century was some 10-15 degrees west of true. The western five alone give +5.0 degrees and RMS 12 km, and move San Borondón by 17 km. San Borondón is 1350 px west of La Palma, inside the surveyed region rather than beyond it, so this is not the Antillia mistake.",
+  "extraction_note": "A paper fold runs across the lower third of San Borondón and has scuffed the wash along it. Above threshold ~140 the fold cuts the island and the largest-component step silently drops the southern part, leaving a straight chord along the crease — the same signature as a rhumb line. At 130 the island crosses the fold but keeps a notch where the paint is gone; --closing 30 bridges it, adding 490 px (0.3%), all of it within the island's own outline.",
+  "landmarks": [
+    {"name": "La Palma", "x": 2044, "y": 2137, "lon": -17.86, "lat": 28.67},
+    {"name": "El Hierro", "x": 1811, "y": 3161, "lon": -18.02, "lat": 27.73},
+    {"name": "La Gomera", "x": 2823, "y": 2920, "lon": -17.23, "lat": 28.10},
+    {"name": "Tenerife", "x": 3858, "y": 2728, "lon": -16.62, "lat": 28.29},
+    {"name": "Gran Canaria", "x": 4766, "y": 3204, "lon": -15.60, "lat": 27.96},
+    {"name": "Fuerteventura", "x": 7310, "y": 3205, "lon": -14.01, "lat": 28.40},
+    {"name": "Lanzarote", "x": 7834, "y": 2368, "lon": -13.63, "lat": 29.04}
+  ]
+}

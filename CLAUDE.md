@@ -107,7 +107,7 @@ Filename is the id. `kind` drives rendering:
   That supersedes the older suspension of the question.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
-with `coords_note` recording provenance. **Ten islands are `conjectural`** —
+with `coords_note` recording provenance. **Nine islands are `conjectural`** —
 positions I inferred from context. Don't silently "correct" them; flag
 uncertainty to Étienne rather than guessing harder. Full table in
 `COORDINATES.md`.
@@ -283,9 +283,9 @@ earth.
 
 ## Adding an island
 
-Done ten times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
-`kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`. Read
-this before the eleventh — it is written so Étienne does not have to explain the
+Done twelve times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+`kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
+`saint-brendan`, `san-borondon`. Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -455,6 +455,21 @@ python3 scripts/trace_outline.py mayda --chart catalan-atlas \
     --tolerance 1.5 --bbox 200,50,850,650 \
     --height-km 59.6 --centre=-20.0,47.0
 
+# Saint-Brendan — Mercator's projection: latitude and scale off his own
+# degree ladder, longitude offset from Ireland (see the chart JSON)
+python3 scripts/trace_outline.py saint-brendan --chart mercator-1569 \
+    --image ~/scratch/charts/merc-1569-s04.jpg \
+    --mode dark --threshold 155 --smooth 2 --closing 5 --despeckle 60 \
+    --tolerance 1.5 --bbox 4580,6540,4900,6820 \
+    --height-km 116.4 --centre=-28.68,52.12
+
+# San Borondón — every real Canary on the sheet, so fully georeferenced;
+# a paper fold crosses the island and needs --closing 30 to bridge
+python3 scripts/trace_outline.py san-borondon --chart canarias-1760 \
+    --image ~/scratch/charts/sb-canarias-1760.jpg \
+    --mode dark --threshold 130 --smooth 6 --open 9 --closing 30 \
+    --tolerance 2 --bbox 180,2300,720,3300
+
 # Groclant — a polar projection, and an island moved because it hit real land
 python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
     --image ~/scratch/charts/ortelius-north.jpg \
@@ -616,7 +631,9 @@ diffing against the mask you approved, not by eye.
 are holes in the colour wash and must be filled.
 
 **A line drawn across an island truncates it, and the result looks like a
-coastline.** This has now cost time on two charts running — a green rhumb line
+coastline.** A paper fold does the same (San Borondón, where the crease
+scuffed the wash: above threshold ~140 the southern third vanished behind a
+straight chord on the fold). This has now cost time on two charts running — a green rhumb line
 over Brasil on the Catalan Atlas, the graticule over Groclandt on Ortelius —
 with an identical signature both times. The line depresses the score along its
 path, the mask splits, the largest-component step silently discards the
@@ -678,11 +695,11 @@ interesting object than a clickable index.
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
-- 34 islands with coordinates; 10 attested, 14 approximate, 10 conjectural
-- 10 traced outlines, 24 placeholder blobs; 10 chart records in
+- 35 islands with coordinates; 11 attested, 15 approximate, 9 conjectural
+- 12 traced outlines, 23 placeholder blobs; 12 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
-- **31 of 34 written in French** — all 28 blog posts imported verbatim,
+- **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - English has only `hy-brasil`, so 30 islands sit in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
@@ -695,7 +712,16 @@ output `dist`, no adapter (static). Nothing to configure.
   (Ortelius 1570, on a fitted polar projection, then moved into Baffin Bay),
   `californie` (Vinckeboons c. 1650) and `coree` (Teixeira 1595, traced from
   Hondius' re-engraving; the real Korea is erased whole) and `mayda` (the
-  gilded crescent "Insula de mam" on the Catalan Atlas, Hy-Brasil's panel)
+  gilded crescent "Insula de mam" on the Catalan Atlas, Hy-Brasil's panel),
+  `saint-brendan` (Mercator 1569, placed on his own graticule west of
+  Ireland) and `san-borondon` (a c. 1760 Canaries chart, georeferenced on
+  the seven real islands)
+- **Saint Brendan's island is two entries**, split in October 2026: the
+  northern island of the printed atlases (`saint-brendan`, which keeps the
+  slug and the story about the monk) and the Canarian San Borondón
+  (`san-borondon`, no story yet — Étienne may write one). Same name, two
+  traditions, 2,700 km apart. `saint-brendan` has no span until someone
+  researches when the northern island left the charts.
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
@@ -721,9 +747,10 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Ten done: `antillia`,
-   `bermeja`, `nakanotorishima`, `frisland`, `kianida`, `hy-brasil`,
-   `groclant`, `californie`, `coree`, `mayda`. No placeholder blob now actively
+2. **Trace real outlines** — see *Adding an island*. Twelve done:
+   `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
+   `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
+   `san-borondon`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano

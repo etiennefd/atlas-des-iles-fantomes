@@ -48,7 +48,8 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 
 | id | position | reasoning |
 |---|---|---|
-| `saint-brendan` | −25.0, 30.0 | Wandered constantly for a millennium. Pick whichever depiction your story uses. |
+| `saint-brendan` | −28.68, 52.12 | The northern island, from Mercator 1569: latitude off his degree ladder, longitude offset fitted on Ireland. Approximate — one chart's reading of an island that wandered. Was −25.0, 30.0, conjectural, a compromise between two traditions. |
+| `san-borondon` | −19.01, 27.91 | The Canarian island, split from `saint-brendan` in October 2026. Georeferenced on all seven real Canaries of a c. 1760 chart (RMS 14 km): about 85 km west of El Hierro. |
 | `bacalao` | −52.0, 47.5 | Terra dos Bacalhaus, Newfoundland region. Highly variable. |
 | `ile-des-demons` | −55.5, 51.5 | Usually off the northern tip of Newfoundland, near Quirpon. Often conflated with Satanazes. |
 | `thule` | −19.0, 64.0 | Pytheas, c. 330 BCE. Variously Iceland, Norway, Shetland. Placed on Iceland here. |
