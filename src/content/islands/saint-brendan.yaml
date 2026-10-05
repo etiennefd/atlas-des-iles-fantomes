@@ -2,33 +2,39 @@ name_fr: "L’île de Saint-Brendan"
 name_en: "Saint Brendan’s Island"
 kind: island
 ocean: atlantique-nord
-coords: [-28.68, 52.12]
-coords_confidence: approximate
+coords: [-19.01, 27.91]
+span: [null, 1759]
+coords_confidence: attested
 coords_note: >-
-  The northern Saint-Brendan: the island of the Navigatio as the printed
-  atlases carried it, in the open Atlantic west of Ireland. Split from the
-  Canarian San Borondón (`san-borondon`) in October 2026; this entry keeps
-  the slug and the story, which is about the Irish monk. Was [-25.0, 30.0]
-  and conjectural — a compromise between the two traditions that belonged to
-  neither — with a span of [?, 1759] that was San Borondón's and moved there.
-  NO SPAN for now: when the northern island stopped being charted has not
-  been researched, and a guess would sit on every hover.
-  Position read off Mercator's own graticule. Latitude from the one-degree
-  ladder on the meridian bar beside the island (52.12 N); longitude by holding
-  the graticule's scale and fitting only the offset on eight points of
-  Ireland, Wales and Cornwall (s.d. 0.54 degrees; Irish towns land within
-  20-70 km). That gives [-28.68, 52.12], some 1300 km west of Ireland. It is
-  one chart's position for an island whose position wandered, so
-  approximate rather than attested.
+  Placed where the Canaries looked for it: San Borondón, the "eighth Canary",
+  seen on the western horizon from La Palma, La Gomera and El Hierro, assigned
+  to the archipelago by the Treaty of Alcáçovas in 1479 as an island still to
+  be won, and sought by expeditions until 1721. The span ends with the 1759
+  sighting.
+  One island, not two. Brendan's legend was localised in the Canaries rather
+  than borrowed by them, and the medieval maps already put the saint's
+  island among the Fortunate Isles. Mercator 1569 and Ortelius moved it west
+  of Ireland, to about [-28.7, 52.1] read off Mercator's own graticule; for
+  two days in October 2026 that placement was a separate entry, until the
+  sources were checked and showed one wandering island. Étienne chose the
+  Canarian position as the correct one.
+  The position is derived, not chosen: the chart that gives the shape draws
+  every real Canary beside it. Seven island centroids fit a similarity to
+  RMS 14 km at 0.073 km/px, rotation +9.5 degrees (magnetic north), and put
+  the island at [-19.01, 27.91], about 85 km west of El Hierro and well
+  inside the surveyed region. The western five islands alone move it by
+  17 km. Was [-25.0, 30.0], conjectural, a point for a placeholder blob.
 outline_note: >-
-  Traced from Gerard Mercator's world map of 1569, sheet 4 ('S. Brandain'),
-  10930 x 8370 TIF, the most influential printed depiction of this tradition
-  — Ortelius copied it. Chosen by Étienne in October 2026 over Honorius
-  Philoponus 1621 (the whale engraving, an illustration with no scale or
-  position) and Delisle 1707 (the Canarian island, now `san-borondon`).
-  `--mode dark --threshold 155 --smooth 2`: a dark engraved shape on a
-  stippled sea. Below ~145 the rhumb lines that touch the north-west coast
-  are taken in as spurs; 145-160 the extent holds (203 x 144 to 198 x 142).
-  `--despeckle 60` drops an 8 km spur where a rhumb line touches the
-  north-east coast (54 px) and a few specks of a few px; nothing else moves.
-  Size from the graticule, 0.825 km/px at 52 N: 164 x 116 km.
+  Traced from 'Plan de las Afortunadas Islas del Reyno de Canarias', a
+  manuscript chart of c. 1760 (Ministerio de Defensa, Madrid), 8425 x 6062,
+  where 'S. Borondon' is drawn in the same brown wash and relief hatching as
+  the real islands. Its title matches Pedro Agustín del Castillo's 1686 map
+  and it may copy it; not established. Chosen in October 2026 over Mercator
+  1569 (the placement west of Ireland, rejected with it), Delisle 1707 (the
+  story's plate, a 35 px blob) and Honorius Philoponus 1621 (the whale
+  engraving, an illustration with no scale or position).
+  `--mode dark --threshold 130 --open 9 --closing 30`. A PAPER FOLD crosses
+  the lower third: above ~140 it cuts the island and the southern part is
+  silently dropped, leaving a straight chord on the crease. --closing 30
+  bridges the scuffed paint, adding 0.3% to the area, all inside the drawn
+  outline. 21 x 58 km.
