@@ -283,9 +283,9 @@ earth.
 
 ## Adding an island
 
-Done eleven times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twelve times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
-`saint-brendan`. Read this before the next — it is written so Étienne does not have to explain the
+`saint-brendan`, `buss`. Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -462,6 +462,14 @@ python3 scripts/trace_outline.py saint-brendan --chart canarias-1760 \
     --mode dark --threshold 130 --smooth 6 --open 9 --closing 30 \
     --tolerance 2 --bbox 180,2300,720,3300
 
+# Buss — bare paper both sides; the sea flooded in, walled by the coast band
+python3 scripts/trace_outline.py buss --chart seller-1670 \
+    --image ~/scratch/charts/buss-seller-1670-draught.jpg \
+    --mode density --threshold 0.35 --window 15 --open 30 --closing 120 \
+    --relief-box 200,700,1500,1850,120 --blank-box 2545,1420,3090,1760 \
+    --tolerance 3 --bbox 200,700,3250,2950 \
+    --height-km 165.0 --centre=-30.64,57.98
+
 # Groclant — a polar projection, and an island moved because it hit real land
 python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
     --image ~/scratch/charts/ortelius-north.jpg \
@@ -483,7 +491,7 @@ node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
-**Five extraction modes, because charts differ.** A flat colour wash
+**Six extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
 A *violet* wash needs `--mode magenta`, which is `(R+B)/2 - G`: the Catalan
 Atlas draws its sea in blue hatching exactly as dark as the wash and its rhumb
@@ -507,6 +515,19 @@ needs a seed of its own, and so does every islet you want kept. And lettering
 written *across* a coast walls off whatever lies beyond it, broken into dozens
 of pockets between the strokes that no number of seeds will collect — paint it
 out with `--blank-box`, keeping the box clear of the coastline itself.
+
+A **plate with no wash at all, in a toned facsimile** (Seller's Buss, from
+Lucas 1898) defeats both colour and the ink flood: the paper reads as dark as
+the island, and the relief hatching is too broken to wall a flood from
+inside. `--mode density` floods the *sea* in from the frame instead, walled
+by the coast band — Seller shades his shore as a thick hatched band, ink
+density > 0.35 over 15 px, which no single rhumb line reaches — plus a coarse
+core eroded well inside the island to stop leaks. The trap it replaced: a
+density threshold on its own needs a window wider than the inlets, and it
+filled every harbour the chart is known for. Relief drawn up to the shore has
+no band, so `--relief-box x0,y0,x1,y1,r` closes the hills' blank sunlit faces
+inside one box only. Its morphology runs at quarter scale; at full size a
+120 px closing on a 3000 px crop runs for minutes and was killed twice.
 
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
 so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
@@ -688,7 +709,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 14 approximate, 9 conjectural
-- 11 traced outlines, 23 placeholder blobs; 11 chart records in
+- 12 traced outlines, 22 placeholder blobs; 12 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -706,7 +727,8 @@ output `dist`, no adapter (static). Nothing to configure.
   Hondius' re-engraving; the real Korea is erased whole) and `mayda` (the
   gilded crescent "Insula de mam" on the Catalan Atlas, Hy-Brasil's panel)
   and `saint-brendan` (San Borondón, from a c. 1760 Canaries chart,
-  georeferenced on the seven real islands)
+  georeferenced on the seven real islands) and `buss` (Seller's 1670
+  draught, placed from his own 1673 chart)
 - **Saint Brendan's island is one entry, placed in the Canaries.** It was
   briefly split in October 2026 into Mercator's placement west of Ireland and
   the Canarian San Borondón, on the claim that they were two phantoms sharing
@@ -739,9 +761,10 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Eleven done:
+2. **Trace real outlines** — see *Adding an island*. Twelve done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
-   `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`. No placeholder blob now actively
+   `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
+   `buss`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano

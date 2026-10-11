@@ -2,9 +2,45 @@ name_fr: "L’île Buss"
 name_en: "Buss Island"
 kind: island
 ocean: atlantique-nord
-coords: [-25.0, 57.0]
+coords: [-30.64, 57.98]
 span: [1578, 1856]
 coords_confidence: approximate
 coords_note: >-
   Charted between Ireland and Frisland at about 57 deg N. Frobisher’s
   third expedition.
+  Position from John Seller's Chart of the Northerne Sea, 1673 — the same
+  hydrographer as the draught that gives the shape, so the two agree. Its
+  latitude ladder and ten points on Iceland, Ireland, Scotland and the
+  Scillies (fitted per axis; RMS ~40 km, Duncansby Head the outlier at 86)
+  put the centre at [-30.64, 57.98]; dropping Duncansby moves it to
+  [-31.15, 57.89]. The 1670 draught's own ladder gives 57.95 N, 4 km from
+  the 1673 reading. Supersedes [-25.0, 57.0], a point chosen for a
+  placeholder blob. One chart's longitude for an island charted for two
+  centuries, so approximate rather than attested.
+outline_note: >-
+  Traced from John Seller's 'A Draught of the Island Buss', 1670, the story's
+  plate, in the facsimile of Lucas 1898 (plate XVII), 3486 x 5420: the
+  island the Hudson's Bay Company took a grant of, with its harbours named
+  for the Company's investors. Chosen by Étienne in October 2026 over Seller
+  1673 (the same shape at ~520 x 330 px, used for position instead) and
+  Doncker's Pas-caerte (an unnamed blob).
+  A new mode, `--mode density`: land and sea are the same paper and the
+  facsimile is evenly toned, so neither colour nor an ink flood separates
+  them. The sea is flooded in from the frame, walled by Seller's thick
+  shaded coast band (ink density > 0.35 over 15 px — a rhumb line never gets
+  there) and by a coarse core well inside the island; land is what the sea
+  cannot reach. A first version thresholded density alone and filled every
+  inlet — Rupert's and Shaftesbury's harbours, Arlington's, Robinson Bay —
+  because the window was wider than they are. They are all kept now.
+  Liberties: the walruses off the east coast are painted out, since they
+  are engraved as densely as the hills. In the north-west the relief runs to
+  the shore with no coast band, and the flood ran into the hills' blank
+  sunlit faces; there, and only there, the outline is the hills' outer
+  silhouette, closed with a 120 px disk (60 and 90 still cut into the
+  faces) — 1.6% of the area. THE NORTH-WEST END IS THE FRAME: the island runs
+  into the left neatline. Seller 1673 draws it whole at width/height 1.44,
+  against 1.31 here, so roughly a tenth of its length is missing on this
+  plate. Shepherd's and Mundon's islands are not included.
+  Size from the plate's own scale bar, thirty English leagues (1.5 degrees,
+  166.7 km) over 2040 px, 0.0817 km/px, which the margin ladder confirms at
+  1360 px per degree: 217 x 165 km.

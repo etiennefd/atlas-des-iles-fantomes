@@ -34,7 +34,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `hy-brasil` | −15.0, 51.5 | West of Ireland. Position varied across five centuries of charts; there is no single right answer. |
 | `mayda` | −20.0, 47.0 | Babcock: open Atlantic far west of lower Brittany, roughly 46–48°N. Migrated westward over time toward Newfoundland and Bermuda. |
 | `frisland` | −25.0, 62.5 | Zeno map, 1558: south of Iceland. Reappeared off Labrador in 1630. |
-| `buss` | −25.0, 57.0 | Charted between Ireland and Frisland at about 57°N. |
+| `buss` | −30.64, 57.98 | From Seller's Chart of the Northerne Sea, 1673: latitude ladder plus ten points on Iceland, Ireland, Scotland and the Scillies (RMS ~40 km). His 1670 draught's own ladder agrees on latitude to 4 km. Was −25.0, 57.0, a placeholder. |
 | `antillia` | −45.0, 32.0 | Pizzigano chart, 1424: far west of Portugal, with Satanazes just north. |
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
 | `californie` | −116.65, 32.8 | Derived, not chosen: the island is real land, so its own headlands have modern positions and Vinckeboons names them. Eight landmarks fit to RMS 127 km. Traced from Vinckeboons c. 1650, 16 parts. Was −114.0, 28.0, a point for a placeholder blob. |

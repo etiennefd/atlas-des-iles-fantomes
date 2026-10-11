@@ -29,7 +29,7 @@ import argparse, json, math, os
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import (binary_closing, binary_dilation, binary_fill_holes,
+from scipy.ndimage import (binary_closing, binary_dilation, binary_erosion, binary_fill_holes,
                            binary_propagation, find_objects, gaussian_filter,
                            label as ndlabel, uniform_filter)
 from skimage.measure import approximate_polygon, find_contours, label, regionprops
@@ -101,7 +101,7 @@ def residuals(p, K, landmarks):
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
-                seed=None, satellites=None):
+                seed=None, satellites=None, window=41, relief=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -123,6 +123,8 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     a = np.asarray(img.convert("RGB")).astype(int)
     if mode == "ink":
         return ink_mask(a, thr, close, seed, (x0, y0)), (x0, y0)
+    if mode == "density":
+        return density_mask(a, thr, open_r, close, window, relief, (x0, y0)), (x0, y0)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
@@ -222,6 +224,60 @@ def ink_mask(a, thr, close, seeds, origin):
         raise SystemExit("the flood leaked into the sea — a gap in the coast "
                          "line; raise --threshold")
     return binary_fill_holes(binary_closing_sk(m, disk(close)))
+
+
+def density_mask(a, thr, open_r, close, window, relief, origin):
+    """Land is where the engraver cut, for a plate where land and sea are the
+    same bare paper.
+
+    Seller's Draught of the Island Buss has no wash, and in the Lucas
+    facsimile the paper is as dark as the island's interior (~150 both), so no
+    colour mode separates them; an ink flood from inside leaks through the
+    broken relief hatching. What separates them is *how much* is inked, used
+    twice:
+
+    - a coarse CORE — ink density > 0.12 over ~44 px, opened and closed, then
+      eroded `close` px — that sits well inside the coast and blocks leaks;
+    - the COAST BAND — ink density > `thr` over `window` px. Seller shades his
+      shore as a thick hatched band; a rhumb line is one stroke and never
+      reaches that density, so it does not wall anything.
+
+    The sea is flooded in from the crop's top, bottom and right edges (not the
+    left: the island runs into the neatline there), walled by band and core,
+    and land is what it cannot reach. That keeps every inlet the band draws —
+    a density window alone is wider than Rupert's Harbour and fills it.
+
+    Relief drawn right up to a shore has no band, and the flood runs into the
+    hills' blank sunlit faces. `relief` = (x0, y0, x1, y1, r) adds, inside that
+    box only, the coarse silhouette closed with a disk of radius r. Morphology
+    on that scale runs at quarter resolution; at full size it takes minutes.
+    """
+    ox, oy = origin
+    ink = a.mean(axis=2) < 80
+    q = 4
+    coarse = uniform_filter(ink[::q, ::q].astype(np.float32), 11) > 0.12
+    coarse = binary_opening(coarse, disk(max(open_r // q, 1)))
+    coarse = binary_fill_holes(binary_closing_sk(coarse, disk(10)))
+    lab = label(coarse)
+    coarse = lab == max(regionprops(lab), key=lambda r: r.area).label
+    up = lambda m: np.repeat(np.repeat(m, q, 0), q, 1)[:ink.shape[0], :ink.shape[1]]
+    core = up(binary_erosion(coarse, disk(close // q)))
+    band = uniform_filter(ink.astype(np.float32), window) > thr
+    free = ~(band | core)
+    start = np.zeros_like(free)
+    start[0, :], start[-1, :], start[:, -1] = free[0, :], free[-1, :], free[:, -1]
+    land = binary_fill_holes(~binary_propagation(start, mask=free))
+    land = binary_opening(land, disk(6))
+    lab = label(land)
+    land = lab == max(regionprops(lab), key=lambda r: r.area).label
+    if relief:
+        rx0, ry0, rx1, ry1, r = relief
+        p = r // q + 4
+        sil = binary_fill_holes(binary_closing_sk(np.pad(coarse, p), disk(r // q)))[p:-p, p:-p]
+        box = np.zeros_like(land)
+        box[max(ry0 - oy, 0):ry1 - oy, max(rx0 - ox, 0):rx1 - ox] = True
+        land = binary_fill_holes(land | (up(sil) & box))
+    return land
 
 
 def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
@@ -529,7 +585,7 @@ def polar(a, chart):
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                                  a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                                 a.seed)
+                                 a.seed, window=a.window, relief=a.relief)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -612,7 +668,7 @@ def manual(a, chart):
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                           a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed)
+                          a.seed, window=a.window, relief=a.relief)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -657,9 +713,16 @@ def main():
     ap.add_argument("island")
     ap.add_argument("--chart", required=True, help="scripts/charts/<name>.json")
     ap.add_argument("--image", required=True, help="local copy of the chart raster")
-    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink"),
+    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink", "density"),
                     help="ink: flood from --seed, stopped by the engraved coast; "
-                         "--threshold is then the grey level below which a pixel is ink")
+                         "--threshold is then the grey level below which a pixel is ink. "
+                         "density: the fraction of inked pixels in --window, for a "
+                         "plate where land and sea are the same bare paper")
+    ap.add_argument("--window", type=int, default=41,
+                    help="density mode: window side in px")
+    ap.add_argument("--relief-box", dest="relief",
+                    help="x0,y0,x1,y1,r — density mode: close the notches that relief "
+                         "drawn up to the shore leaves, inside this box only")
     ap.add_argument("--threshold", type=float, default=45.0)
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--open", type=int, default=0, dest="open_r",
@@ -737,6 +800,7 @@ def main():
     a.seed = ([tuple(int(v) for v in s.split(",")) for s in a.seed.split(";")]
               if a.seed else None)
     a.satellites = tuple(int(v) for v in a.satellites.split(",")) if a.satellites else None
+    a.relief = tuple(int(v) for v in a.relief.split(",")) if a.relief else None
     a.drop_parts = tuple(int(v) for v in a.drop_parts.split(",")) if a.drop_parts else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
@@ -763,7 +827,7 @@ def main():
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed, a.satellites)
+                          a.seed, a.satellites, window=a.window, relief=a.relief)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass
