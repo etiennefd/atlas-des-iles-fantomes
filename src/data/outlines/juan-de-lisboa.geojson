@@ -1,0 +1,128 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "juan-de-lisboa",
+  "traced_from": "Jan Huygen van Linschoten, engraved by Arnold Florent van Langren, Delineatio orarum maritimarum ... Madagascar (Itinerario, 1596)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:(Indian_Ocean)._Delineatio_Orarum_maritimarum,_Terra_vulgo_indigetata_Terra_do_Naral,_item_Sofale,_Mozambicae_..._Carte_d%27une_(IA_dr_indian-ocean-delineatio-orarum-maritimarum-terra-vulgo-indigetata-terra-12236010).jpg",
+  "georeference": {
+   "km_per_px": 0.648,
+   "chart_rotation_deg": -0.3,
+   "landmark_rms_km": 33,
+   "landmarks": 7
+  },
+  "centre": [
+   54.936,
+   -25.956
+  ],
+  "centre_from_chart": null,
+  "turned_deg": null,
+  "scaled_by": null,
+  "size_km": [
+   78,
+   44
+  ]
+ },
+ "geometry": {
+  "type": "Polygon",
+  "coordinates": [
+   [
+    [
+     54.885,
+     -26.1546
+    ],
+    [
+     54.8476,
+     -26.1544
+    ],
+    [
+     54.6735,
+     -26.1011
+    ],
+    [
+     54.565,
+     -26.0042
+    ],
+    [
+     54.5466,
+     -25.9516
+    ],
+    [
+     54.5843,
+     -25.8818
+    ],
+    [
+     54.5722,
+     -25.8233
+    ],
+    [
+     54.6067,
+     -25.7739
+    ],
+    [
+     54.7003,
+     -25.7568
+    ],
+    [
+     54.7812,
+     -25.7631
+    ],
+    [
+     54.8746,
+     -25.7869
+    ],
+    [
+     54.9491,
+     -25.8281
+    ],
+    [
+     55.055,
+     -25.8286
+    ],
+    [
+     55.1676,
+     -25.7591
+    ],
+    [
+     55.3197,
+     -25.8561
+    ],
+    [
+     55.3258,
+     -25.8737
+    ],
+    [
+     55.288,
+     -25.9435
+    ],
+    [
+     55.3127,
+     -25.9962
+    ],
+    [
+     55.2906,
+     -26.0515
+    ],
+    [
+     55.2095,
+     -26.0686
+    ],
+    [
+     55.1782,
+     -26.0977
+    ],
+    [
+     55.1095,
+     -26.1265
+    ],
+    [
+     55.0412,
+     -26.0853
+    ],
+    [
+     54.885,
+     -26.1546
+    ]
+   ]
+  ]
+ }
+}

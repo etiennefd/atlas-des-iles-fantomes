@@ -2,8 +2,27 @@ name_fr: "Juan de Lisboa"
 name_en: "Juan de Lisboa"
 kind: island
 ocean: indien
-coords: [55.0, -28.0]
+coords: [54.94, -25.96]
 span: [1600, 1800]
-coords_confidence: conjectural
+coords_confidence: approximate
 coords_note: >-
   Charted southeast of Madagascar on 17th-18th century maps.
+  Position read off Linschoten's chart of 1596, the story's plate, not
+  guessed: seven real places round the island — Réunion, Mauritius and
+  Rodrigues as the chart draws them, Madagascar's south tip, its south-east
+  corner at Fort-Dauphin, Cap Saint-André and the head of Antongil Bay — fit
+  a similarity to RMS ~55 km, and the island sits inside the ring they make,
+  about 550 km south of Réunion. The four nearest landmarks alone move it
+  under 0.2 degrees. Approximate rather than attested: one chart, for an
+  island charted for two centuries. Supersedes [55.0, -28.0], a conjectural
+  point for a placeholder blob — the chart puts it two degrees further north.
+outline_note: >-
+  Traced from Linschoten's 'Delineatio orarum maritimarum', engraved by van
+  Langren for the Itinerario, 1596 (David Rumsey scan, 11999 x 8646), where
+  'I. de Juan de Lixboa' is a small hatched islet ~120 x 60 px. Chosen by
+  Étienne in October 2026 over Van Keulen's Nieuwe Pascaert van Oost
+  Indien, c. 1680, which copies the same shape at half the size.
+  `--mode dark --smooth 2.5 --threshold 75 --open 6`: the smoothing turns
+  the hatching into a solid, and the opening strips the rhumb lines that
+  cross the island's east end. Size from the fit, 0.645 km/px: 78 x 44 km.
+  At ~120 px the shape is the engraver's quick outline, and reads as such.

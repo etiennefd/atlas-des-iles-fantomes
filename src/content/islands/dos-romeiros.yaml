@@ -2,8 +2,23 @@ name_fr: "Dos Romeiros"
 name_en: "Dos Romeiros"
 kind: island
 ocean: indien
-coords: [57.0, -26.0]
+coords: [68.67, -28.31]
 span: [1600, 1800]
-coords_confidence: conjectural
+coords_confidence: approximate
 coords_note: >-
-  Depicted alongside Juan de Lisboa. Relative position guessed.
+  Depicted alongside Juan de Lisboa.
+  Position read off the same chart and the same fit as Juan de Lisboa
+  (Linschoten 1596, seven landmarks, RMS ~55 km): far east of it, some
+  1450 km, about 950 km south-south-east of Rodrigues. Unlike Juan de
+  Lisboa it lies outside the ring of landmarks, ~1500 px south-east of
+  Rodrigues, so the fit is extrapolated there — modestly, and it moves under
+  0.2 degrees across landmark subsets. Supersedes [57.0, -26.0], whose
+  position relative to Juan de Lisboa was guessed entirely; the chart puts
+  it eleven degrees further east.
+outline_note: >-
+  Traced from Linschoten's chart of 1596, as for Juan de Lisboa, where it is
+  'Dos Romeyros dos Castelhanos', a hatched islet ~100 x 65 px.
+  `--mode dark --smooth 2.5 --threshold 75 --open 9`: a rhumb line runs
+  along the island's north-east shore and left a ~7 km spur at its
+  north-west corner at --open 6; 9 removes it and nothing else (85 px), 12
+  breaks the island apart. Size from the fit: 63 x 47 km.

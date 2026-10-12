@@ -107,7 +107,7 @@ Filename is the id. `kind` drives rendering:
   That supersedes the older suspension of the question.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
-with `coords_note` recording provenance. **Nine islands are `conjectural`** —
+with `coords_note` recording provenance. **Seven islands are `conjectural`** —
 positions I inferred from context. Don't silently "correct" them; flag
 uncertainty to Étienne rather than guessing harder. Full table in
 `COORDINATES.md`.
@@ -283,9 +283,9 @@ earth.
 
 ## Adding an island
 
-Done twelve times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done fourteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
-`saint-brendan`, `buss`. Read this before the next — it is written so Étienne does not have to explain the
+`saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`. Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -470,6 +470,17 @@ python3 scripts/trace_outline.py buss --chart seller-1670 \
     --blank-box "2545,1420,3090,1760;2780,2243,3150,2290" \
     --satellites 10000,40000 --tolerance 3 --bbox 200,700,3272,2950 \
     --height-km 165.0 --centre=-30.64,57.98
+
+# Juan de Lisboa and Dos Romeiros — hatched islets on one georeferenced
+# chart; smoothing makes the hatching solid, an opening strips rhumb lines
+python3 scripts/trace_outline.py juan-de-lisboa --chart linschoten-1596 \
+    --image ~/scratch/charts/jl-linschoten-rumsey.jpg \
+    --mode dark --threshold 75 --smooth 2.5 --open 6 --closing 6 \
+    --tolerance 1.5 --bbox 5560,6580,5760,6710
+python3 scripts/trace_outline.py dos-romeiros --chart linschoten-1596 \
+    --image ~/scratch/charts/jl-linschoten-rumsey.jpg \
+    --mode dark --threshold 75 --smooth 2.5 --open 9 --closing 6 \
+    --tolerance 1.5 --bbox 7780,6980,7980,7100
 
 # Groclant — a polar projection, and an island moved because it hit real land
 python3 scripts/trace_outline.py groclant --chart ortelius-1570 \
@@ -712,8 +723,8 @@ interesting object than a clickable index.
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
-- 34 islands with coordinates; 11 attested, 14 approximate, 9 conjectural
-- 12 traced outlines, 22 placeholder blobs; 12 chart records in
+- 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
+- 14 traced outlines, 20 placeholder blobs; 13 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -732,7 +743,9 @@ output `dist`, no adapter (static). Nothing to configure.
   gilded crescent "Insula de mam" on the Catalan Atlas, Hy-Brasil's panel)
   and `saint-brendan` (San Borondón, from a c. 1760 Canaries chart,
   georeferenced on the seven real islands) and `buss` (Seller's 1670
-  draught, placed from his own 1673 chart)
+  draught, placed from his own 1673 chart), and `juan-de-lisboa` and
+  `dos-romeiros` (both from Linschoten 1596, georeferenced on the Mascarenes
+  and Madagascar)
 - **Saint Brendan's island is one entry, placed in the Canaries.** It was
   briefly split in October 2026 into Mercator's placement west of Ireland and
   the Canarian San Borondón, on the claim that they were two phantoms sharing
@@ -765,10 +778,10 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Twelve done:
+2. **Trace real outlines** — see *Adding an island*. Fourteen done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
-   `buss`. No placeholder blob now actively
+   `buss`, `juan-de-lisboa`, `dos-romeiros`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano

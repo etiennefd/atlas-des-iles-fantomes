@@ -53,8 +53,8 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `ile-des-demons` | −55.5, 51.5 | Usually off the northern tip of Newfoundland, near Quirpon. Often conflated with Satanazes. |
 | `thule` | −19.0, 64.0 | Pytheas, c. 330 BCE. Variously Iceland, Norway, Shetland. Placed on Iceland here. |
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |
-| `juan-de-lisboa` | 55.0, −28.0 | SE of Madagascar on 17th–18th century charts. |
-| `dos-romeiros` | 57.0, −26.0 | Depicted alongside Juan de Lisboa; **relative position guessed entirely**. |
+| `juan-de-lisboa` | 54.94, −25.96 | From Linschoten 1596, fitted on Réunion, Mauritius, Rodrigues and four points of Madagascar (RMS ~55 km). Was 55.0, −28.0, conjectural. |
+| `dos-romeiros` | 68.67, −28.31 | Same chart and fit as Juan de Lisboa, extrapolated ~1500 px beyond Rodrigues. Was 57.0, −26.0, guessed; the chart puts it eleven degrees further east. |
 | `los-jardines` | 150.0, 21.0 | **Sources conflict.** English Wikipedia: NE of the Marianas near Guam. German Wikipedia: east of the Marshalls. I used the former. |
 
 ## Unknown (3) — I need your notes

@@ -1,0 +1,17 @@
+{
+  "name": "Jan Huygen van Linschoten, engraved by Arnold Florent van Langren, Delineatio orarum maritimarum ... Madagascar (Itinerario, 1596)",
+  "holding": "David Rumsey Map Collection",
+  "source_url": "https://commons.wikimedia.org/wiki/File:(Indian_Ocean)._Delineatio_Orarum_maritimarum,_Terra_vulgo_indigetata_Terra_do_Naral,_item_Sofale,_Mozambicae_..._Carte_d%27une_(IA_dr_indian-ocean-delineatio-orarum-maritimarum-terra-vulgo-indigetata-terra-12236010).jpg",
+  "licence": "public domain (the chart is from 1596)",
+  "note": "11999x8646. The story's plate. Draws 'I. de Juan de Lixboa' south-east of Madagascar and 'Dos Romeyros dos Castelhanos' further east, each as a small hatched islet. Linschoten's charts carried the Portuguese route to the Indies into Dutch hands and later charts copied them — Van Keulen's Nieuwe Pascaert van Oost Indien, c. 1680, draws the same two shapes at half the size. Chosen by Étienne in October 2026 over that Van Keulen. Hondius 1616, Van Keulen's 1679 Mozambique Channel chart and an 18th-century French manuscript of the Indian Ocean were checked and do not draw Juan de Lisboa at all.",
+  "landmarks_note": "Seven real places round the two islands, at the centre of each drawn island or the drawn cape: Réunion (drawn as 'Do Mascarenhas'), Mauritius ('Do Cirne'), Rodrigues ('I. de Diego Roiz'), Madagascar's south tip (Cap Sainte-Marie), its south-east corner at Fort-Dauphin, Cap Saint-André and the head of Antongil Bay. Similarity RMS ~55 km at 0.645 km/px, rotation about +1 degree. Rejected: Île Sainte-Marie, 194 km out — Linschoten's north-east Madagascar is distorted. The four landmarks nearest the islands alone (the three Mascarenes and Madagascar's south) move the islands by under 0.2 degrees. Juan de Lisboa sits among these landmarks; Dos Romeiros lies ~1500 px south-east of Rodrigues, a modest extrapolation.",
+  "landmarks": [
+    {"name": "Réunion (Do Mascarenhas)", "x": 5675, "y": 5828, "lon": 55.53, "lat": -21.11},
+    {"name": "Mauritius (Do Cirne)", "x": 6042, "y": 5698, "lon": 57.57, "lat": -20.28},
+    {"name": "Rodrigues (Diego Roiz)", "x": 7085, "y": 5568, "lon": 63.42, "lat": -19.72},
+    {"name": "Cap Sainte-Marie", "x": 4120, "y": 6564, "lon": 45.15, "lat": -25.60},
+    {"name": "Fort-Dauphin corner", "x": 4396, "y": 6469, "lon": 46.99, "lat": -25.03},
+    {"name": "Cap Saint-André", "x": 3966, "y": 5012, "lon": 44.45, "lat": -16.18},
+    {"name": "Antongil Bay head", "x": 4784, "y": 4814, "lon": 49.74, "lat": -15.43}
+  ]
+}
