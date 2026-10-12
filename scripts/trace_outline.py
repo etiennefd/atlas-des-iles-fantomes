@@ -124,7 +124,8 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     if mode == "ink":
         return ink_mask(a, thr, close, seed, (x0, y0)), (x0, y0)
     if mode == "density":
-        return density_mask(a, thr, open_r, close, window, relief, (x0, y0)), (x0, y0)
+        return density_mask(a, thr, open_r, close, window, relief, (x0, y0),
+                            satellites), (x0, y0)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
@@ -226,7 +227,8 @@ def ink_mask(a, thr, close, seeds, origin):
     return binary_fill_holes(binary_closing_sk(m, disk(close)))
 
 
-def density_mask(a, thr, open_r, close, window, relief, origin):
+def density_mask(a, thr, open_r, close, window, relief, origin, satellites=None,
+                 solidity=0.75):
     """Land is where the engraver cut, for a plate where land and sea are the
     same bare paper.
 
@@ -270,6 +272,18 @@ def density_mask(a, thr, open_r, close, window, relief, origin):
     land = binary_opening(land, disk(6))
     lab = label(land)
     land = lab == max(regionprops(lab), key=lambda r: r.area).label
+    # Islets the chart draws beside the island (Shepherd's and Mundon's, off
+    # Buss) come out of the same flood as separate pieces. So does lettering
+    # in the sea, which only compactness tells apart — the plate path's rule.
+    keep = np.zeros_like(land)
+    if satellites:
+        lo, hi = satellites
+        H, W = land.shape
+        for r in regionprops(lab):
+            y0, x0, y1, x1 = r.bbox
+            if (lo <= r.area <= hi and r.solidity >= solidity
+                    and y0 > 0 and x0 > 0 and y1 < H and x1 < W):
+                keep |= lab == r.label
     if relief:
         rx0, ry0, rx1, ry1, r = relief
         p = r // q + 4
@@ -277,7 +291,7 @@ def density_mask(a, thr, open_r, close, window, relief, origin):
         box = np.zeros_like(land)
         box[max(ry0 - oy, 0):ry1 - oy, max(rx0 - ox, 0):rx1 - ox] = True
         land = binary_fill_holes(land | (up(sil) & box))
-    return land
+    return land | keep
 
 
 def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
@@ -668,30 +682,47 @@ def manual(a, chart):
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                           a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed, window=a.window, relief=a.relief)
-    ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
-                               a.tolerance)
-    if len(ring) > 3 and (ring[0] == ring[-1]).all():
-        ring = ring[:-1]
-    ys, xs = np.nonzero(mask)
+                          a.seed, a.satellites, window=a.window, relief=a.relief)
+    if a.satellites:
+        rings = component_rings(mask, a.tolerance)
+    else:
+        ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
+                                   a.tolerance)
+        if len(ring) > 3 and (ring[0] == ring[-1]).all():
+            ring = ring[:-1]
+        rings = [ring]
+    # Size and centre come from the MAIN island: --height-km is its height,
+    # and satellites below it must not stretch the scale.
+    lab = label(mask)
+    main = lab == max(regionprops(lab), key=lambda q: q.area).label
+    ys, xs = np.nonzero(main)
     cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
     kmpx = a.height_km / (ys.max() - ys.min())   # already in upsampled px
-    pts = []
-    for r, c in ring:
-        dlat = -(r - cy) * kmpx / 111.0
-        dlon = (c - cx) * kmpx / (111.32 * math.cos(math.radians(lat)))
-        pts.append([round(lon + dlon, 4), round(lat + dlat, 4)])
-    area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
-               pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
-    if area > 0:
-        pts = pts[::-1]
-    pts.append(pts[0])
+    polys = []
+    for ring in rings:
+        pts = []
+        for r, c in ring:
+            dlat = -(r - cy) * kmpx / 111.0
+            dlon = (c - cx) * kmpx / (111.32 * math.cos(math.radians(lat)))
+            pts.append([round(lon + dlon, 4), round(lat + dlat, 4)])
+        area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
+                   pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
+        if area > 0:
+            pts = pts[::-1]
+        pts.append(pts[0])
+        polys.append(pts)
+    pts = polys[0]
     lons = [q[0] for q in pts]; lats = [q[1] for q in pts]
     km_w = (max(lons) - min(lons)) * 111.32 * math.cos(math.radians(lat))
     print(f"{a.island}: {len(pts)-1} points   (silhouette only — {chart['name']} "
           f"has no landmarks yet)")
     print(f"  centre     {lon}, {lat}   (given)")
     print(f"  extent     {km_w:.0f} x {a.height_km:.0f} km   (height given)")
+    if len(polys) > 1:
+        print(f"  parts      {len(polys)} (main island plus {len(polys)-1} satellites)")
+        for q in polys[1:]:
+            print(f"     satellite at {sum(v[0] for v in q[:-1])/(len(q)-1):.2f}, "
+                  f"{sum(v[1] for v in q[:-1])/(len(q)-1):.2f}, {len(q)-1} points")
     feat = {"type": "Feature",
             "properties": {"id": a.island, "traced_from": chart["name"],
                            "source_url": chart.get("source_url", ""),
@@ -699,7 +730,11 @@ def manual(a, chart):
                            "scale_source": "height set by hand; chart not yet georeferenced",
                            "centre": [lon, lat],
                            "size_km": [round(km_w), round(a.height_km)]},
-            "geometry": {"type": "Polygon", "coordinates": [pts]}}
+            "geometry": ({"type": "Polygon", "coordinates": [pts]} if len(polys) == 1
+                         else {"type": "MultiPolygon",
+                               "coordinates": [[q] for q in polys]})}
+    if len(polys) > 1:
+        feat["properties"]["parts"] = len(polys)
     if a.dry_run:
         print("\n(dry run — nothing written)"); return
     os.makedirs(OUTDIR, exist_ok=True)

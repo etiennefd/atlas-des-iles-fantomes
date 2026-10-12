@@ -4,22 +4,82 @@
   "licence": "public domain (the chart is from 1670; the facsimile from 1898)",
   "note": "3486x5420. The chart Seller drew after the Hudson's Bay Company took a grant of the island, with its harbours named for the Company's investors (Rupert, Shaftesbury, Arlington, Albemarle) and Shepherd's and Mundon's islands off the east point. It is the story's plate. Chosen in October 2026 over Seller's own Chart of the Northerne Sea, 1673 (the same shape at ~520 x 330 px) and Doncker's Pas-caerte van Groenlandt (an unnamed blob from before the survey). The 1673 chart is used for the position instead — see position_chart.",
   "scale_note": "SCALE FROM THE PLATE'S OWN BAR, NOT LANDMARKS — there is no real land on this sheet. The bar of thirty English leagues runs from x=710 to x=2750 (2040 px). At 20 leagues to the degree, 30 leagues is 1.5 degrees, 166.7 km: 0.0817 km/px, 1360 px per degree. The margin ladder agrees: 59 and 58 are ~1360 px apart. The scale bar is horizontal and equal to the latitude scale, so the island is drawn at the same linear scale both ways. The parallels tilt by about 1 degree across the sheet (left labels sit ~60 px lower than right), which is ignored.",
-  "extraction_note": "--mode density. Land and sea are the same paper and the facsimile is uniformly toned, so neither colour nor an ink flood works (the hatching leaks). The island is engraved solid; the sea is empty but for rhumb lines. The walruses off the east coast are painted out with --blank-box first, since they read as land exactly as the hills do. Relief is drawn up to the north-west shore and its sunlit faces leave notches; --relief-box closes them with a 120 px disk in that block only (60 and 90 still cut into the faces). The island's north-west end runs into the left neatline, so that end is the frame's, as on Corée — but Seller's 1673 chart draws the island whole at width/height 1.44 against 1.34 here, so the frame takes off little.",
+  "extraction_note": "--mode density. Land and sea are the same paper and the facsimile is uniformly toned, so neither colour nor an ink flood works (the hatching leaks). The island is engraved solid; the sea is empty but for rhumb lines. The walruses off the east coast are painted out with --blank-box first, since they read as land exactly as the hills do. Relief is drawn up to the north-west shore and its sunlit faces leave notches; --relief-box closes them with a 120 px disk in that block only (60 and 90 still cut into the faces). The island's north-west end runs into the left neatline, so that end is the frame's, as on Corée — but Seller's 1673 chart draws the island whole at width/height 1.44 against 1.31 here, so the frame takes off roughly a tenth of the length. Shepherd's and Mundon's islands are kept as satellites (--satellites 10000,40000, solidity >= 0.75); the 'Mundons Island' lettering is painted out below that islet's tip, which it touches.",
   "position_chart": {
     "name": "John Seller, A Chart of the Northerne Sea, 1673, in Lucas 1898, plate XVI",
     "source_url": "https://commons.wikimedia.org/wiki/File:Lucas_1898_Plate_16_Chart_of_the_Northern_Sea_Seller_1673_annalsofvoyageso00luca_0308.jpg",
     "fit_note": "5600x4347. Longitude and latitude fitted separately (it is a plane-like chart: 127.4 px per degree of latitude, 78.2 per degree of longitude) on ten points of Iceland, Ireland, Scotland and the Scillies; RMS ~40 km, Duncansby Head the outlier at 86. Buss's centre at px (2665, 2190) gives [-30.64, 57.98]; without Duncansby, [-31.15, 57.89]. The 1670 draught's own ladder puts the centre at 57.95 N, so the two Seller charts agree on latitude to 4 km.",
     "landmarks": [
-      {"name": "Reykjanes", "x": 3345, "y": 1440, "lon": -22.70, "lat": 63.81},
-      {"name": "Langanes", "x": 3895, "y": 1115, "lon": -14.53, "lat": 66.38},
-      {"name": "Grimsey", "x": 3565, "y": 1050, "lon": -18.0, "lat": 66.55},
-      {"name": "Vestmannaeyjar", "x": 3525, "y": 1505, "lon": -20.27, "lat": 63.43},
-      {"name": "Dublin", "x": 4590, "y": 2795, "lon": -6.2, "lat": 53.35},
-      {"name": "Carnsore Point", "x": 4540, "y": 2880, "lon": -6.36, "lat": 52.17},
-      {"name": "Duncansby Head", "x": 4935, "y": 2205, "lon": -3.03, "lat": 58.64},
-      {"name": "Butt of Lewis", "x": 4540, "y": 2150, "lon": -6.26, "lat": 58.52},
-      {"name": "Scilly", "x": 4515, "y": 3200, "lon": -6.3, "lat": 49.93},
-      {"name": "St Kilda", "x": 4385, "y": 2185, "lon": -8.57, "lat": 57.81}
+      {
+        "name": "Reykjanes",
+        "x": 3345,
+        "y": 1440,
+        "lon": -22.7,
+        "lat": 63.81
+      },
+      {
+        "name": "Langanes",
+        "x": 3895,
+        "y": 1115,
+        "lon": -14.53,
+        "lat": 66.38
+      },
+      {
+        "name": "Grimsey",
+        "x": 3565,
+        "y": 1050,
+        "lon": -18.0,
+        "lat": 66.55
+      },
+      {
+        "name": "Vestmannaeyjar",
+        "x": 3525,
+        "y": 1505,
+        "lon": -20.27,
+        "lat": 63.43
+      },
+      {
+        "name": "Dublin",
+        "x": 4590,
+        "y": 2795,
+        "lon": -6.2,
+        "lat": 53.35
+      },
+      {
+        "name": "Carnsore Point",
+        "x": 4540,
+        "y": 2880,
+        "lon": -6.36,
+        "lat": 52.17
+      },
+      {
+        "name": "Duncansby Head",
+        "x": 4935,
+        "y": 2205,
+        "lon": -3.03,
+        "lat": 58.64
+      },
+      {
+        "name": "Butt of Lewis",
+        "x": 4540,
+        "y": 2150,
+        "lon": -6.26,
+        "lat": 58.52
+      },
+      {
+        "name": "Scilly",
+        "x": 4515,
+        "y": 3200,
+        "lon": -6.3,
+        "lat": 49.93
+      },
+      {
+        "name": "St Kilda",
+        "x": 4385,
+        "y": 2185,
+        "lon": -8.57,
+        "lat": 57.81
+      }
     ]
   },
   "landmarks": []

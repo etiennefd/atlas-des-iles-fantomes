@@ -466,8 +466,9 @@ python3 scripts/trace_outline.py saint-brendan --chart canarias-1760 \
 python3 scripts/trace_outline.py buss --chart seller-1670 \
     --image ~/scratch/charts/buss-seller-1670-draught.jpg \
     --mode density --threshold 0.35 --window 15 --open 30 --closing 120 \
-    --relief-box 200,700,1500,1850,120 --blank-box 2545,1420,3090,1760 \
-    --tolerance 3 --bbox 200,700,3250,2950 \
+    --relief-box 200,700,1500,1850,120 \
+    --blank-box "2545,1420,3090,1760;2780,2243,3150,2290" \
+    --satellites 10000,40000 --tolerance 3 --bbox 200,700,3272,2950 \
     --height-km 165.0 --centre=-30.64,57.98
 
 # Groclant — a polar projection, and an island moved because it hit real land
@@ -526,7 +527,10 @@ core eroded well inside the island to stop leaks. The trap it replaced: a
 density threshold on its own needs a window wider than the inlets, and it
 filled every harbour the chart is known for. Relief drawn up to the shore has
 no band, so `--relief-box x0,y0,x1,y1,r` closes the hills' blank sunlit faces
-inside one box only. Its morphology runs at quarter scale; at full size a
+inside one box only. `--satellites MIN,MAX` keeps the chart's islets, with the
+plate path's compactness rule (0.75) to leave the sea lettering behind; the
+hand-scaled path then writes a MultiPolygon, scaled on the main island alone.
+Its morphology runs at quarter scale; at full size a
 120 px closing on a 3000 px crop runs for minutes and was killed twice.
 
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
