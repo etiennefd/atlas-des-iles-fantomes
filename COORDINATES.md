@@ -50,7 +50,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 |---|---|---|
 | `saint-brendan` | −19.01, 27.91 | San Borondón, west of El Hierro: georeferenced on all seven real Canaries of a c. 1760 chart (RMS 14 km). Mercator's placement west of Ireland (≈ −28.7, 52.1) was briefly a separate entry and was dropped: one island, not two. Was −25.0, 30.0, conjectural. |
 | `bacalao` | −52.0, 47.5 | Terra dos Bacalhaus, Newfoundland region. Highly variable. |
-| `ile-des-demons` | −55.5, 51.5 | Usually off the northern tip of Newfoundland, near Quirpon. Often conflated with Satanazes. |
+| `ile-des-demons` | −59.45, 50.49 | **Placed by the story, not the charts:** off Harrington Harbour on the Côte-Nord, where tradition puts Marguerite de La Rocque's marooning in 1542 (Étienne's call, October 2026). The charts put it off the northern tip of Newfoundland, near Quirpon, and Gastaldi 1556 draws it ~470 km tall. Here it is 10 km, shape from Gastaldi. Often conflated with Satanazes. Was −55.5, 51.5, a point for a placeholder blob lying on the Northern Peninsula. |
 | `thule` | −19.0, 64.0 | Pytheas, c. 330 BCE. Variously Iceland, Norway, Shetland. Placed on Iceland here. |
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |
 | `juan-de-lisboa` | 54.94, −25.96 | From Linschoten 1596, fitted on Réunion, Mauritius, Rodrigues and four points of Madagascar (RMS ~55 km). Was 55.0, −28.0, conjectural. |

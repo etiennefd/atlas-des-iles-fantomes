@@ -28,7 +28,7 @@ so tracing one island is a complete unit of work.
 import argparse, json, math, os
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 from scipy.ndimage import (binary_closing, binary_dilation, binary_erosion, binary_fill_holes,
                            binary_propagation, find_objects, gaussian_filter,
                            label as ndlabel, uniform_filter)
@@ -101,7 +101,7 @@ def residuals(p, K, landmarks):
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
-                seed=None, satellites=None, window=41, relief=None):
+                seed=None, satellites=None, window=41, relief=None, seal=None, grow=0):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -126,6 +126,8 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     if mode == "density":
         return density_mask(a, thr, open_r, close, window, relief, (x0, y0),
                             satellites), (x0, y0)
+    if mode == "band":
+        return band_mask(a, thr, window, close, seed, seal, grow, (x0, y0)), (x0, y0)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
@@ -292,6 +294,52 @@ def density_mask(a, thr, open_r, close, window, relief, origin, satellites=None,
         box[max(ry0 - oy, 0):ry1 - oy, max(rx0 - ox, 0):rx1 - ox] = True
         land = binary_fill_holes(land | (up(sil) & box))
     return land | keep
+
+
+def band_mask(a, thr, window, close, seeds, seal, grow, origin):
+    """Flood the island outward from points inside it, stopped by the shaded
+    band of sea along its coast.
+
+    For a woodcut where the interior is drawn over as busily as the sea.
+    Gastaldi's Isola de Demoni carries a hut, a tree, birds, an archer and
+    long ground strokes running coast to coast, so an ink flood from inside
+    stops in dozens of pockets; and the open sea is wave lines with paper
+    between them, so a flood from outside walks straight through the coast
+    wherever its line is broken. What is continuous is the hatching cut hard
+    against the shore: ink density > `thr` over `window` px picks out that
+    band and almost nothing else, the interior figures being holes that are
+    filled afterwards.
+
+    `seal` draws extra band where the woodcutter left no coast at all — the
+    demons on Demoni's north shore stand across it. A seal is a liberty: it
+    is the outline there, so record it. `grow` moves the edge from where the
+    band starts out onto the drawn coastline.
+    """
+    if not seeds:
+        raise SystemExit("--mode band needs --seed: a point inside the island")
+    ox, oy = origin
+    ink = a.mean(axis=2) < 110
+    band = uniform_filter(ink.astype(np.float32), window) > thr
+    if close:
+        band = binary_closing_sk(band, disk(close))
+    if seal:
+        sm = Image.new("L", (band.shape[1], band.shape[0]), 0)
+        for line in seal:
+            ImageDraw.Draw(sm).line([(x - ox, y - oy) for x, y in line], fill=1, width=7)
+        band |= np.asarray(sm).astype(bool)
+    start = np.zeros_like(band)
+    for sx, sy in seeds:
+        if band[sy - oy, sx - ox]:
+            raise SystemExit(f"--seed {sx},{sy} is on the band — move it inland")
+        start[sy - oy, sx - ox] = True
+    m = binary_fill_holes(binary_propagation(start, mask=~band))
+    ys, xs = np.nonzero(m)
+    if xs.min() == 0 or ys.min() == 0 or xs.max() == m.shape[1] - 1 or ys.max() == m.shape[0] - 1:
+        raise SystemExit("the flood reached the crop edge — the band has a gap; "
+                         "lower --threshold or add a --seal")
+    if grow:
+        m = binary_fill_holes(binary_dilation(m, disk(grow)))
+    return m
 
 
 def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
@@ -682,7 +730,8 @@ def manual(a, chart):
     mask, _ = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                           a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed, a.satellites, window=a.window, relief=a.relief)
+                          a.seed, a.satellites, window=a.window, relief=a.relief,
+                          seal=a.seal, grow=a.grow if a.mode == "band" else 0)
     if a.satellites:
         rings = component_rings(mask, a.tolerance)
     else:
@@ -748,13 +797,18 @@ def main():
     ap.add_argument("island")
     ap.add_argument("--chart", required=True, help="scripts/charts/<name>.json")
     ap.add_argument("--image", required=True, help="local copy of the chart raster")
-    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink", "density"),
+    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink", "density", "band"),
                     help="ink: flood from --seed, stopped by the engraved coast; "
                          "--threshold is then the grey level below which a pixel is ink. "
                          "density: the fraction of inked pixels in --window, for a "
-                         "plate where land and sea are the same bare paper")
+                         "plate where land and sea are the same bare paper. "
+                         "band: flood from --seed, stopped by the shaded sea band "
+                         "along the coast (density > --threshold over --window)")
     ap.add_argument("--window", type=int, default=41,
                     help="density mode: window side in px")
+    ap.add_argument("--seal", help="band mode: polylines of extra band where the chart "
+                    "draws no coast, as 'x,y x,y ...' in source px, several separated "
+                    "by ';'. A liberty — it IS the outline there; record it.")
     ap.add_argument("--relief-box", dest="relief",
                     help="x0,y0,x1,y1,r — density mode: close the notches that relief "
                          "drawn up to the shore leaves, inside this box only")
@@ -800,7 +854,7 @@ def main():
                     help="plate mode: how far the water hatching is stripped "
                          "inward from the sea, in px")
     ap.add_argument("--grow", type=int, default=4,
-                    help="plate mode: px back out, to land on the drawn shore")
+                    help="plate and band modes: px back out, to land on the drawn shore")
     ap.add_argument("--sigma", type=float, default=8.0,
                     help="plate mode: smoothing for the main island. The hatch "
                          "strokes leave the raw edge furry")
@@ -836,6 +890,8 @@ def main():
               if a.seed else None)
     a.satellites = tuple(int(v) for v in a.satellites.split(",")) if a.satellites else None
     a.relief = tuple(int(v) for v in a.relief.split(",")) if a.relief else None
+    a.seal = ([[tuple(int(v) for v in p.split(",")) for p in line.split()]
+               for line in a.seal.split(";")] if a.seal else None)
     a.drop_parts = tuple(int(v) for v in a.drop_parts.split(",")) if a.drop_parts else None
 
     chart = json.load(open(os.path.join(CHARTS, a.chart + ".json"), encoding="utf-8"))
@@ -862,7 +918,8 @@ def main():
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                          a.seed, a.satellites, window=a.window, relief=a.relief)
+                          a.seed, a.satellites, window=a.window, relief=a.relief,
+                          seal=a.seal, grow=a.grow if a.mode == "band" else 0)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass

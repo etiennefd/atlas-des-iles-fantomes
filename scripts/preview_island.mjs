@@ -29,7 +29,12 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const R = 6371, D = Math.PI / 180;
 const argv = process.argv.slice(2);
 const id = argv.find(a => !a.startsWith('--'));
-const opt = (n, d) => { const i = argv.indexOf('--' + n); return i < 0 ? d : argv[i + 1]; };
+// both `--centre -50,52` and `--centre=-50,52`: the second is what the usage
+// line above shows, and it used to be silently ignored, previewing the island
+// where the file already had it
+const opt = (n, d) => { const eq = argv.find(a => a.startsWith(`--${n}=`));
+  if (eq) return eq.slice(n.length + 3);
+  const i = argv.indexOf('--' + n); return i < 0 ? d : argv[i + 1]; };
 if (!id) { console.error('usage: node scripts/preview_island.mjs <id> [--turn t] [--scale s] [--centre lon,lat] [--out f.png] [--scale-px n]'); process.exit(1); }
 
 const topo = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/land-50m.json'), 'utf8'));

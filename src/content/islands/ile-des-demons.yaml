@@ -2,8 +2,45 @@ name_fr: "L’île des Démons"
 name_en: "The Isle of Demons"
 kind: island
 ocean: atlantique-nord
-coords: [-55.5, 51.5]
+coords: [-59.45, 50.49]
 span: [1508, 1600]
 coords_confidence: conjectural
 coords_note: >-
   Usually charted off the northern tip of Newfoundland, near Quirpon.
+  Placed instead off Harrington Harbour on the Côte-Nord (50.50 N, 59.48 W),
+  the island where tradition has Roberval maroon Marguerite de La Rocque in
+  1542 — the island of the story, which the notice names. Étienne, October
+  2026: "based on the story it's near harrington harbour and is very small."
+  Moved 3 km south-east of the village, to [-59.45, 50.49]: Natural Earth
+  50m smooths that shore's maze of islets into one coastline about 8 km out
+  from the real one, and a 10 km island centred on the village grazes it.
+  It now sits ~5 km off the basemap's coast. Supersedes [-55.5, 51.5], a
+  point for a placeholder blob that lay across the Northern Peninsula and
+  the Labrador shore. The charts' position was tried first: Gastaldi's own
+  scale makes the island ~470 km tall, and no size from 47 to 470 km fits
+  near Quirpon without moving east of the Strait of Belle Isle.
+outline_note: >-
+  Traced from Giacomo Gastaldi's La Nuova Francia, the woodcut in Ramusio's
+  Navigationi et viaggi, vol. III, Venice 1556 (McGill scan, 4026 x 3228) —
+  the story's plate, where 'Isola de Demoni' is a large island north of
+  Terra Nova with demons on its north shore. Chosen by Étienne in October
+  2026 over Ortelius 1570 (after Mercator 1569: one blank islet of ~45 x 55
+  px, the version later maps repeated) and Ruysch 1507 (the first
+  appearance: two ovals of ~40 x 20 px inside a legend). He has since said
+  the shape matters less to him than the place.
+  A new mode, `--mode band`: the interior is drawn over as busily as the
+  sea, so neither an ink flood from inside nor a sea flood from outside
+  works; the flood is walled instead by the hatching cut hard against the
+  shore, then grown 3 px onto the drawn coastline.
+  Liberties: the tree on the west coast and the two demons on the north
+  shore are painted out first, since they touch the coast and would come out
+  as notches. Over ~200 px of the north shore the demons stand across the
+  coast and there is no band; the outline there is a hand-drawn seal along
+  the faint drawn shore, straight behind the horned demon's legs — the flat
+  top of the silhouette. The three islets off the north-east and the specks
+  along the east coast are not included.
+  SIZE IS A CHOICE, NOT A MEASUREMENT: 10 km tall (size_km), the same as
+  Bermeja and Nakanotorishima, for an island Étienne wants "very small".
+  Read against Terra Nova on the same sheet, Gastaldi draws it ~470 km tall
+  — nearly the size of Newfoundland, of which it is probably the cut-off
+  northern half.

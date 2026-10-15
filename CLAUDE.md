@@ -283,9 +283,10 @@ earth.
 
 ## Adding an island
 
-Done fourteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done fifteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
-`saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`. Read this before the next — it is written so Étienne does not have to explain the
+`saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`.
+Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
 A phantom island's shape is a claim, not a fact, so it carries provenance of
@@ -496,6 +497,17 @@ python3 scripts/trace_outline.py coree --chart hondius-iaponia \
     --bbox 3100,560,4600,6300 --blank-box 3598,5465,3668,5698 \
     --seed "3700,2500;3600,5300;3630,5600;3719,5737;3598,5779;3730,5814"
 
+# Île des Démons — the flood walled by the coast's hatch band; the demons on
+# the north shore stand across the coast, so that stretch is sealed by hand.
+# Placed by the story (Harrington Harbour), not by the charts, at 10 km.
+python3 scripts/trace_outline.py ile-des-demons --chart gastaldi-1556 \
+    --image ~/scratch/charts/demons-gastaldi-1556.jpg \
+    --mode band --threshold 0.25 --window 15 --closing 6 --grow 3 \
+    --seed 3000,1150 --seal "3045,640 3090,645 3125,648 3175,652 3220,655 3245,655" \
+    --blank-box "2848,1040,2965,1230;3058,585,3228,800" \
+    --tolerance 1.5 --bbox 2600,540,3460,1540 \
+    --height-km 10 --centre=-59.45,50.49
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -503,7 +515,7 @@ node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
-**Six extraction modes, because charts differ.** A flat colour wash
+**Seven extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
 A *violet* wash needs `--mode magenta`, which is `(R+B)/2 - G`: the Catalan
 Atlas draws its sea in blue hatching exactly as dark as the wash and its rhumb
@@ -543,6 +555,20 @@ plate path's compactness rule (0.75) to leave the sea lettering behind; the
 hand-scaled path then writes a MultiPolygon, scaled on the main island alone.
 Its morphology runs at quarter scale; at full size a
 120 px closing on a 3000 px crop runs for minutes and was killed twice.
+
+A **woodcut whose interior is as busy as its sea** (Gastaldi's Isola de
+Demoni, 1556) defeats the ink flood from both sides. From inside, a hut, a
+tree, birds, an archer and long ground strokes running coast to coast cut the
+island into 126 pockets; from outside, the sea is wave lines with paper
+between them, and the flood walks through the coast wherever its line breaks.
+`--mode band` floods from `--seed` inside, walled by the hatching cut hard
+against the shore — ink at density > 0.25 over 15 px, which marks that band
+and very little else — then `--grow 3` moves the edge out onto the drawn line.
+Figures that touch the coast (the tree, the demons) come out as notches, not
+holes, so paint them out first. Where the woodcutter drew no coast at all —
+the demons stand across Demoni's north shore — `--seal "x,y x,y ..."` draws
+band by hand. A seal *is* the outline there, so it is a liberty: say so in
+`outline_note`. The flood refuses to finish if it reaches the crop edge.
 
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
 so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
@@ -724,7 +750,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 14 traced outlines, 20 placeholder blobs; 13 chart records in
+- 15 traced outlines, 19 placeholder blobs; 14 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -745,7 +771,17 @@ output `dist`, no adapter (static). Nothing to configure.
   georeferenced on the seven real islands) and `buss` (Seller's 1670
   draught, placed from his own 1673 chart), and `juan-de-lisboa` and
   `dos-romeiros` (both from Linschoten 1596, georeferenced on the Mascarenes
-  and Madagascar)
+  and Madagascar), and `ile-des-demons` (Gastaldi 1556, the story's plate)
+- **Île des Démons is placed by its story, not its charts.** The charts put it
+  off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
+  ~470 km tall — read against Terra Nova on the same sheet it is nearly
+  Newfoundland's size, and no size from 47 to 470 km fits near Quirpon
+  without moving east of the Strait of Belle Isle. Étienne, October 2026:
+  *"based on the story it's near harrington harbour and is very small."* So
+  it is 10 km tall off Harrington Harbour on the Côte-Nord, where tradition
+  puts Marguerite de La Rocque's marooning. He said the shape matters less to
+  him than that; Gastaldi's was kept because it was already traced. At 10 km
+  it is 3 x 4 px even at full zoom — a dot inside its halo, as Bermeja is.
 - **Saint Brendan's island is one entry, placed in the Canaries.** It was
   briefly split in October 2026 into Mercator's placement west of Ireland and
   the Canarian San Borondón, on the claim that they were two phantoms sharing
