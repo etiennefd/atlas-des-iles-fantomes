@@ -283,9 +283,10 @@ earth.
 
 ## Adding an island
 
-Done fifteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done sixteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
-`saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`.
+`saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
+`saint-mathieu`.
 Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
@@ -508,6 +509,13 @@ python3 scripts/trace_outline.py ile-des-demons --chart gastaldi-1556 \
     --tolerance 1.5 --bbox 2600,540,3460,1540 \
     --height-km 10 --centre=-59.45,50.49
 
+# Saint-Mathieu — a clean orange wash; the landmark fit is poor (RMS 201 km)
+# out here, so the centre is anchored on Annobón at the graticule's scale
+python3 scripts/trace_outline.py saint-mathieu --chart ortelius-africa-1572 \
+    --image ~/scratch/charts/sm-ortelius-1572.jpg \
+    --mode red --threshold 40 --closing 3 --tolerance 1 \
+    --bbox 3720,4700,3960,4960 --centre=-5.08,-1.35
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -614,6 +622,12 @@ visible part across the cut. Reflect a wedge and you get an arrowhead, so the
 completion is smoothed at 0.18 x the island's width at the cut — and *unioned*
 with the original, never substituted for it, or the rounding pulls the drawn
 coast in with it.
+
+**Atlas sheets draw real islands oversized, so their scale is not the
+island's.** Ortelius' Africa draws Annobón ~8x its real length and São Tomé
+and Príncipe ~4x; S. Matheo, at the sheet's scale, is 104 km. That scale is
+still what every traced island uses, so it was kept — but it is a choice to
+put in front of Étienne, not a measurement to defend.
 
 **Scale and position come from georeferencing where the chart can support it.**
 Portolans carry real coastlines beside their invented islands, so landmarks fit
@@ -750,7 +764,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 15 traced outlines, 19 placeholder blobs; 14 chart records in
+- 16 traced outlines, 18 placeholder blobs; 15 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -771,7 +785,9 @@ output `dist`, no adapter (static). Nothing to configure.
   georeferenced on the seven real islands) and `buss` (Seller's 1670
   draught, placed from his own 1673 chart), and `juan-de-lisboa` and
   `dos-romeiros` (both from Linschoten 1596, georeferenced on the Mascarenes
-  and Madagascar), and `ile-des-demons` (Gastaldi 1556, the story's plate)
+  and Madagascar), and `ile-des-demons` (Gastaldi 1556, the story's plate),
+  and `saint-mathieu` (Ortelius' Africa 1570, anchored on Annobón — which
+  moved it ~880 km east of the story's "1000 km north of Ascension")
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly

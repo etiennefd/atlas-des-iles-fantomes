@@ -2,10 +2,43 @@ name_fr: "L’île Saint-Mathieu"
 name_en: "Saint Matthew Island"
 kind: island
 ocean: atlantique-sud
-coords: [-13.0, -1.2]
+coords: [-5.08, -1.35]
 span: [1516, 1900]
 coords_confidence: approximate
 coords_note: >-
   Atlantic west of Africa, about 1000 km north of Ascension. Possibly a
   confusion with Annobón, which sits at the same latitude. Supposedly found
   on Saint Matthew’s day, 21 September 1516.
+  Position from Ortelius' Africae Tabula Nova (1570, the 1572 impression),
+  the chart that gives the shape, anchored on Annobón: the nearest real
+  island the sheet draws, almost level with S. Matheo and 1240 px east of
+  it. At the sheet's own graticule scale (115.3 px per degree, the equator
+  at y 4622 and the Tropic of Capricorn at 7324) that puts the centre at
+  [-5.08, -1.35], ~1200 km due west of Annobón. Two readings disagree by
+  ~55 km and are recorded: a similarity fit on eight landmarks from Cabo
+  Verde to Cape Lopez gives [-5.47, -1.74], but at RMS 201 km (Cape Three
+  Points 397 km out) and extrapolated west of everything but the Guinea
+  coast; the graticule alone gives latitude -1.85, but it puts Annobón
+  itself 0.5 deg too far south, so the anchor carries that error with it.
+  Supersedes [-13.0, -1.2], a point from the story's "1000 km north of
+  Ascension", ~880 km further west. Mercator 1595 draws the island in the
+  same relation to Annobón, so the eastern position is the Antwerp atlases'
+  and not one sheet's slip.
+outline_note: >-
+  Traced from Abraham Ortelius' Africae Tabula Nova, Theatrum Orbis
+  Terrarum, 1570 (this impression 1572, 12444 x 9188): S. Matheo as an
+  orange-washed boot, notched on the west, 65 x 109 px. Chosen by Étienne
+  in October 2026 over Mercator's Africa of 1595 (the same shape in red at
+  ~40 x 65 px), Blaeu's Africae nova descriptio of 1630 (a blank sliver of
+  ~60 x 20 px) and the story's own plate (a late-18th-century French sheet,
+  ~15 px in our copy, its source unidentified).
+  `--mode red --threshold 40`: the wash scores R-(G+B)/2 well above the
+  stippled sea, and 40 is where the edge sits on Ortelius' drawn coastline
+  — 55 and 72 fall inside it, 30 adds nothing (65 x 109 against 67 x 111).
+  Not included: the speck of an uncoloured islet off the north end, a ring
+  of ~15 px that the wash does not reach. Mercator draws it too.
+  SIZE IS THE CHART'S: 63 x 104 km, from the georeference (0.956 km/px,
+  within 1% of the graticule's 0.964). Ortelius draws every island here
+  oversized — Annobón ~8x its real length, São Tomé and Príncipe ~4x — so
+  read like its neighbours S. Matheo would be ~12-26 km. Kept at the
+  chart's scale, as every other traced island is.
