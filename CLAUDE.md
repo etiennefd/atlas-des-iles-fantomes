@@ -626,8 +626,11 @@ coast in with it.
 **Atlas sheets draw real islands oversized, so their scale is not the
 island's.** Ortelius' Africa draws Annobón ~8x its real length and São Tomé
 and Príncipe ~4x; S. Matheo, at the sheet's scale, is 104 km. That scale is
-still what every traced island uses, so it was kept — but it is a choice to
-put in front of Étienne, not a measurement to defend.
+still what every traced island uses, so S. Matheo keeps it for now. When
+this was put to Étienne the question came with no numbers, and he said he
+answered at random — so ask it WITH them: the drawn size, the neighbours'
+real sizes against their drawn ones, what each option looks like on the
+globe, and the precedent. A question he cannot answer is not a gate.
 
 **Scale and position come from georeferencing where the chart can support it.**
 Portolans carry real coastlines beside their invented islands, so landmarks fit
