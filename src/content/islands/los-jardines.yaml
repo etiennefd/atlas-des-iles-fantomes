@@ -2,9 +2,38 @@ name_fr: "Los Jardines"
 name_en: "Los Jardines"
 kind: island
 ocean: pacifique-nord
-coords: [150.0, 21.0]
+coords: [145.3, 10.6]
 span: [1528, 1973]
 coords_confidence: conjectural
 coords_note: >-
   SOURCES CONFLICT: English Wikipedia says NE of the Marianas near Guam;
   German Wikipedia says east of the Marshalls. Pick per your research.
+  PLACED BY CLAUDE, October 2026, in a run Étienne asked to go "without my
+  input" — not reviewed by him. Two islands share the name: Saavedra's of
+  1528, near 11 N in the Carolines or Marshalls, where the story puts it;
+  and a later charted position near 21 N 151 E, kept on charts until the
+  IHO struck it in 1973, which is where the old blob was ([150.0, 21.0]).
+  Following the story, the position is Ortelius' (Maris Pacifici, 1589, the
+  chart that gives the shape): latitude from his graticule, 10.6 N, which
+  agrees with Saavedra's; longitude relative to the largest of his
+  Ladrones, presumably Guam, which he draws 22 px (~0.5 deg) west of the
+  main islet — [145.3, 10.6]. Anchoring both axes on Guam instead gives
+  [145.3, 7.5], but Ortelius draws Guam itself 3 deg too far north, and
+  latitude is what 16th-century navigators measured well. Open water: the
+  nearest land in the basemap is Guam, 276 km.
+outline_note: >-
+  Traced from Abraham Ortelius' Maris Pacifici, 1589, in the uncoloured
+  BnF impression (7896 x 5645) — the story's plate, in a coloured
+  impression, and the first printed map of the Pacific. CHOSEN BY CLAUDE,
+  not Étienne. 'Los Iardinos' are two islets left blank inside hatching:
+  the main one 25 x 20 px, a sliver 13 x 20 px about 39 px east. The
+  coloured scan was not used because its wash blurs past the engraving.
+  A new `--mode ring`: the hatching's gaps run out to the open sea, so every
+  brightness threshold leaks; sealing each islet's ink ring and keeping the
+  pale core is stable at every closing radius from 2 to 8 (284 and 149 px).
+  The sliver's ring is open at its north end and the core carries a small
+  spur there.
+  Size from the graticule, 2.63 km/px (42.3 px per degree): the main islet
+  69 x 53 km and the sliver ~35 x 53 km, ~100 km apart. On Étienne's
+  precedent of keeping the chart's scale (Saint-Mathieu); like every island
+  on these sheets, they are drawn far larger than any real atoll.

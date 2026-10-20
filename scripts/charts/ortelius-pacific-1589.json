@@ -1,0 +1,10 @@
+{
+  "name": "Abraham Ortelius, Maris Pacifici, 1589 (Theatrum Orbis Terrarum), uncoloured impression, Bibliothèque nationale de France",
+  "holding": "BnF, Gallica btv1b8493480w",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Maris_Pacifici_(quod_vulgo_Mar_del_Zur)_cum_regionibus_circumiacentibus_insulisque_in_eodem_passis_sparsis_novissima_descriptio._(1_-_41_500_000_env)._Genio_et_ingenio_nobili_Dn._Nicolao_Roccoxio_Patricio..._-_btv1b8493480w_(1_of_2).jpg",
+  "licence": "public domain (the map is from 1589)",
+  "note": "7896x5645. The first printed map of the Pacific, and the story's own plate (in a coloured impression). 'Los Iardinos' are two islets left blank inside hatching just south of the Ladrones (Marianas): a main islet of 25 x 20 px and a sliver of 13 x 20 px beside it to the east. CHOSEN BY CLAUDE, not reviewed by Etienne (a run he asked to go 'without my input'): it is both the story's plate and the influential depiction, the model for Pacific sheets for decades. The uncoloured BnF impression is used rather than the coloured 6717 x 5310 scan because the hand colouring there blurs past the engraved coast; the engraving is the source.",
+  "extraction_note": "--mode ring. The islets are pale cores inside horizontal hatching whose gaps run straight out to the open sea, so every brightness threshold leaks to the crop edge at every smoothing. Sealing the ink ring (grey < 110) and keeping the core is stable at every closing radius from 2 to 8: 284 px for the islet, 149 for the sliver.",
+  "graticule_note": "The equator is the double rule at y ~2733; parallels every 10 degrees at y 2317, 1887 and 1464 (sampled at x 1700 and 2600, which agree within 4 px): 42.3 px per degree, 2.63 km/px. The Ladrones are four islets at x 1320-1370, y 1950-2050; the largest and southernmost, presumably Guam, is at (1335, 2040), 16.4 N on the graticule against the real 13.44 N.",
+  "landmarks": []
+}

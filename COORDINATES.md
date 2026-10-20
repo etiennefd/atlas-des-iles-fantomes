@@ -55,7 +55,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |
 | `juan-de-lisboa` | 54.94, −25.96 | From Linschoten 1596, fitted on Réunion, Mauritius, Rodrigues and four points of Madagascar (RMS ~55 km). Was 55.0, −28.0, conjectural. |
 | `dos-romeiros` | 68.67, −28.31 | Same chart and fit as Juan de Lisboa, extrapolated ~1500 px beyond Rodrigues. Was 57.0, −26.0, guessed; the chart puts it eleven degrees further east. |
-| `los-jardines` | 150.0, 21.0 | **Sources conflict.** English Wikipedia: NE of the Marianas near Guam. German Wikipedia: east of the Marshalls. I used the former. |
+| `los-jardines` | 145.3, 10.6 | **Sources conflict.** English Wikipedia: NE of the Marianas near Guam. German Wikipedia: east of the Marshalls. **Placed by Claude (Oct 2026, unreviewed)** at Saavedra's 1528 island, as the story has it: Ortelius 1589's graticule latitude (10.6 N, matching Saavedra), longitude relative to his Guam. Was 150.0, 21.0, the later chart position struck in 1973. |
 
 ## Unknown (3) — I need your notes
 

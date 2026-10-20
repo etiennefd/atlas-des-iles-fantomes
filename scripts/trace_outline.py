@@ -129,6 +129,10 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                             satellites), (x0, y0)
     if mode == "band":
         return band_mask(a, thr, window, close, seed, seal, grow, (x0, y0)), (x0, y0)
+    if mode == "ring":
+        if not seed:
+            raise SystemExit("--mode ring needs --seed: a point on each islet's pale core")
+        return ring_cores(a, seed, (x0, y0), upsample), (x0, y0)
     R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
     score = {"red":   R - (G + B) / 2,
              "blue":  B - (R + G) / 2,
@@ -209,18 +213,30 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # sea hatching above S. Matheo's islet into a ring of its own, so the
         # "core" became 1272 px of paper between strokes. 4-6 is a plateau,
         # 212-222 px, which is the islet.
-        ink = a.mean(axis=2) < 110
-        for sx, sy in islets:
-            lx, ly = (sx - x0) * upsample, (sy - y0) * upsample
-            R = 40 * upsample
-            yl, xl = max(0, ly - R), max(0, lx - R)
-            core = seal_core(ink[yl:ly + R, xl:lx + R], seed=(ly - yl, lx - xl),
-                             radii=(4, 5, 6), pad=20, min_area=60)
-            if core is None:
-                raise SystemExit(f"--islet {sx},{sy}: no ring closes round it — "
-                                 "move the seed onto the pale core")
-            m[yl:ly + R, xl:lx + R] |= core
+        m |= ring_cores(a, islets, (x0, y0), upsample, "--islet")
     return m, (x0, y0)
+
+
+def ring_cores(a, seeds, origin, upsample=1, flag="--seed"):
+    """The pale core inside an ink ring, around each seed: the plate path's
+    sealing, applied locally. For islets drawn blank inside hatching, where
+    the gaps between the strokes run straight out to the open sea, so no
+    threshold separates the islet from it (Ortelius' Los Iardinos leak to
+    the crop edge at every smoothing). Closing the ink seals those gaps."""
+    x0, y0 = origin
+    ink = a.mean(axis=2) < 110
+    m = np.zeros(ink.shape, bool)
+    for sx, sy in seeds:
+        lx, ly = (sx - x0) * upsample, (sy - y0) * upsample
+        R = 40 * upsample
+        yl, xl = max(0, ly - R), max(0, lx - R)
+        core = seal_core(ink[yl:ly + R, xl:lx + R], seed=(ly - yl, lx - xl),
+                         radii=(4, 5, 6), pad=20, min_area=60)
+        if core is None:
+            raise SystemExit(f"{flag} {sx},{sy}: no ring closes round it — "
+                             "move the seed onto the pale core")
+        m[yl:ly + R, xl:lx + R] |= core
+    return m
 
 
 def ink_mask(a, thr, close, seeds, origin):
@@ -757,7 +773,7 @@ def manual(a, chart):
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
                           islets=a.islet)
-    if a.satellites:
+    if a.satellites or a.islet or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
         ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
@@ -822,13 +838,16 @@ def main():
     ap.add_argument("island")
     ap.add_argument("--chart", required=True, help="scripts/charts/<name>.json")
     ap.add_argument("--image", required=True, help="local copy of the chart raster")
-    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink", "density", "band"),
+    ap.add_argument("--mode", default="red", choices=("red", "blue", "green", "magenta", "dark", "ink", "density", "band", "ring"),
                     help="ink: flood from --seed, stopped by the engraved coast; "
                          "--threshold is then the grey level below which a pixel is ink. "
                          "density: the fraction of inked pixels in --window, for a "
                          "plate where land and sea are the same bare paper. "
                          "band: flood from --seed, stopped by the shaded sea band "
-                         "along the coast (density > --threshold over --window)")
+                         "along the coast (density > --threshold over --window). "
+                         "ring: islets left blank inside hatching — the ink ring round "
+                         "each --seed is sealed and its pale core kept; the first seed "
+                         "is the main island")
     ap.add_argument("--window", type=int, default=41,
                     help="density mode: window side in px")
     ap.add_argument("--seal", help="band mode: polylines of extra band where the chart "

@@ -1,0 +1,164 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "los-jardines",
+  "traced_from": "Abraham Ortelius, Maris Pacifici, 1589 (Theatrum Orbis Terrarum), uncoloured impression, Biblioth\u00e8que nationale de France",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Maris_Pacifici_(quod_vulgo_Mar_del_Zur)_cum_regionibus_circumiacentibus_insulisque_in_eodem_passis_sparsis_novissima_descriptio._(1_-_41_500_000_env)._Genio_et_ingenio_nobili_Dn._Nicolao_Roccoxio_Patricio..._-_btv1b8493480w_(1_of_2).jpg",
+  "georeference": null,
+  "scale_source": "height set by hand; chart not yet georeferenced",
+  "centre": [
+   145.3,
+   10.6
+  ],
+  "size_km": [
+   69,
+   53
+  ],
+  "parts": 2
+ },
+ "geometry": {
+  "type": "MultiPolygon",
+  "coordinates": [
+   [
+    [
+     [
+      145.1988,
+      10.3506
+     ],
+     [
+      144.9837,
+      10.4628
+     ],
+     [
+      145.1355,
+      10.7372
+     ],
+     [
+      145.1482,
+      10.8245
+     ],
+     [
+      145.2747,
+      10.8245
+     ],
+     [
+      145.3,
+      10.8494
+     ],
+     [
+      145.4265,
+      10.7995
+     ],
+     [
+      145.5024,
+      10.7247
+     ],
+     [
+      145.5783,
+      10.7496
+     ],
+     [
+      145.6163,
+      10.7122
+     ],
+     [
+      145.5783,
+      10.6
+     ],
+     [
+      145.5024,
+      10.6
+     ],
+     [
+      145.4012,
+      10.4753
+     ],
+     [
+      145.1988,
+      10.3506
+     ]
+    ]
+   ],
+   [
+    [
+     [
+      146.1602,
+      10.4753
+     ],
+     [
+      146.097,
+      10.4878
+     ],
+     [
+      146.097,
+      10.5875
+     ],
+     [
+      146.2235,
+      10.6374
+     ],
+     [
+      146.2108,
+      10.6748
+     ],
+     [
+      146.1476,
+      10.6873
+     ],
+     [
+      146.2235,
+      10.7871
+     ],
+     [
+      146.1729,
+      10.8369
+     ],
+     [
+      146.2614,
+      10.8245
+     ],
+     [
+      146.2994,
+      10.8619
+     ],
+     [
+      146.2994,
+      10.9367
+     ],
+     [
+      146.3373,
+      10.9741
+     ],
+     [
+      146.3879,
+      10.9741
+     ],
+     [
+      146.4006,
+      10.8868
+     ],
+     [
+      146.35,
+      10.812
+     ],
+     [
+      146.4006,
+      10.7372
+     ],
+     [
+      146.4259,
+      10.5127
+     ],
+     [
+      146.1855,
+      10.5002
+     ],
+     [
+      146.1602,
+      10.4753
+     ]
+    ]
+   ]
+  ]
+ }
+}
