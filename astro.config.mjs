@@ -1,7 +1,8 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://example.com", // TODO: real domain
+  // the live Vercel origin until a real domain exists; change it then
+  site: "https://atlas-des-iles-fantomes.vercel.app",
   i18n: {
     locales: ["fr", "en"],
     defaultLocale: "fr",

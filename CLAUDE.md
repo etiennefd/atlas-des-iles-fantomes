@@ -861,20 +861,20 @@ output `dist`, no adapter (static). Nothing to configure.
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
   tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
 
-### Known blemishes, live right now
+### Known blemishes — fixed October 2026
 
-- **Three story images 404.** `/iles/hy-brasil-atlas-catalan.png`,
-  `/iles/nakanotorishima-pacifique-1941.png`, `/iles/nimrod-perthes-1906.png`
-  are referenced in frontmatter and don't exist, so every story page shows a
-  broken image icon — including Hy-Brasil, the one with real prose. Either add
-  the files to `public/iles/` or make the template skip a figure whose file is
-  missing (worth doing anyway before migrating 28 stories).
-- **`/` stalls for two seconds.** `Astro.redirect` in static mode compiles to
-  `<meta http-equiv="refresh" content="2;url=/fr/">`. A `vercel.json` 308 fixes
-  it. Sharing the `/fr/` URL sidesteps it.
-- **`site` is still `https://example.com`** in `astro.config.mjs`, and it is
-  already leaking into production as `<link rel="canonical">` on the redirect
-  page.
+- **Story images that do not exist are skipped, not shown broken.** The story
+  template checks each frontmatter image against `public/` at build time,
+  drops a missing one and prints `[stories] <id>: missing image …, figure
+  skipped` in the build log. Two plates are missing today and their pages show
+  no figure until they arrive: `/iles/nakanotorishima-pacifique-1941.png`
+  (`fr/nakanotorishima`) and `/iles/nimrod-perthes-1906.png` (`fr/nimrod`).
+  Hy-Brasil's, the third once listed here, was already resolved by the import.
+- **`/` redirects with a 308** from `vercel.json`, instead of Astro's static
+  redirect page, which is a two-second meta refresh. That page still builds and
+  is what `npm run preview` serves.
+- **`site` is `https://atlas-des-iles-fantomes.vercel.app`**, so the canonical
+  link on the redirect page is real. Change it with the domain (Next, item 5).
 
 ## Next, roughly in order
 
@@ -904,7 +904,8 @@ output `dist`, no adapter (static). Nothing to configure.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
 5. A real domain (Vercel is serving `atlas-des-iles-fantomes.vercel.app`
-   today; point `site` in `astro.config.mjs` at whatever it becomes).
+   today, and `site` in `astro.config.mjs` points there; move it to whatever
+   the domain becomes).
 
 ## Open questions
 

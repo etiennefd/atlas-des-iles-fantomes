@@ -1,4 +1,6 @@
 ---
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { getCollection, render } from "astro:content";
 import { marked } from "marked";
 import Base from "../../../layouts/Base.astro";
@@ -45,6 +47,16 @@ const altHref = counterpart
   ? `/${o}/iles/${splitStoryId(counterpart.id).slug}/`
   : undefined;
 
+// A plate named in frontmatter but absent from public/ would render as a
+// broken-image icon. Skip it, and say so at build time, so the gap stays
+// visible to whoever builds rather than to whoever reads.
+const images = story.data.images.filter((img) => {
+  if (!img.src.startsWith("/")) return true;
+  const ok = existsSync(join(process.cwd(), "public", img.src));
+  if (!ok) console.warn(`[stories] ${story.id}: missing image ${img.src}, figure skipped`);
+  return ok;
+});
+
 const { Content } = await render(story);
 const inline = (md: string) => marked.parseInline(md);
 ---
@@ -55,7 +67,7 @@ const inline = (md: string) => marked.parseInline(md);
     {spans.length > 0 && <span class="story__span sc">{spans.join(" · ")}</span>}
 
     {
-      story.data.images.map((img) => (
+      images.map((img) => (
         <figure class="story__figure">
           <img src={img.src} alt={img.alt} loading="lazy" />
           {img.caption && (
