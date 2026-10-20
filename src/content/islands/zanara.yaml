@@ -2,9 +2,33 @@ name_fr: "Zanara"
 name_en: "Zanara"
 kind: island
 ocean: mediterranee
-coords: [10.99, 42.3]
+coords: [10.99, 42.298]
 span: [1589, 1720]
 coords_confidence: approximate
 coords_note: >-
   Tyrrhenian Sea off Tuscany, near Monte Argentario, between Giglio and
   Giannutri. Appears in Mercator, 1589; gone by about 1720.
+  Position from Mercator's Tuscia (1589), the chart that gives the shape,
+  by interpolation between the two real islands he draws on either side:
+  48% of the way from Giglio to Giannutri and slightly south of the line,
+  laid on their real centroids, [10.990, 42.298] — which confirms the
+  earlier [10.99, 42.3]. A five-landmark fit (Giglio, Giannutri, Ansedonia,
+  Porto Ercole, Orbetello) was rejected: RMS 5 km across a 20 km cluster and
+  a 35 deg rotation on a north-up sheet, because Mercator spreads Giglio and
+  Giannutri to twice their real 19.5 km apart. 12 km from Monte Argentario,
+  the nearest land the basemap carries (it has no Giglio).
+  Checked by Claude, October 2026, in a run Étienne asked to go "without my
+  input" — not reviewed by him.
+outline_note: >-
+  Traced from Gerard Mercator's Tuscia, 1589, in the David Rumsey impression
+  (13546 x 11730, uncoloured) — Zanara's first appearance and the story's
+  plate, in a coloured impression. CHOSEN BY CLAUDE, not Étienne, though
+  with little to choose: it is the island's origin and the sheet later
+  Tuscany maps copied. 256 x 159 px, three hills drawn across it.
+  `--mode band` at density 0.4, where Mercator's solid coastal shading walls
+  the flood; at 0.25 the hill strokes join that band and cut the island in
+  half, and 0.35-0.55 is a plateau (254-260 x 157-163 px).
+  Size from the sheet's latitude border, 3531 px per degree (0.0315 km/px),
+  north up: 8 x 5 km. Mercator draws its real neighbours larger than life
+  too (Giglio ~1.3-1.6x), so this is the chart's scale, on Étienne's
+  precedent of keeping it (Saint-Mathieu).

@@ -1,0 +1,48 @@
+{
+  "name": "Gerard Mercator, Tuscia, 1589 (Italiae, Sclavoniae et Graeciae tabulae geographicae), David Rumsey Map Collection impression",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Tuscia._Per_Gerardum_Mercatorem_Cum_Privilegio._(IA_dr_tuscia-per-gerardum-mercatorem-cum-privilegio-10501410).jpg",
+  "licence": "public domain (the map is from 1589)",
+  "note": "13546x11730, uncoloured. Zanara's first appearance and the story's plate (in a coloured impression): an engraved island of 256 x 159 px between 'Gio' (Giglio) and 'Gianuti' (Giannutri), south of Monte Argentario, three hills drawn on it. CHOSEN BY CLAUDE, not reviewed by Etienne (a run he asked to go 'without my input'): the island's origin, the story's plate, and the sheet later Tuscany maps copied until it was dropped c. 1720. This scan is twice the resolution of the BnF impressions (6073x5238).",
+  "extraction_note": "--mode band, threshold 0.4: Mercator shades every coast as a solid dark band against pale land. At 0.25 the hill strokes drawn on the island join the band and wall off half of it; 0.35-0.55 is a plateau, 254-260 x 157-163 px.",
+  "fit_landmarks": [
+    {
+      "name": "Giglio (band-mask centroid)",
+      "x": 6737,
+      "y": 8887,
+      "lon": 10.905,
+      "lat": 42.355
+    },
+    {
+      "name": "Giannutri (band-mask centroid)",
+      "x": 7993,
+      "y": 8921,
+      "lon": 11.1,
+      "lat": 42.255
+    },
+    {
+      "name": "Ansedonia (town symbol)",
+      "x": 7706,
+      "y": 8197,
+      "lon": 11.285,
+      "lat": 42.41
+    },
+    {
+      "name": "Porto Ercole (town symbol)",
+      "x": 7622,
+      "y": 8405,
+      "lon": 11.207,
+      "lat": 42.394
+    },
+    {
+      "name": "Orbetello (town symbol)",
+      "x": 7500,
+      "y": 8325,
+      "lon": 11.213,
+      "lat": 42.441
+    }
+  ],
+  "fit_note": "NOT USED for scale or placement. A similarity fit on these five gives RMS 5 km across a 20 km cluster and a chart rotation of -35 degrees on a sheet that is plainly north-up: Mercator spreads Giglio and Giannutri to 2.03x their real 19.5 km apart, and the fit absorbs that as a turn. Kept for the record and for the interpolation below.",
+  "scale_note": "From the sheet's own latitude border: bars every 10 minutes, 43 deg at y 4059 and 42 deg at y 7590 on the left border, 3531 px per degree, 0.0315 km/px; read as a plan at equal linear scale both ways, north up.",
+  "position_note": "Interpolated between the two real islands Mercator draws on either side, since that is the relation the chart asserts: Zanara's centre (7335, 8980) lies at t = 0.478 along Giglio -> Giannutri and 77 px south of the line. Laid on the real segment (centroids 10.905,42.355 -> 11.100,42.255) with the offset scaled the same way, that is [10.990, 42.298].",
+  "landmarks": []
+}
