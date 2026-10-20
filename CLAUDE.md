@@ -376,6 +376,11 @@ all general:
   the same feature — a phantom archipelago is more interesting than a phantom
   blob. Components touching the crop edge are skipped, being clipped mainland
   rather than islands.
+- `--islet x,y` keeps an islet the wash never reached — S. Matheo's is a
+  pale core in an open ink ring. It seals the ring as the plate path seals
+  Frisland's islets and adds the core as a satellite. Radii 4-6 only: the
+  sealing keeps the largest core it finds, and a wider closing fuses nearby
+  sea hatching into a ring of its own.
 - `--drop-parts i,j` discards satellites the georeference lands on real
   ground. Every part's centroid is printed so the choice is auditable. Two of
   Vinckeboons' Gulf islands come out 200 km inland in Arizona.
@@ -514,7 +519,7 @@ python3 scripts/trace_outline.py ile-des-demons --chart gastaldi-1556 \
 python3 scripts/trace_outline.py saint-mathieu --chart ortelius-africa-1572 \
     --image ~/scratch/charts/sm-ortelius-1572.jpg \
     --mode red --threshold 40 --closing 3 --tolerance 1 \
-    --bbox 3720,4700,3960,4960 --centre=-5.08,-1.35
+    --bbox 3720,4700,3960,4960 --islet 3824,4752 --centre=-5.08,-1.35
 
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land

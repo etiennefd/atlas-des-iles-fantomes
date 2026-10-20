@@ -3,7 +3,7 @@
   "source_url": "https://commons.wikimedia.org/wiki/File:Theatrum_Orbis_Terrarum,_by_Abraham_Ortelius,_Africa,_1572.jpg",
   "licence": "public domain (the map is from 1570)",
   "note": "12444x9188, hand-coloured. S. Matheo is drawn west of Annobon just south of the equator as an orange-washed island of 65 x 109 px — a boot, notched on the west, with a speck of an islet off its north end. Chosen by Etienne in October 2026 over Mercator's Africa of 1595 (the same boot and islet in red, ~40 x 65 px), Blaeu's Africae nova descriptio of 1630 (a different shape, a blank sliver of ~60 x 20 px) and the story's own plate (a late-18th-century French sheet, ~15 px in the copy we have, source unidentified). The Theatrum was the best-selling atlas in Europe for decades and Mercator repeats this shape, so it is the influential depiction as well as the largest scan.",
-  "extraction_note": "--mode red: the wash is orange, R-(G+B)/2 > 40 isolates it at 3619 px against a stippled parchment sea. The islet to the north is an uncoloured ring of ~15 px, below what the wash can carry.",
+  "extraction_note": "--mode red: the wash is orange, R-(G+B)/2 > 40 isolates it at 3619 px against a stippled parchment sea. The islet to the north is uncoloured, so the wash cannot carry it: `--islet` seals its ink ring (grey < 110, closing radius 4-6, a plateau at 212-222 px) and keeps the pale core as a satellite. At radius 8 and above the closing fuses the sea hatching above it and the core leaks to 1272 px.",
   "landmarks": [
     {"name": "Cabo Verde", "x": 2783, "y": 2992, "lon": -17.53, "lat": 14.74},
     {"name": "Cape Sierra Leone", "x": 2983, "y": 3633, "lon": -13.30, "lat": 8.50},

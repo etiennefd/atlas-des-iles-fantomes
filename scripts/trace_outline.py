@@ -101,7 +101,8 @@ def residuals(p, K, landmarks):
 # --- the island ------------------------------------------------------------
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
-                seed=None, satellites=None, window=41, relief=None, seal=None, grow=0):
+                seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
+                islets=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -197,6 +198,28 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         for q in regionprops(lab2):
             if q.area < despeckle:
                 m[lab2 == q.label] = False
+    if islets:
+        # An islet the wash never reached: Ortelius leaves the speck off
+        # S. Matheo's north end uncoloured, a pale core inside an ink ring
+        # that is open at the top. The plate path's sealing does it — close
+        # the ring until it encloses something, take the core — on the
+        # crop's ink, around each seed. The part is then a satellite like any
+        # other, written into the same MultiPolygon. Radii 4-6 only: seal_core
+        # keeps the LARGEST core it finds, and at 8-10 the closing fuses the
+        # sea hatching above S. Matheo's islet into a ring of its own, so the
+        # "core" became 1272 px of paper between strokes. 4-6 is a plateau,
+        # 212-222 px, which is the islet.
+        ink = a.mean(axis=2) < 110
+        for sx, sy in islets:
+            lx, ly = (sx - x0) * upsample, (sy - y0) * upsample
+            R = 40 * upsample
+            yl, xl = max(0, ly - R), max(0, lx - R)
+            core = seal_core(ink[yl:ly + R, xl:lx + R], seed=(ly - yl, lx - xl),
+                             radii=(4, 5, 6), pad=20, min_area=60)
+            if core is None:
+                raise SystemExit(f"--islet {sx},{sy}: no ring closes round it — "
+                                 "move the seed onto the pale core")
+            m[yl:ly + R, xl:lx + R] |= core
     return m, (x0, y0)
 
 
@@ -342,7 +365,8 @@ def band_mask(a, thr, window, close, seeds, seal, grow, origin):
     return m
 
 
-def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100):
+def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100,
+              min_area=350):
     """An island whose outline the engraver left open is still ringed by the
     hatching that stands for water. Close that ring until it encircles the
     island; the pale core inside it is the island."""
@@ -358,7 +382,7 @@ def seal_core(local, seed=None, radii=(14, 18, 22, 28, 36, 46, 58, 72), pad=100)
                 continue
             core = lab == k
             # a leak through the ring swallows the sea; that is not an island
-            if core.sum() < 350 or core.sum() > 0.25 * core.size:
+            if core.sum() < min_area or core.sum() > 0.25 * core.size:
                 continue
             if best is None or core.sum() > best.sum():
                 best = core
@@ -731,7 +755,8 @@ def manual(a, chart):
                           a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
-                          seal=a.seal, grow=a.grow if a.mode == "band" else 0)
+                          seal=a.seal, grow=a.grow if a.mode == "band" else 0,
+                          islets=a.islet)
     if a.satellites:
         rings = component_rings(mask, a.tolerance)
     else:
@@ -869,6 +894,9 @@ def main():
                          "run — for pieces the georeference lands on real ground")
     ap.add_argument("--satellites", help="MIN,MAX component area in px — also keep "
                     "the chart's smaller islands, as extra parts of the same feature")
+    ap.add_argument("--islet", help="x,y in source px on the pale core of an "
+                    "uncoloured islet beside the island — its ink ring is sealed and "
+                    "the core kept as a satellite. Several separated by ';'")
     ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
                     "want, when it is not the largest one sharing the wash. "
                     "--mode ink takes several, separated by ';'")
@@ -889,6 +917,8 @@ def main():
     a.seed = ([tuple(int(v) for v in s.split(",")) for s in a.seed.split(";")]
               if a.seed else None)
     a.satellites = tuple(int(v) for v in a.satellites.split(",")) if a.satellites else None
+    a.islet = ([tuple(int(v) for v in s.split(",")) for s in a.islet.split(";")]
+               if a.islet else None)
     a.relief = tuple(int(v) for v in a.relief.split(",")) if a.relief else None
     a.seal = ([[tuple(int(v) for v in p.split(",")) for p in line.split()]
                for line in a.seal.split(";")] if a.seal else None)
@@ -919,7 +949,8 @@ def main():
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
-                          seal=a.seal, grow=a.grow if a.mode == "band" else 0)
+                          seal=a.seal, grow=a.grow if a.mode == "band" else 0,
+                          islets=a.islet)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass
@@ -937,7 +968,7 @@ def main():
         clat = sum(v[1] for v in q[:-1]) / (len(q) - 1)
         kept.append((idx, q, clon, clat))
     dropped = set(a.drop_parts or ())
-    if a.satellites:
+    if a.satellites or a.islet:
         print("  satellites:")
         for idx, q, clon, clat in kept[1:]:
             mark = "  DROPPED" if idx in dropped else ""
@@ -945,14 +976,22 @@ def main():
     rings = [q for idx, q, _, _ in kept if idx not in dropped]
     pts = rings[0]
 
-    ys, xs = np.nonzero(mask)
+    # the centre is the MAIN island's, as on the hand-scaled path: satellites
+    # must not move it, or adding an islet shifts the island under a fixed
+    # --centre (S. Matheo's islet would have moved it ~20 km south)
+    lab = label(mask)
+    ys, xs = np.nonzero(lab == max(regionprops(lab), key=lambda q: q.area).label)
     clon, clat = to_lonlat(p, K, (xs.min() + xs.max()) / 2 + ox,
                            (ys.min() + ys.max()) / 2 + oy)
     moved = None
     if a.centre:
         tlon, tlat = [float(v) for v in a.centre.split(",")]
         dlon, dlat = tlon - clon, tlat - clat
-        pts = [[round(q[0] + dlon, 4), round(q[1] + dlat, 4)] for q in pts]
+        # every part moves, not just the main ring: shifting only `pts` wrote
+        # a MultiPolygon from the unshifted rings, so an override was silently
+        # ignored on any island with satellites
+        rings = [[[round(q[0] + dlon, 4), round(q[1] + dlat, 4)] for q in r] for r in rings]
+        pts = rings[0]
         moved = (round(clon, 2), round(clat, 2))
         clon, clat = tlon, tlat
     lons = [q[0] for q in pts]; lats = [q[1] for q in pts]

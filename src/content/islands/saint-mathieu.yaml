@@ -35,8 +35,12 @@ outline_note: >-
   `--mode red --threshold 40`: the wash scores R-(G+B)/2 well above the
   stippled sea, and 40 is where the edge sits on Ortelius' drawn coastline
   — 55 and 72 fall inside it, 30 adds nothing (65 x 109 against 67 x 111).
-  Not included: the speck of an uncoloured islet off the north end, a ring
-  of ~15 px that the wash does not reach. Mercator draws it too.
+  Two parts: the islet off the north end is kept as a satellite (Étienne,
+  October 2026: add it). Ortelius leaves it uncoloured — a pale core, 19 x 22
+  px, inside an ink ring open at the top — so the wash cannot see it;
+  `--islet 3824,4752` seals that ring and keeps the core, ~20 km across and
+  ~25 km north of the main island. Mercator 1595 draws it too. The small
+  flag at its north-east corner is where the ring is open.
   SIZE IS THE CHART'S: 63 x 104 km, from the georeference (0.956 km/px,
   within 1% of the graticule's 0.964). Ortelius draws every island here
   oversized — Annobón ~8x its real length, São Tomé and Príncipe ~4x — so
