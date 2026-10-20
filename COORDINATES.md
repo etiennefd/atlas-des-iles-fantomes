@@ -49,7 +49,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | id | position | reasoning |
 |---|---|---|
 | `saint-brendan` | −19.01, 27.91 | San Borondón, west of El Hierro: georeferenced on all seven real Canaries of a c. 1760 chart (RMS 14 km). Mercator's placement west of Ireland (≈ −28.7, 52.1) was briefly a separate entry and was dropped: one island, not two. Was −25.0, 30.0, conjectural. |
-| `bacalao` | −52.0, 47.5 | Terra dos Bacalhaus, Newfoundland region. Highly variable. |
+| `bacalao` | −51.3, 48.2 | Terra dos Bacalhaus, Newfoundland region. Highly variable. **Placed by Claude (Oct 2026, unreviewed):** Gastaldi 1556 draws it where Trinity and Conception Bays are, which is land, so it sits in the nearest open water to Baccalieu Island, 111 km east, 24 km off the coast. Was −52.0, 47.5, a blob. |
 | `ile-des-demons` | −59.45, 50.49 | **Placed by the story, not the charts:** off Harrington Harbour on the Côte-Nord, where tradition puts Marguerite de La Rocque's marooning in 1542 (Étienne's call, October 2026). The charts put it off the northern tip of Newfoundland, near Quirpon, and Gastaldi 1556 draws it ~470 km tall. Here it is 10 km, shape from Gastaldi. Often conflated with Satanazes. Was −55.5, 51.5, a point for a placeholder blob lying on the Northern Peninsula. |
 | `thule` | −19.0, 64.0 | Pytheas, c. 330 BCE. Variously Iceland, Norway, Shetland. Placed on Iceland here. |
 | `terre-de-davis` | −90.0, −27.0 | Sighted 1687 sailing south from the Galápagos; later conflated with Easter Island (109°W), so this could move a long way west. |

@@ -2,8 +2,34 @@ name_fr: "Bacalao"
 name_en: "Bacalao"
 kind: island
 ocean: atlantique-nord
-coords: [-52.0, 47.5]
+coords: [-51.3, 48.2]
 span: [1508, 1600]
 coords_confidence: conjectural
 coords_note: >-
   Terra dos Bacalhaus, Newfoundland region. Position highly variable.
+  CHOSEN BY CLAUDE, October 2026, in a run Étienne asked to go "without my
+  input" — not reviewed by him. Gastaldi, whose island this is, draws
+  Bacalaos between Bonne viste and the C. de Ras island, i.e. where real
+  Trinity and Conception Bays are; that is land, so it was placed instead
+  in the nearest open water to Baccalieu Island (48.14 N, 52.80 W), the
+  real islet that kept the name: [-51.3, 48.2], 111 km east of it. The
+  closest clear centre, [-51.75, 48.25], left its west end 6 km off the
+  Bonavista peninsula, which reads on the globe as touching; this one leaves
+  24 km of water. Supersedes [-52.0, 47.5], a point for a placeholder blob.
+outline_note: >-
+  Traced from Giacomo Gastaldi's La Nuova Francia, Ramusio 1556 (McGill
+  scan, 4026 x 3228) — the same sheet as Île des Démons — where 'Bacalaos'
+  is a long thin island in the archipelago Gastaldi makes of Newfoundland,
+  355 x 161 px with a narrow eastern tail. CHOSEN BY CLAUDE, not Étienne:
+  the story's plate (Langenes 1602) labels as Ilha dos Bakalhaos what the
+  story's own caption says is real Baccalieu; Ortelius 1572 and de Jode
+  1593 use Baccalaos only as a coastal place-name, and the Vatican chart of
+  c. 1530 as the name of the mainland (Terra de Bacalaos). Gastaldi's is the
+  only depiction found of Bacalao as an island in its own right.
+  `--mode band`, as for Démons. Liberty: the lettering 'Bacalaos', which
+  sits on the island's south shore and reads as coast band, is painted out
+  (`--blank-box 2990,2192,3125,2256`), keeping the box clear of the shore;
+  without it the flood stops at the label and loses the paper south of it.
+  Size from the sheet: 0.54 km/px, from Terra Nova (~1020 px from its north
+  end to C. de Ras) against Newfoundland's 553 km, giving 193 x 87 km. On
+  Étienne's precedent of keeping the chart's scale (Saint-Mathieu).
