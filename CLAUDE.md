@@ -283,10 +283,12 @@ earth.
 
 ## Adding an island
 
-Done sixteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done nineteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-`saint-mathieu`.
+`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`. The last three were done
+in October 2026 in a run Étienne asked to go "without my input": every source
+and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
 project again.
 
@@ -521,6 +523,27 @@ python3 scripts/trace_outline.py saint-mathieu --chart ortelius-africa-1572 \
     --mode red --threshold 40 --closing 3 --tolerance 1 \
     --bbox 3720,4700,3960,4960 --islet 3824,4752 --centre=-5.08,-1.35
 
+# Bacalao — the same Gastaldi sheet; its lettering sits on the south shore
+python3 scripts/trace_outline.py bacalao --chart gastaldi-1556 \
+    --image ~/scratch/charts/demons-gastaldi-1556.jpg \
+    --mode band --threshold 0.25 --window 15 --closing 6 --grow 3 \
+    --seed 3050,2170 --blank-box 2990,2192,3125,2256 \
+    --tolerance 1.5 --bbox 2820,2080,3360,2380 \
+    --height-km 87 --centre=-51.3,48.2
+
+# Los Jardines — two islets blank inside hatching; ring sealing, not a threshold
+python3 scripts/trace_outline.py los-jardines --chart ortelius-pacific-1589 \
+    --image ~/scratch/charts/lj-bnf-1589.jpg \
+    --mode ring --seed "1357,2291;1396,2285" --tolerance 0.75 \
+    --bbox 1310,2250,1450,2320 --height-km 52.6 --centre=145.3,10.6
+
+# Zanara — solid coastal shading; scale from the latitude border, not a fit
+python3 scripts/trace_outline.py zanara --chart mercator-tuscia-1589 \
+    --image ~/scratch/charts/zan-tuscia-ia.jpg \
+    --mode band --threshold 0.4 --window 15 --closing 6 --grow 3 \
+    --seed 7250,8960 --tolerance 1.5 --bbox 7130,8840,7540,9110 \
+    --height-km 5.0 --centre=10.990,42.298
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -528,7 +551,7 @@ node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
-**Seven extraction modes, because charts differ.** A flat colour wash
+**Eight extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
 A *violet* wash needs `--mode magenta`, which is `(R+B)/2 - G`: the Catalan
 Atlas draws its sea in blue hatching exactly as dark as the wash and its rhumb
@@ -583,6 +606,14 @@ the demons stand across Demoni's north shore — `--seal "x,y x,y ..."` draws
 band by hand. A seal *is* the outline there, so it is a liberty: say so in
 `outline_note`. The flood refuses to finish if it reaches the crop edge.
 
+An **islet left blank inside hatching** whose strokes run out to the open
+sea (Ortelius' Los Iardinos, 1589) leaks every brightness threshold: the pale
+gaps between strokes connect the islet to the sea at any smoothing. `--mode
+ring` closes the ink round each `--seed` and keeps the pale core, the plate
+path's sealing applied locally; it is stable across closing radii 2-8 there.
+`--islet x,y` is the same sealing for an islet beside an island traced in
+another mode. The first `--seed` is the main island.
+
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
 so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
 block in its JSON takes a different path — the sea is flooded inward from the
@@ -636,6 +667,15 @@ still what every traced island uses, and Étienne kept it for S. Matheo
 numbers and he answered at random — so ask it WITH them: the drawn size, the neighbours'
 real sizes against their drawn ones, what each option looks like on the
 globe, and the precedent. A question he cannot answer is not a gate.
+
+**A landmark fit can turn spacing errors into a rotation.** On Mercator's
+Tuscia the five points round Monte Argentario fit at RMS 5 km — across a
+20 km cluster — with the chart rotated 35 degrees, on a sheet that is plainly
+north-up: Mercator spreads Giglio and Giannutri to twice their real distance,
+and a similarity transform can only absorb that as a turn. Check the fitted
+rotation against the sheet's own graticule; where they disagree, take scale
+and north from the graticule and place by interpolating between the real
+neighbours the chart draws.
 
 **Scale and position come from georeferencing where the chart can support it.**
 Portolans carry real coastlines beside their invented islands, so landmarks fit
@@ -772,7 +812,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 16 traced outlines, 18 placeholder blobs; 15 chart records in
+- 19 traced outlines, 15 placeholder blobs; 17 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -795,7 +835,11 @@ output `dist`, no adapter (static). Nothing to configure.
   `dos-romeiros` (both from Linschoten 1596, georeferenced on the Mascarenes
   and Madagascar), and `ile-des-demons` (Gastaldi 1556, the story's plate),
   and `saint-mathieu` (Ortelius' Africa 1570, anchored on Annobón — which
-  moved it ~880 km east of the story's "1000 km north of Ascension")
+  moved it ~880 km east of the story's "1000 km north of Ascension"), and,
+  unreviewed, `bacalao` (Gastaldi 1556 again, moved off the real bays it is
+  drawn over), `los-jardines` (Ortelius' Maris Pacifici 1589, at Saavedra's
+  1528 latitude rather than the 21 N position struck in 1973) and `zanara`
+  (Mercator's Tuscia 1589, its origin)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -842,9 +886,14 @@ output `dist`, no adapter (static). Nothing to configure.
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-   `saint-mathieu`. No placeholder blob now actively
+   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
+   **`aurora` was searched and stays a blob** (October 2026): every source
+   found — the story's Spruner 1855 plate, the 1776 variation charts, Weddell's
+   1825 volume, the Malaspina expedition's diary — marks the three islands as
+   specks with no coastline. The Atrevida's own 1794 survey drawing, if it
+   exists, is not on Commons; that is the one source worth finding.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
    Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map
