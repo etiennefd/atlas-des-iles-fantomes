@@ -833,10 +833,11 @@ output `dist`, no adapter (static). Nothing to configure.
    arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
    to preview one, `--all --images --force` to redo everything. If a post is
    edited on the blog, re-run rather than hand-patching.
-2. **Trace real outlines** — see *Adding an island*. Fourteen done:
+2. **Trace real outlines** — see *Adding an island*. Sixteen done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
-   `buss`, `juan-de-lisboa`, `dos-romeiros`. No placeholder blob now actively
+   `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
+   `saint-mathieu`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
