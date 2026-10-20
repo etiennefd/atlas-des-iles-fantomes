@@ -23,7 +23,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `maria-de-lajara` | −140.0, 27.0 | Pacific charts registered it around 27°N, 140°W from the late 17th to early 19th century. |
 | `ernest-legouve` | −150.667, −35.2 | International Hydrographic Bureau, 9 Feb 1957: 35°12′S 150°40′W. Searched 1982–83, not found. |
 | `maria-theresa` | −136.65, −36.833 | Reported 16 Nov 1843 by Capt. Asaph P. Taber of the *Maria-Theresa*. Note: Verne gives 37°11′S 153°00′W on the Paris meridian. |
-| `aurora` | −47.817, −52.617 | The Spanish *San Miguel* fixed them at 52°37′S, 47°49′W; surveyed by the *Atrevida*, 20 Feb 1794. |
+| `aurora` | −47.865, −52.975 | The Spanish *San Miguel* fixed them at 52°37′S, 47°49′W; surveyed by the *Atrevida*, **21–27 January** 1794 (not 20 Feb). **Now three positions, Oct 2026**, from Espinosa y Tello's *Memorias* (1809, p. 31), W of Cádiz + 6°17′15″: 53°15′22″S 47°57′15″W; 53°02′40″S 47°55′15″W (la Rasa); 52°37′24″S 47°43′15″W (Isla Nueva). `coords` is the group's centre. |
 | `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 1841. Keates 1860 and Stannard 1886 gave slightly different fixes. |
 | `emerald` | 162.2, −57.5 | Capt. William Elliot of the *Emerald*, December 1821: 57°30′S 162°12′E. |
 

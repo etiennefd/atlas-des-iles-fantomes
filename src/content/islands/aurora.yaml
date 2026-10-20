@@ -2,9 +2,46 @@ name_fr: "Les îles Aurora"
 name_en: "The Aurora Islands"
 kind: island
 ocean: atlantique-sud
-coords: [-47.817, -52.617]
+coords: [-47.865, -52.975]
 span: [1762, 1870]
 coords_confidence: attested
 coords_note: >-
   Spanish ship San Miguel fixed them at 52 37' S, 47 49' W. Surveyed by
-  the Atrevida, 20 Feb 1794.
+  the Atrevida, 21-27 January 1794 — not 20 February, the date English
+  Wikipedia gives (after Stommel); the expedition's own account says "desde
+  el 21 al 27 de Enero".
+  Now three positions, one per island, from that account: Espinosa y Tello,
+  Memorias sobre las observaciones astronómicas hechas por los navegantes
+  españoles (Madrid, 1809), p. 31, which says "Las islas son tres, están
+  próximamente en un mismo meridiano". Its longitudes are west of Cádiz;
+  Weddell (1825) and every English copy add 6 17' 15" for Greenwich:
+  - the southernmost, 53 15' 22" S, 47 57' 15" W
+  - la Rasa, the low middle one, 53 02' 40" S, 47 55' 15" W
+  - Isla Nueva, named by the Atrevida, 52 37' 24" S, 47 43' 15" W
+  The San Miguel's fix is Isla Nueva's to within 6'. `coords` is now the
+  group's centre, [-47.865, -52.975], for the label; it was the San
+  Miguel's point, [-47.817, -52.617]. Viana's diary of the expedition gives
+  a different pair — "su medianía" at 53 09' 15", 41 46' 50" W of Cádiz and
+  Isla Nueva at 52 35' 30", 41 56' — 10-30' off the Memorias; the Memorias
+  is the formal astronomical account and is used.
+outline_note: >-
+  NOT A TRACING. No depiction with a coastline was found, after a
+  time-boxed search in October 2026 (Étienne's call: search, and if nothing
+  has an outline, three blobs). Dots only: the Bauzá/Selma 'Carta esférica
+  del Océano Meridional' (Dirección de Hidrografía, 1800, Museo Naval, which
+  draws the Atrevida's own track to the islands), the story's Spruner 1855
+  plate, a c. 1800 French map, the 1776 variation charts. Weddell's 1825
+  track chart (seen only in Gould's 1928 redrawing) gives three squiggles of
+  a few millimetres, "as laid down, not in existence". No Atrevida sketch is
+  mentioned in the Memorias or in Figueroa's study of the Museo Naval
+  manuscripts (Magallánica 9, 2023); a direct search of Museo Naval Ms. 634
+  ff. 11r-14v is the one lead left.
+  So: three placeholder blobs, build_geojson's own blob() with r = 0.04 deg
+  (each ~8-9 km tall), one at each of the Atrevida's positions. The
+  arrangement is the record's; the shapes and the size are not — ~10 km is
+  the atlas's size for a very small island (Bermeja, Nakanotorishima,
+  Démons), and the islands are 24 and 47 km apart, so much larger would merge
+  them. Bustamante's descriptions, for whoever draws them: the southern a
+  tent-shaped mountain ('en forma de pabellón'), split, white to the east
+  and dark to the west; la Rasa low; Isla Nueva a great split rock with
+  sharp peaks round a ravine and reefs a mile off.

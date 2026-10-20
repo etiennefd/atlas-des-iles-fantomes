@@ -812,7 +812,8 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 19 traced outlines, 15 placeholder blobs; 17 chart records in
+- 19 traced outlines, 14 placeholder blobs, and `aurora` as three blobs at
+  attested positions; 17 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -889,11 +890,13 @@ output `dist`, no adapter (static). Nothing to configure.
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
-   **`aurora` was searched and stays a blob** (October 2026): every source
-   found — the story's Spruner 1855 plate, the 1776 variation charts, Weddell's
-   1825 volume, the Malaspina expedition's diary — marks the three islands as
-   specks with no coastline. The Atrevida's own 1794 survey drawing, if it
-   exists, is not on Commons; that is the one source worth finding.
+   **`aurora` is three placeholder blobs at the Atrevida's three positions**
+   (October 2026), not a tracing: a time-boxed search found no depiction with
+   a coastline — the 1800 Spanish hydrographic chart, the story's Spruner
+   plate and every atlas sheet draw dots. The positions are firm, from
+   Espinosa y Tello's *Memorias* (1809), longitudes west of Cádiz. The one
+   lead left is Museo Naval Ms. 634 ff. 11r–14v, the Atrevida's own extract;
+   a sketch there would replace the blobs.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
    Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map
