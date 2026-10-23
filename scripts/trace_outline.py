@@ -788,12 +788,19 @@ def manual(a, chart):
     ys, xs = np.nonzero(main)
     cx, cy = (xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2
     kmpx = a.height_km / (ys.max() - ys.min())   # already in upsampled px
+    # --turn here is usually not a liberty but a reading: Fletcher draws
+    # Elizabeth Island south-up, so it is turned 180 to stand north-up. It
+    # rotates the drawing clockwise about its own centre, before placing.
+    t = math.radians(a.turn or 0.0)
+    ct, st = math.cos(t), math.sin(t)
     polys = []
     for ring in rings:
         pts = []
         for r, c in ring:
-            dlat = -(r - cy) * kmpx / 111.0
-            dlon = (c - cx) * kmpx / (111.32 * math.cos(math.radians(lat)))
+            x, y = c - cx, -(r - cy)
+            x, y = x * ct + y * st, -x * st + y * ct
+            dlat = y * kmpx / 111.0
+            dlon = x * kmpx / (111.32 * math.cos(math.radians(lat)))
             pts.append([round(lon + dlon, 4), round(lat + dlat, 4)])
         area = sum(pts[i][0] * pts[(i + 1) % len(pts)][1] -
                    pts[(i + 1) % len(pts)][0] * pts[i][1] for i in range(len(pts)))
@@ -819,7 +826,13 @@ def manual(a, chart):
                            "georeference": None,
                            "scale_source": "height set by hand; chart not yet georeferenced",
                            "centre": [lon, lat],
-                           "size_km": [round(km_w), round(a.height_km)]},
+                           "turned_deg": a.turn or None,
+                           # size_km is a control that build_geojson rescales to by
+                           # latitude span; after any turn but a half turn the drawn
+                           # height is not that span (the Groclant trap), so it is
+                           # written as a readout instead
+                           ("size_km" if (a.turn or 0) % 180 == 0 else "size_km_measured"):
+                               [round(km_w), round(a.height_km)]},
             "geometry": ({"type": "Polygon", "coordinates": [pts]} if len(polys) == 1
                          else {"type": "MultiPolygon",
                                "coordinates": [[q] for q in polys]})}

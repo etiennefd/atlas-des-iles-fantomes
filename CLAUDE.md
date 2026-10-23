@@ -283,10 +283,11 @@ earth.
 
 ## Adding an island
 
-Done nineteen times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`. The last three were done
+`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`.
+`bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
@@ -544,6 +545,14 @@ python3 scripts/trace_outline.py zanara --chart mercator-tuscia-1589 \
     --seed 7250,8960 --tolerance 1.5 --bbox 7130,8840,7540,9110 \
     --height-km 5.0 --centre=10.990,42.298
 
+# Elizabeth — a drawing from Drake's voyage, south-up, so turned 180; the
+# stream joins the pool to the coast and is painted out so the pool fills
+python3 scripts/trace_outline.py elizabeth --chart fletcher-elizabeth \
+    --image ~/scratch/charts/eliz-nuttall-0360.png \
+    --mode ink --threshold 110 --closing 3 --seed 1000,1450 \
+    --blank-box 1000,926,1032,1045 --tolerance 1.5 \
+    --bbox 600,820,1420,1650 --turn 180 --height-km 48.3 --centre=-70.0,-57.0
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -696,6 +705,13 @@ reference meridian, law — takes a path that inverts every vertex through the
 projection instead. Fit it by least squares on landmarks (twelve on Ortelius,
 RMS 208 km; stereographic beat equidistant, 208 against 227).
 
+**A drawing can be upside down.** Fletcher draws Elizabeth Island south-up —
+the pool "in the south part" sits at the top, and his map of the region in the
+same manuscript is south-up too. `--turn 180` on the hand-scaled path stands it
+north-up and records `turned_deg`; that turn is a reading, not a liberty. Any
+turn but a half turn writes `size_km_measured` rather than `size_km`, for the
+Groclant reason below. Check orientation on every hand drawing.
+
 **`--turn` and `--scale` exist for when the island has to be moved, and both
 are liberties.** They rotate and resize about the island's own centre in a
 spherical azimuthal-equidistant plane, so a turn is a rigid rotation *on the
@@ -812,8 +828,8 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 19 traced outlines, 14 placeholder blobs, and `aurora` as three blobs at
-  attested positions; 17 chart records in
+- 20 traced outlines, 13 placeholder blobs, and `aurora` as three blobs at
+  attested positions; 18 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -840,7 +856,8 @@ output `dist`, no adapter (static). Nothing to configure.
   unreviewed, `bacalao` (Gastaldi 1556 again, moved off the real bays it is
   drawn over), `los-jardines` (Ortelius' Maris Pacifici 1589, at Saavedra's
   1528 latitude rather than the 21 N position struck in 1973) and `zanara`
-  (Mercator's Tuscia 1589, its origin)
+  (Mercator's Tuscia 1589, its origin), and `elizabeth` (Fletcher's own
+  drawing from Drake's voyage, turned north-up, 48 km)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -887,7 +904,7 @@ output `dist`, no adapter (static). Nothing to configure.
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`. No placeholder blob now actively
+   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**
