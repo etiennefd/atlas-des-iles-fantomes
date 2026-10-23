@@ -2,10 +2,36 @@ name_fr: "Thulé"
 name_en: "Thule"
 kind: island
 ocean: atlantique-nord
-coords: [-19.0, 64.0]
+coords: [-11.0, 60.0]
 span: [-330, 1600]
 span_qualifier: vers
 coords_confidence: conjectural
 coords_note: >-
   Pytheas, c. 330 BCE. Variously identified with Iceland, Norway,
   Shetland. Planned-state test case.
+  Moved in October 2026 from [-19.0, 64.0], which lay 69% on Iceland, to
+  [-11.0, 60.0], by Étienne's choice of source: Olaus Magnus' Carta Marina
+  (1539) draws 'Tile' as an island separate from 'Islandia', so Iceland
+  stays on the map and Thule goes where Olaus puts it — south of Iceland,
+  west of the Faroes, north-west of Orkney. The sheet cannot fix it
+  closely: a similarity fit on Islandia, the Faroes, Orkney and Shetland
+  has RMS 93 km and a 47 deg rotation on a north-up sheet (Olaus draws the
+  northern islands two to five times too large and crowded), and gives
+  [-10.3, 59.2]; an affine on Islandia, Faroes and Orkney gives
+  [-12.2, 60.3]. [-11.0, 60.0] lies between the two. Open water: 210 km
+  from the Outer Hebrides, ~800 km from Frisland, ~930 km from Buss.
+outline_note: >-
+  Traced from Olaus Magnus' Carta Marina, Venice 1539 (Commons
+  CartaMarina.png, 13978 x 10394): 'TILE', 778 x 571 px, with a satellite
+  islet off its west coast — two parts. Chosen by Étienne in October 2026,
+  with the decision that Iceland stays, over a Ptolemaic Thule that would
+  have replaced it.
+  `--mode band` at density 0.4 (0.3-0.4 a plateau; 0.45 leaks).
+  Liberty: a road drawn along the north shore reads as coastline and walls
+  off the strip north of it, so it is painted out, clear of the coast. The
+  islet, a pale core in the hatching, comes in with `--islet` at an ink
+  threshold of 130.
+  SIZE IS THE CHART'S: 164 x 120 km, at the 0.21 km/px of the fit on its
+  neighbours, by Étienne's choice (October 2026), with the comparison in
+  front of him, over 55 x 40 km — a third, as Olaus oversizes Orkney ~5x,
+  the Faroes ~2x and Shetland 2-3x by extent, all read off bounding boxes.

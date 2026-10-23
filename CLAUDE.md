@@ -283,10 +283,10 @@ earth.
 
 ## Adding an island
 
-Done twenty times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-one times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`.
+`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`.
 `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -553,6 +553,15 @@ python3 scripts/trace_outline.py elizabeth --chart fletcher-elizabeth \
     --blank-box 1000,926,1032,1045 --tolerance 1.5 \
     --bbox 600,820,1420,1650 --turn 180 --height-km 48.3 --centre=-70.0,-57.0
 
+# Thule — the Carta Marina's Tile, separate from Iceland, which stays; a road
+# on the north shore is painted out; the west islet sealed with --islet
+python3 scripts/trace_outline.py thule --chart carta-marina-1539 \
+    --image ~/scratch/charts/thule-cartamarina-1539.png \
+    --mode band --threshold 0.4 --window 15 --closing 6 --grow 3 \
+    --seed 1316,4732 --blank-box 1415,4552,1665,4583 \
+    --islet 1282,4640 --islet-threshold 130 --tolerance 1.5 \
+    --bbox 1100,4330,2080,5060 --height-km 120 --centre=-11.0,60.0
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -621,7 +630,16 @@ gaps between strokes connect the islet to the sea at any smoothing. `--mode
 ring` closes the ink round each `--seed` and keeps the pale core, the plate
 path's sealing applied locally; it is stable across closing radii 2-8 there.
 `--islet x,y` is the same sealing for an islet beside an island traced in
-another mode. The first `--seed` is the main island.
+another mode (colour, band or ink); `--islet-threshold` sets its ink level,
+and a core too big for the 80 px window is retried in a 160 px one. The
+first `--seed` is the main island.
+
+**Choose the treatment and the source together** where a phantom shares a
+place with real land. Thule on a Ptolemaic sheet *is* the island at Iceland's
+place, so tracing it there would mean erasing Iceland, as Californie erases
+California; the Carta Marina draws Tile and Islandia side by side, so with
+that source Iceland stays and Thule moves to where Olaus put it. Étienne chose
+the second (October 2026).
 
 An **engraved plate** (Frisland 1562) has neither: land is bare parchment and
 so is the sea, so there is nothing to threshold *for*. A chart with a `plate`
@@ -828,8 +846,8 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 20 traced outlines, 13 placeholder blobs, and `aurora` as three blobs at
-  attested positions; 18 chart records in
+- 21 traced outlines, 12 placeholder blobs, and `aurora` as three blobs at
+  attested positions; 19 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -857,7 +875,8 @@ output `dist`, no adapter (static). Nothing to configure.
   drawn over), `los-jardines` (Ortelius' Maris Pacifici 1589, at Saavedra's
   1528 latitude rather than the 21 N position struck in 1973) and `zanara`
   (Mercator's Tuscia 1589, its origin), and `elizabeth` (Fletcher's own
-  drawing from Drake's voyage, turned north-up, 48 km)
+  drawing from Drake's voyage, turned north-up, 48 km), and `thule`
+  (Olaus Magnus' Carta Marina 1539, moved off Iceland, which stays)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -904,7 +923,7 @@ output `dist`, no adapter (static). Nothing to configure.
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`. No placeholder blob now actively
+   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**

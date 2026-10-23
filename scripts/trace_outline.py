@@ -102,7 +102,7 @@ def residuals(p, K, landmarks):
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
                 seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
-                islets=None):
+                islets=None, islet_thr=110):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -123,12 +123,18 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         img = img.resize((img.width * upsample, img.height * upsample), Image.LANCZOS)
     a = np.asarray(img.convert("RGB")).astype(int)
     if mode == "ink":
-        return ink_mask(a, thr, close, seed, (x0, y0)), (x0, y0)
+        m = ink_mask(a, thr, close, seed, (x0, y0))
+        if islets:
+            m |= ring_cores(a, islets, (x0, y0), upsample, "--islet", islet_thr)
+        return m, (x0, y0)
     if mode == "density":
         return density_mask(a, thr, open_r, close, window, relief, (x0, y0),
                             satellites), (x0, y0)
     if mode == "band":
-        return band_mask(a, thr, window, close, seed, seal, grow, (x0, y0)), (x0, y0)
+        m = band_mask(a, thr, window, close, seed, seal, grow, (x0, y0))
+        if islets:
+            m |= ring_cores(a, islets, (x0, y0), upsample, "--islet", islet_thr)
+        return m, (x0, y0)
     if mode == "ring":
         if not seed:
             raise SystemExit("--mode ring needs --seed: a point on each islet's pale core")
@@ -213,25 +219,33 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # sea hatching above S. Matheo's islet into a ring of its own, so the
         # "core" became 1272 px of paper between strokes. 4-6 is a plateau,
         # 212-222 px, which is the islet.
-        m |= ring_cores(a, islets, (x0, y0), upsample, "--islet")
+        m |= ring_cores(a, islets, (x0, y0), upsample, "--islet", islet_thr)
     return m, (x0, y0)
 
 
-def ring_cores(a, seeds, origin, upsample=1, flag="--seed"):
+def ring_cores(a, seeds, origin, upsample=1, flag="--seed", ink_thr=110):
     """The pale core inside an ink ring, around each seed: the plate path's
     sealing, applied locally. For islets drawn blank inside hatching, where
     the gaps between the strokes run straight out to the open sea, so no
     threshold separates the islet from it (Ortelius' Los Iardinos leak to
-    the crop edge at every smoothing). Closing the ink seals those gaps."""
+    the crop edge at every smoothing). Closing the ink seals those gaps.
+
+    The search window is 80 px; a core over a quarter of it is refused as a
+    leak, so a bigger islet (Olaus Magnus' beside Tile, ~58 px) is retried in
+    a 160 px window. `ink_thr` is the grey level below which a pixel is ink:
+    at 110 a hair of paper between two of Olaus' hatch strokes joins that
+    islet, at 130 it does not."""
     x0, y0 = origin
-    ink = a.mean(axis=2) < 110
+    ink = a.mean(axis=2) < ink_thr
     m = np.zeros(ink.shape, bool)
     for sx, sy in seeds:
         lx, ly = (sx - x0) * upsample, (sy - y0) * upsample
-        R = 40 * upsample
-        yl, xl = max(0, ly - R), max(0, lx - R)
-        core = seal_core(ink[yl:ly + R, xl:lx + R], seed=(ly - yl, lx - xl),
-                         radii=(4, 5, 6), pad=20, min_area=60)
+        for R in (40 * upsample, 80 * upsample):
+            yl, xl = max(0, ly - R), max(0, lx - R)
+            core = seal_core(ink[yl:ly + R, xl:lx + R], seed=(ly - yl, lx - xl),
+                             radii=(4, 5, 6), pad=20, min_area=60)
+            if core is not None:
+                break
         if core is None:
             raise SystemExit(f"{flag} {sx},{sy}: no ring closes round it — "
                              "move the seed onto the pale core")
@@ -772,7 +786,7 @@ def manual(a, chart):
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet)
+                          islets=a.islet, islet_thr=a.islet_thr)
     if a.satellites or a.islet or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
@@ -929,6 +943,8 @@ def main():
     ap.add_argument("--islet", help="x,y in source px on the pale core of an "
                     "uncoloured islet beside the island — its ink ring is sealed and "
                     "the core kept as a satellite. Several separated by ';'")
+    ap.add_argument("--islet-threshold", type=float, default=110, dest="islet_thr",
+                    help="grey level below which a pixel is ink, for --islet's ring")
     ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
                     "want, when it is not the largest one sharing the wash. "
                     "--mode ink takes several, separated by ';'")
@@ -982,7 +998,7 @@ def main():
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet)
+                          islets=a.islet, islet_thr=a.islet_thr)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass
