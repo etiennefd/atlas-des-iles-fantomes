@@ -95,7 +95,7 @@ Pulled from the notices on the blog:
 |---|---|---|
 | `zanara` | 10.99, 42.298 | **Mediterranean**, not Atlantic. Tyrrhenian Sea off Tuscany near Monte Argentario, between Giglio and Giannutri. Mercator 1589 → c. 1720. **Confirmed Oct 2026** by interpolating Mercator's own placement between his Giglio and Giannutri. |
 | `saint-mathieu` | −5.08, −1.35 | **Superseded October 2026** — was −13.0, −1.2, from "1000 km north of Ascension". Now from Ortelius' *Africae Tabula Nova* (1570), the chart that gives the shape: anchored on Annobón, ~1200 km due west of it at the sheet's graticule scale. A landmark fit gives −5.47, −1.74 (RMS 201 km); Mercator 1595 agrees on the relation to Annobón. Possibly a confusion with Annobón, at the same latitude. |
-| `ile-aux-vaches` | −30.0, −3.0 | Atlantic between South America and Africa, off the Brazilian coast on the Piri Reis map of 1513 — apparently its only appearance. Position read off the fragment, so loose. |
+| `ile-aux-vaches` | −35.0, 6.2 | Atlantic between South America and Africa, on the Piri Reis map of 1513 — apparently its only appearance. **Refitted Oct 2026** on the fragment's Cape Verde Islands, Cap-Vert and Cabo de São Roque (RMS 62 km); the story's alternative, nine days west of Cerné, would be about −25, 24. Was −30.0, −3.0. |
 
 Zanara needed a `mediterranee` ocean value, the same situation as Kianida in
 the Black Sea. Two of thirty-four islands are now in enclosed seas.

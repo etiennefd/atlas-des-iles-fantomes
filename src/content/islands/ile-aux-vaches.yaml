@@ -2,10 +2,35 @@ name_fr: "L’île aux Vaches"
 name_en: "Cow Island"
 kind: island
 ocean: atlantique-sud
-coords: [-30.0, -3.0]
+coords: [-35.0, 6.2]
 span: [1513, 1513]
 coords_confidence: conjectural
 coords_note: >-
   Atlantic between South America and Africa, not far off the Brazilian coast
   on the Piri Reis map of 1513 — apparently its only appearance. Position
   read off the surviving fragment, so treat as loose.
+  October 2026: fitted on the fragment itself, by Étienne's choice of the
+  Piri Reis position over the story's. A similarity fit on three features
+  Piri Reis draws — the Cape Verde Islands, Cap-Vert at Dakar and Cabo de
+  São Roque — has RMS 62 km, 4.05 km/px and a modest -9.5 deg rotation,
+  and puts the centre at [-35.0, 6.2]; adding the Canaries gives
+  [-35.6, 6.1]. Supersedes [-30.0, -3.0], ~1160 km away. Open water, 1300
+  km north of Brazil's north-east tip.
+  The story's own geography was the alternative: nine days' sail west of
+  Cerné, read as Herne Island at Dakhla (23.7 N, 15.9 W; contested), which
+  at ~100 km a day is about [-25, 24], between the Canaries and Cape Verde.
+outline_note: >-
+  Traced from the Piri Reis map, 1513 (Topkapı; Commons '1513 Piri
+  Reis.jpg', 2000 x 2753), the story's plate: a solid red wash of 67 x 87
+  px, `--mode red --threshold 75 --open 3` (75-80 a plateau; without the
+  opening a rhumb line joins a dot and the island grows to 101 px).
+  Fourteen parts: the island and the thirteen red dots Piri Reis rings it
+  with, the portolan sign for rocks and shoals, kept as islets by
+  Étienne's choice (October 2026). They come in through `--dots 30`: dark,
+  compact, red blobs within 30 px of the coast, split where they touch;
+  farther out are a ship and a boat. A word of lettering 16 px north of the
+  coast passed every test and is painted out (`--blank-box`). The main
+  island is pixel-identical with and without the dots.
+  SIZE IS THE CHART'S: 274 x 352 km at 4.05 km/px, by Étienne's choice,
+  over a third of that — Piri Reis draws the Cape Verde Islands 2-4x too
+  large. The story calls it "une terre assez grande".

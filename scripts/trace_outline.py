@@ -102,7 +102,7 @@ def residuals(p, K, landmarks):
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
                 seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
-                islets=None, islet_thr=110):
+                islets=None, islet_thr=110, dots=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -208,6 +208,8 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         for q in regionprops(lab2):
             if q.area < despeckle:
                 m[lab2 == q.label] = False
+    if dots:
+        m |= portolan_dots(a, m, dots)
     if islets:
         # An islet the wash never reached: Ortelius leaves the speck off
         # S. Matheo's north end uncoloured, a pale core inside an ink ring
@@ -221,6 +223,41 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # 212-222 px, which is the islet.
         m |= ring_cores(a, islets, (x0, y0), upsample, "--islet", islet_thr)
     return m, (x0, y0)
+
+
+def portolan_dots(a, island, reach):
+    """The ring of dots a portolan draws round an island, for rocks and shoals,
+    kept as satellites. Piri Reis rings the Isle of Cows with about a dozen,
+    some darker than the wash, so the island's own red threshold either loses
+    them or, set lower, fuses them onto the coast and lifts rhumb lines as
+    islets. Here a dot is found on its own terms: dark (grey < 155), compact
+    (solidity >= 0.8), red (R-(G+B)/2 > 45 on average), 12-150 px, and
+    within `reach` px of the coast — farther out it is a ship or a boat.
+    Dots touching each other are split at their distance-transform peaks, and
+    each is shrunk 1 px so neighbours stay separate parts. Lettering near the
+    coast can pass every test; paint it out with --blank-box."""
+    from scipy.ndimage import distance_transform_edt
+    from skimage.feature import peak_local_max
+    from skimage.segmentation import watershed
+    R, G, B = a[:, :, 0], a[:, :, 1], a[:, :, 2]
+    red = R - (G + B) / 2
+    dark = 255 - (R + G + B) / 3
+    m = (gaussian_filter(dark.astype(float), 1.0) > 100) & ~binary_dilation(island, disk(3))
+    m = binary_opening(m, disk(2))
+    dist = distance_transform_edt(m)
+    markers = np.zeros(m.shape, int)
+    for i, (y, x) in enumerate(peak_local_max(dist, min_distance=5, threshold_abs=2.5,
+                                              labels=label(m)), 1):
+        markers[y, x] = i
+    ws = watershed(-dist, markers, mask=m)
+    to_coast = distance_transform_edt(~island)
+    out = np.zeros(m.shape, bool)
+    for r in regionprops(ws):
+        piece = ws == r.label
+        if (12 <= r.area <= 150 and r.solidity >= 0.8 and red[piece].mean() > 45
+                and to_coast[piece].min() <= reach):
+            out |= binary_erosion(piece)
+    return out
 
 
 def ring_cores(a, seeds, origin, upsample=1, flag="--seed", ink_thr=110):
@@ -786,8 +823,8 @@ def manual(a, chart):
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet, islet_thr=a.islet_thr)
-    if a.satellites or a.islet or a.mode == "ring":
+                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots)
+    if a.satellites or a.islet or a.dots or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
         ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
@@ -943,6 +980,9 @@ def main():
     ap.add_argument("--islet", help="x,y in source px on the pale core of an "
                     "uncoloured islet beside the island — its ink ring is sealed and "
                     "the core kept as a satellite. Several separated by ';'")
+    ap.add_argument("--dots", type=int, dest="dots",
+                    help="colour modes: keep the portolan ring of rock dots within N px "
+                         "of the coast as satellites (Piri Reis' Isle of Cows: 30)")
     ap.add_argument("--islet-threshold", type=float, default=110, dest="islet_thr",
                     help="grey level below which a pixel is ink, for --islet's ring")
     ap.add_argument("--seed", help="x,y in source pixels inside the landmass you "
@@ -998,7 +1038,7 @@ def main():
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet, islet_thr=a.islet_thr)
+                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass
@@ -1016,7 +1056,7 @@ def main():
         clat = sum(v[1] for v in q[:-1]) / (len(q) - 1)
         kept.append((idx, q, clon, clat))
     dropped = set(a.drop_parts or ())
-    if a.satellites or a.islet:
+    if a.satellites or a.islet or a.dots:
         print("  satellites:")
         for idx, q, clon, clat in kept[1:]:
             mark = "  DROPPED" if idx in dropped else ""

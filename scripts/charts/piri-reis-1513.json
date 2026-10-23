@@ -1,0 +1,15 @@
+{
+  "name": "Piri Reis, world map, 1513 (surviving western fragment), Topkapı Palace Library, Istanbul",
+  "source_url": "https://commons.wikimedia.org/wiki/File:1513_Piri_Reis.jpg",
+  "licence": "public domain (the map is from 1513)",
+  "note": "2000x2753, a photograph of the parchment; the larger Commons files are the same photograph or other Piri Reis maps. The island is a solid red wash in mid-Atlantic between the Brazilian coast and Africa, about 67 x 87 px, ringed by red dots (the portolan convention for rocks and shoals) and lettered beside it; it is the story's plate. Its only known appearance, so the source was Etienne's from the start (October 2026).",
+  "extraction_note": "--mode red, threshold 75, smooth 2, opening 3: 75-80 is a plateau at 66-67 x 86-87 px once the opening frees the dots that touch the east coast. At threshold 70 without the opening a rhumb line joins the southern dot and the island grows to 101 px tall. The dots are not kept.",
+  "fit_landmarks": [
+    {"name": "Cape Verde Islands (cluster centre)", "x": 1270, "y": 1070, "lon": -23.9, "lat": 16.0},
+    {"name": "Cap-Vert, Dakar (Africa's westernmost bulge)", "x": 1450, "y": 1040, "lon": -17.5, "lat": 14.7},
+    {"name": "Cabo de Sao Roque (where Brazil's coast turns south)", "x": 1060, "y": 1680, "lon": -35.2, "lat": -5.5},
+    {"name": "Canaries (cluster centre)", "x": 1480, "y": 790, "lon": -15.6, "lat": 28.3}
+  ],
+  "fit_note": "Similarity fit on the first three: RMS 62 km, 4.05 km/px, rotation -9.5 deg, island centre [-35.0, 6.2]. With the Canaries added: RMS 173 km, 4.27 km/px, -5.8 deg, [-35.6, 6.1]. The two agree, and the rotation is modest, so unlike the Carta Marina or Mercator's Tuscia the fit is usable; the identifications of the Canaries and Cape Verde clusters are by position and drawing, not by legible names. An affine on the three is an extrapolation (barycentric weight -0.89) and is not used.",
+  "landmarks": []
+}

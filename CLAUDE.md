@@ -283,11 +283,11 @@ earth.
 
 ## Adding an island
 
-Done twenty-one times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-two times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`.
-`bacalao`, `los-jardines` and `zanara` were done
+`saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
+`ile-aux-vaches`. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
@@ -384,6 +384,12 @@ all general:
   Frisland's islets and adds the core as a satellite. Radii 4-6 only: the
   sealing keeps the largest core it finds, and a wider closing fuses nearby
   sea hatching into a ring of its own.
+- `--dots N` keeps the **portolan ring of rock dots** as islets, found on
+  their own terms rather than by the island's threshold, which either loses
+  the darker dots or fuses them to the coast and lifts rhumb lines with
+  them: dark, compact, red, 12-150 px, within N px of the coast, split where
+  they touch. Farther out are ships; lettering close in can pass, so paint
+  it out. Added for Piri Reis' Isle of Cows, 13 dots.
 - `--drop-parts i,j` discards satellites the georeference lands on real
   ground. Every part's centroid is printed so the choice is auditable. Two of
   Vinckeboons' Gulf islands come out 200 km inland in Arizona.
@@ -561,6 +567,14 @@ python3 scripts/trace_outline.py thule --chart carta-marina-1539 \
     --seed 1316,4732 --blank-box 1415,4552,1665,4583 \
     --islet 1282,4640 --islet-threshold 130 --tolerance 1.5 \
     --bbox 1100,4330,2080,5060 --height-km 120 --centre=-11.0,60.0
+
+# Île aux Vaches — a red wash on Piri Reis 1513, ringed by rock dots kept as
+# 13 islets; a word of lettering beside the coast painted out
+python3 scripts/trace_outline.py ile-aux-vaches --chart piri-reis-1513 \
+    --image ~/scratch/charts/vaches-pr-a.jpg \
+    --mode red --threshold 75 --smooth 2 --open 3 --closing 3 --dots 30 \
+    --blank-box 985,1298,1013,1318 --tolerance 1 \
+    --bbox 930,1300,1110,1470 --height-km 352 --centre=-35.0,6.2
 
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
@@ -846,7 +860,7 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 21 traced outlines, 12 placeholder blobs, and `aurora` as three blobs at
+- 22 traced outlines, 11 placeholder blobs, and `aurora` as three blobs at
   attested positions; 19 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
@@ -876,7 +890,8 @@ output `dist`, no adapter (static). Nothing to configure.
   1528 latitude rather than the 21 N position struck in 1973) and `zanara`
   (Mercator's Tuscia 1589, its origin), and `elizabeth` (Fletcher's own
   drawing from Drake's voyage, turned north-up, 48 km), and `thule`
-  (Olaus Magnus' Carta Marina 1539, moved off Iceland, which stays)
+  (Olaus Magnus' Carta Marina 1539, moved off Iceland, which stays), and
+  `ile-aux-vaches` (Piri Reis 1513, with its ring of rock dots as islets)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -923,7 +938,7 @@ output `dist`, no adapter (static). Nothing to configure.
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`. No placeholder blob now actively
+   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`, `ile-aux-vaches`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**
