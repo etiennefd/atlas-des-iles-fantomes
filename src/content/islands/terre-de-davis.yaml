@@ -1,10 +1,29 @@
 name_fr: "La Terre de Davis"
 name_en: "Davis Land"
-kind: island
+kind: coast
 ocean: pacifique-sud
-coords: [-90.0, -27.0]
+coords: [-101.8, -27.17]
 span: [1687, 1770]
-coords_confidence: conjectural
+coords_confidence: approximate
 coords_note: >-
-  Sighted by Edward Davis 1687 sailing south from the Galapagos. Later
-  conflated with Easter Island.
+  Sighted by Edward Davis 1687 sailing south from the Galapagos; later
+  conflated with Easter Island. Placed where Vaugondy's Amérique méridionale
+  (1750) draws it, read off his own graticule (meridians east of Ferro, taken
+  as 17.66 W): the shore runs from 102.6 W, 26.2 S to 100.9 W, 28.1 S. Was
+  -90, -27, a conjecture. Checked against the real islands on the same sheet,
+  his San Félix is 0.2 deg of longitude out and Juan Fernández 1.6, so the
+  sheet is used as it stands. Wafer's own figures put the small island at
+  27 20 S and "500 leagues" east of Copiapó, which is about 98 W; the islet
+  here lands at 27.32 S on Moll's placement alone, and 101.8 W.
+outline_note: >-
+  An OPEN coast, not an island: Vaugondy 1750 draws a shore with hatching on
+  its sea side and nothing behind, which is what Wafer described seeing from
+  the ship ("a range of high land"), so it is traced as a line with the land
+  shaded behind it rather than closed into a polygon. The coast is
+  Vaugondy's, about 375 km of shore. The islet (Wafer's "small, sandy
+  island") is Moll's, from his Chili of 1701, since Vaugondy leaves it out: a
+  composite, Étienne's choice, October 2026. Moll's islet is 13 x 8 km at
+  his scale and sits 0.72 of the way down his shore, 53 km off it; it keeps
+  that relationship to Vaugondy's shore. Candidates rejected: Moll 1697 (the
+  same drawing at a quarter the size), Delisle 1720 (closed, narrower),
+  Bellin 1778, the story's plate (a dot).

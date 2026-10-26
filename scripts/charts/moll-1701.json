@@ -1,0 +1,17 @@
+{
+  "name": "Herman Moll, Chili, Magellans-land, and Terra del Fuego, in A System of Geography (London, 1701), p. 214 (NYPL 1505157)",
+  "holding": "New York Public Library, Lionel Pincus and Princess Firyal Map Division, image 1505157",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Chili_Magellans-land,_and_Terra_del_Fuego_etc_NYPL1505157.tiff",
+  "licence": "CC0 (NYPL public-domain release)",
+  "note": "4536x6299. 'Davis's Land' at x 1040-1220, y 1300-1470: Moll's own redrawing of the coast he engraved for Dampier's New Voyage (1697), at four times the size: a shaded stroke bent like a check mark, with an oval islet - a pale core in a ring of hatching - in the crook on its sea side. Used ONLY for the islet (Wafer's 'small, sandy island'), which Vaugondy leaves out. Etienne's choice, October 2026.",
+  "equirectangular": {
+    "x0": 1062,
+    "lon_at_x0": 285,
+    "px_per_deg_lon": 71.6,
+    "y0": 1464,
+    "lat_at_y0": -30,
+    "px_per_deg_lat": 84.2
+  },
+  "equirectangular_note": "Ticks read off the border: 285 and 290 at x 1062 and 1420 on the top border; 30 to 55 S at y 1464 to 3570 on the east border. Lon and lat scales differ (71.6 against 84.2 px per degree, a plate carree drawn for about 32 S), so km are taken separately in x and y. Used only for the islet's size and its distance off the coast.",
+  "landmarks": []
+}

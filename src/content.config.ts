@@ -23,8 +23,12 @@ const islands = defineCollection({
     name_fr: z.string(),
     name_en: z.string(),
 
-    /** island = filled shape | reef = point | misdrawn = real place, wrongly charted */
-    kind: z.enum(["island", "reef", "misdrawn"]).default("island"),
+    /**
+     * island = filled shape | reef = point | misdrawn = real place, wrongly
+     * charted | coast = an open shore seen from a ship, drawn as a line with
+     * the land shaded behind it, plus any islets
+     */
+    kind: z.enum(["island", "reef", "misdrawn", "coast"]).default("island"),
     ocean: z.enum(OCEANS),
 
     /** [lon, lat]. Required before the island can be drawn. */

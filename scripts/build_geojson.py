@@ -17,7 +17,7 @@ OUT = os.path.join(HERE, "..", "src", "data", "islands.geojson")
 
 # Rough apparent size in degrees, by kind. Deliberately small — these are
 # placeholders and shouldn't look authoritative.
-RADIUS = {"island": 1.1, "misdrawn": 3.0, "reef": 0.25}
+RADIUS = {"island": 1.1, "misdrawn": 3.0, "reef": 0.25, "coast": 1.1}
 
 
 def parse(path):
@@ -118,6 +118,44 @@ def wind_cw(pts):
     return pts + [pts[0]]
 
 
+# An open coast's land is shaded this far behind the line, fading to nothing.
+SHADE_KM = 150
+
+
+def destination(lon, lat, bearing, km):
+    """Great-circle step from a point, bearing in degrees from north."""
+    p1, l1, b, d = math.radians(lat), math.radians(lon), math.radians(bearing), km / 6371.0
+    p2 = math.asin(math.sin(p1) * math.cos(d) + math.cos(p1) * math.sin(d) * math.cos(b))
+    l2 = l1 + math.atan2(math.sin(b) * math.sin(d) * math.cos(p1),
+                         math.cos(d) - math.sin(p1) * math.sin(p2))
+    return [round(math.degrees(l2), 4), round(math.degrees(p2), 4)]
+
+
+def bearing(a, b):
+    p1, p2, dl = math.radians(a[1]), math.radians(b[1]), math.radians(b[0] - a[0])
+    return math.degrees(math.atan2(math.sin(dl) * math.cos(p2),
+                                   math.cos(p1) * math.sin(p2) -
+                                   math.sin(p1) * math.cos(p2) * math.cos(dl)))
+
+
+def shade(line, km):
+    """The land behind an open coast, which trace_coast.py writes with the land
+    on its right. Its far edge is the coast's chord pushed inland, not an
+    offset of every vertex: an offset of a wiggly shore self-intersects in
+    every bay, and the far edge is invisible anyway, the gradient having
+    faded out by then. map.ts paints it with two gradients, `across` (coast
+    to inland) and `along` (fading out past both ends of the shore), both
+    as pairs of points so they can be reprojected each frame."""
+    a, b = line[0], line[-1]
+    right = bearing(a, b) + 90
+    ring = wind_cw([list(p) for p in line] +
+                   [destination(*b, right, km), destination(*a, right, km)])
+    mid = [sum(p[0] for p in line) / len(line), sum(p[1] for p in line) / len(line)]
+    return {"ring": ring, "km": km,
+            "across": [[round(v, 4) for v in mid], destination(*mid, right, km)],
+            "along": [list(a), list(b)]}
+
+
 features, skipped, outlined = [], [], []
 for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
     iid = os.path.splitext(os.path.basename(path))[0]
@@ -142,6 +180,11 @@ for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
         geom = scale_to_size(f)
         props["placeholder"] = False
         props["traced_from"] = f["properties"].get("traced_from", "")
+        if f["properties"].get("open_coast"):
+            lines = [g["coordinates"] for g in
+                     (geom["geometries"] if geom["type"] == "GeometryCollection" else [geom])
+                     if g["type"] == "LineString"]
+            props["shade"] = shade(lines[0], f["properties"].get("shade_km", SHADE_KM))
         outlined.append(iid)
     elif kind == "reef":
         geom = {"type": "Point", "coordinates": [lon, lat]}

@@ -1,0 +1,184 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "terre-de-davis",
+  "traced_from": "Didier Robert de Vaugondy, Am\u00e9rique m\u00e9ridionale, 1750 (British Library, Maps K.Top.124.11)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:AM%C3%89RIQUE_M%C3%89RIDIONALE_-_Didier_Robert_de_Vaugondy,_1750_-_BL_Maps_K.Top.124.11_(BLL01018640923).jpg",
+  "georeference": "the sheet's own graticule, fitted on the engraved lines",
+  "open_coast": true,
+  "land_side": "right",
+  "centre": [
+   -101.803,
+   -27.169
+  ],
+  "coast_km": 377,
+  "islet": {
+   "traced_from": "Herman Moll, Chili, Magellans-land, and Terra del Fuego, in A System of Geography (London, 1701), p. 214 (NYPL 1505157)",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Chili_Magellans-land,_and_Terra_del_Fuego_etc_NYPL1505157.tiff",
+   "fraction_along_chord": 0.673,
+   "offshore_km": 55.1,
+   "size_km": [
+    12.9,
+    7.6
+   ],
+   "centre": [
+    -101.372,
+    -27.398
+   ]
+  },
+  "shade_km": 150
+ },
+ "geometry": {
+  "type": "GeometryCollection",
+  "geometries": [
+   {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -102.5607,
+      -26.2075
+     ],
+     [
+      -102.5906,
+      -26.3127
+     ],
+     [
+      -102.5478,
+      -26.3619
+     ],
+     [
+      -102.4055,
+      -26.4079
+     ],
+     [
+      -102.3005,
+      -26.5374
+     ],
+     [
+      -102.1533,
+      -26.5711
+     ],
+     [
+      -102.1557,
+      -26.7463
+     ],
+     [
+      -102.1069,
+      -26.8003
+     ],
+     [
+      -101.9415,
+      -26.848
+     ],
+     [
+      -101.6363,
+      -26.7625
+     ],
+     [
+      -101.5632,
+      -26.8352
+     ],
+     [
+      -101.5984,
+      -27.0174
+     ],
+     [
+      -101.7316,
+      -27.1725
+     ],
+     [
+      -101.7046,
+      -27.3069
+     ],
+     [
+      -101.8152,
+      -27.6436
+     ],
+     [
+      -101.8034,
+      -27.7343
+     ],
+     [
+      -101.7263,
+      -27.7947
+     ],
+     [
+      -101.4691,
+      -27.767
+     ],
+     [
+      -101.338,
+      -27.7877
+     ],
+     [
+      -101.282,
+      -28.0275
+     ],
+     [
+      -101.1303,
+      -28.097
+     ],
+     [
+      -101.0226,
+      -28.0994
+     ],
+     [
+      -100.8956,
+      -28.0513
+     ]
+    ]
+   },
+   {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -101.3167,
+       -27.4317
+      ],
+      [
+       -101.3683,
+       -27.423
+      ],
+      [
+       -101.3958,
+       -27.426
+      ],
+      [
+       -101.4302,
+       -27.4083
+      ],
+      [
+       -101.4389,
+       -27.3891
+      ],
+      [
+       -101.4235,
+       -27.3727
+      ],
+      [
+       -101.4029,
+       -27.3727
+      ],
+      [
+       -101.3788,
+       -27.3637
+      ],
+      [
+       -101.341,
+       -27.3666
+      ],
+      [
+       -101.3082,
+       -27.4124
+      ],
+      [
+       -101.3167,
+       -27.4317
+      ]
+     ]
+    ]
+   }
+  ]
+ }
+}

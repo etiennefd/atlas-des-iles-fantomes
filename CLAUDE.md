@@ -105,9 +105,18 @@ Filename is the id. `kind` drives rendering:
   misdrawn island needs no special styling at all — outline at rest, burgundy
   on hover, like every other phantom. See **Replacing the basemap** below.
   That supersedes the older suspension of the question.
+- `coast` — an **open shore**, seen from a ship and never sailed round
+  (`terre-de-davis`). A LineString with the land on its right, plus any
+  islets as polygons, in one GeometryCollection. The line is styled like any
+  island's outline; the land behind it is a burgundy shade fading out 150 km
+  inland and past both ends, deeper on hover. Étienne, October 2026, chose
+  the land-side shade at 150 km over 400 km and over a sea-side shade like
+  the chart's hatching. The candidates for it next are Crocker Land and
+  Bradley Land, both coasts seen from far off; neither is converted yet. See
+  **Open coasts** below.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
-with `coords_note` recording provenance. **Seven islands are `conjectural`** —
+with `coords_note` recording provenance. **Six islands are `conjectural`** —
 positions I inferred from context. Don't silently "correct" them; flag
 uncertainty to Étienne rather than guessing harder. Full table in
 `COORDINATES.md`.
@@ -283,11 +292,11 @@ earth.
 
 ## Adding an island
 
-Done twenty-two times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-three times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-`ile-aux-vaches`. `bacalao`, `los-jardines` and `zanara` were done
+`ile-aux-vaches`, and `terre-de-davis` as an open coast. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
@@ -576,12 +585,54 @@ python3 scripts/trace_outline.py ile-aux-vaches --chart piri-reis-1513 \
     --blank-box 985,1298,1013,1318 --tolerance 1 \
     --bbox 930,1300,1110,1470 --height-km 352 --centre=-35.0,6.2
 
+# Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
+# Vaugondy's shore placed by his own graticule, the lettering and the
+# graticule's lines painted out; Moll 1701's islet carried across
+python3 scripts/trace_coast.py terre-de-davis --chart vaugondy-1750 \
+    --image ~/scratch/charts/davis/vaugondy-1750.jpg \
+    --bbox 690,3060,960,3330 --land 700,3320 --blank-box 848,3115,1035,3218 \
+    --islet-chart moll-1701 --islet-image ~/scratch/charts/davis/moll-1701.png \
+    --islet 1162,1394 --islet-coast-bbox 1040,1300,1220,1470 \
+    --islet-land 1060,1450 --overlay /tmp/davis-overlay.png
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
 
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
+
+**Open coasts** — `scripts/trace_coast.py`. Some phantoms were never islands
+on their charts: Vaugondy draws Davis Land as a shore with hatching on the
+sea side and nothing behind, which is what Wafer saw from the deck. Closing
+it would invent the far side, so it is written as a line with the land on its
+right, and `build_geojson.py` lays a shade polygon behind it (the coast plus
+its chord pushed `shade_km` inland — not an offset of every vertex, which
+self-intersects in every bay). `map.ts` paints the shade with two
+screen-space gradients reprojected each frame: one across, shore to inland,
+and one along, through a mask that softens both ends. Pointing at the shade
+counts as pointing at the island.
+
+The coast is the land-side edge of the hatch band: ink density, the band's
+outline split at its two farthest-apart points, and the half nearer `--land`
+kept. The sheet's graticule does the georeferencing, from a `graticule` block
+in the chart JSON (each line fitted as a quadratic on the engraving, rms
+under 1.2 px); `--rule-width` paints those same lines out first, since a
+meridian runs within 10 px of Davis Land's north tip. Check the graticule's
+reading against the real islands on the sheet before trusting it.
+
+An islet from a second chart keeps its own chart's relation to the shore,
+measured in a frame laid on the shore's **chord**: a fraction along it and a
+distance seaward of the shore. Not by the local tangent — at 0.72 of
+Vaugondy's shore the coast runs due east along the back of a bay, and an
+offset "seaward" from there put Moll's islet straight back on the shore.
+Moll's islet core is 10 x 6 px, too small for `--islet` (which refuses cores
+under 60 px), and does not need sealing: it is simply the pale component
+under the seed, stable from grey 90 to 110.
+
+Headless Chrome renders the real map at 2x for mock-ups (a temporary page in
+`public/` that drives the globe from an iframe), but it never captures the
+hover transition; force `is-active` and kill transitions for the hover frame.
 
 **Eight extraction modes, because charts differ.** A flat colour wash
 (Pizzigano's Antillia is solid red) is picked out by `--mode red|blue|green`.
@@ -859,9 +910,9 @@ interesting object than a clickable index.
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
-- 34 islands with coordinates; 11 attested, 16 approximate, 7 conjectural
-- 22 traced outlines, 11 placeholder blobs, and `aurora` as three blobs at
-  attested positions; 19 chart records in
+- 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
+- 23 traced outlines (one of them an open coast), 10 placeholder blobs, and
+  `aurora` as three blobs at attested positions; 22 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -891,7 +942,8 @@ output `dist`, no adapter (static). Nothing to configure.
   (Mercator's Tuscia 1589, its origin), and `elizabeth` (Fletcher's own
   drawing from Drake's voyage, turned north-up, 48 km), and `thule`
   (Olaus Magnus' Carta Marina 1539, moved off Iceland, which stays), and
-  `ile-aux-vaches` (Piri Reis 1513, with its ring of rock dots as islets)
+  `ile-aux-vaches` (Piri Reis 1513, with its ring of rock dots as islets),
+  and `terre-de-davis` (Vaugondy 1750's open shore, with Moll 1701's islet)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -938,7 +990,8 @@ output `dist`, no adapter (static). Nothing to configure.
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
-   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`, `ile-aux-vaches`. No placeholder blob now actively
+   `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
+   `ile-aux-vaches`, `terre-de-davis`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**

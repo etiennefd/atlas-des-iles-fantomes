@@ -1,0 +1,44 @@
+{
+  "name": "Didier Robert de Vaugondy, Amérique méridionale, 1750 (British Library, Maps K.Top.124.11)",
+  "holding": "British Library, Maps K.Top.124.11 (BLL01018640923)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:AM%C3%89RIQUE_M%C3%89RIDIONALE_-_Didier_Robert_de_Vaugondy,_1750_-_BL_Maps_K.Top.124.11_(BLL01018640923).jpg",
+  "licence": "public domain (the map is from 1750)",
+  "note": "7336x6019. 'Terre découverte par Davis' at x 690-960, y 3060-3330: an open coast, shaded with hatching on its east (sea) side and blank behind, running NW-SE about 250 km. The longest drawing of the shore among the candidates (Moll 1697 and 1701, Delisle 1720, Vaugondy 1750, Bellin 1778). CHOSEN BY ETIENNE, October 2026, as an open coast with Moll 1701's islet added.",
+  "graticule_note": "Meridians every 5 degrees counted east of Ferro (labels 275, 280 on the top border at x 522 and 886); parallels every 5 degrees (25 and 30 labelled on the west border). Lines fitted by tracing the darkest pixel along each engraved line within 14 px of a guess, quadratic, rms 0.4-1.2 px, over x 400-1400 / y 2860-3500. Checked against the real islands the sheet draws: San Felix/San Ambrosio come out at -80.18, -25.40 (real -79.99, -26.31) and Juan Fernandez at -80.44, -33.75 (real -78.83, -33.64), so longitude here is good to 0.2-1.6 degrees and latitude to about 1.",
+  "graticule": {
+    "counted": "east",
+    "hemisphere": "S",
+    "prime_meridian_greenwich": -17.66,
+    "prime_meridian_note": "Ferro, by the French convention of exactly 20 degrees west of Paris (2.337 E)",
+    "meridians": {
+      "270": [
+        7.07976e-05,
+        -0.128533,
+        159.249
+      ],
+      "275": [
+        7.24042e-05,
+        -0.174794,
+        579.553
+      ],
+      "280": [
+        6.95046e-05,
+        -0.202328,
+        999.754
+      ]
+    },
+    "parallels": {
+      "25": [
+        -3.10125e-05,
+        0.319032,
+        2786.35
+      ],
+      "30": [
+        -3.90703e-05,
+        0.324383,
+        3184.52
+      ]
+    }
+  },
+  "landmarks": []
+}
