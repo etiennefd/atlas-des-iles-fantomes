@@ -107,11 +107,15 @@ Filename is the id. `kind` drives rendering:
   That supersedes the older suspension of the question.
 - `coast` — an **open shore**, seen from a ship and never sailed round
   (`terre-de-davis`). A LineString with the land on its right, plus any
-  islets as polygons, in one GeometryCollection. The line is styled like any
-  island's outline; the land behind it is a burgundy shade fading out 150 km
-  inland and past both ends, deeper on hover. Étienne, October 2026, chose
-  the land-side shade at 150 km over 400 km and over a sea-side shade like
-  the chart's hatching. The candidates for it next are Crocker Land and
+  islets as polygons, in one GeometryCollection. **It follows the same rules
+  as every island, with a gradient standing in for the coast nobody saw**: at
+  rest only the line, solid or dashed by state; on hover the land behind it
+  fills, solid at the shore and fading out 150 km inland and past both ends —
+  full burgundy for a story here, soft rose at 0.55 otherwise. Étienne,
+  October 2026, chose the land side at 150 km over 400 km and over a
+  sea-side shade like the chart's hatching, then made it hover-only and
+  solid at the shore: "it is the equivalent of filling the island with
+  color." The candidates for it next are Crocker Land and
   Bradley Land, both coasts seen from far off; neither is converted yet. See
   **Open coasts** below.
 

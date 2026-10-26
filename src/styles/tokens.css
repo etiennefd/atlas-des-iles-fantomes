@@ -311,9 +311,9 @@ a:hover {
 .pmap__island.is-planned.is-active { fill-opacity: 0.55; }
 
 /* An open coast: the shore is a line, styled like any island's outline, and
-   the land behind it is a shade that fades inland and past both ends — seen
-   from a ship, never sailed round. The fill is the hover answer here too,
-   so the shade deepens on hover rather than appearing. */
+   at rest that is all there is. The shade is its fill: it appears on hover
+   exactly as other islands fill, solid at the shore and fading inland and
+   past both ends, a gradient standing in for the coast nobody saw. */
 .pmap__coast {
   fill: none;
   stroke: var(--phantom);
@@ -325,11 +325,13 @@ a:hover {
 .pmap__coast.is-planned { stroke-dasharray: 2 2; }
 .pmap__coast.is-active { stroke-width: 1.25; }
 .pmap__shade {
-  fill-opacity: var(--shade-rest, 0.35);
+  fill-opacity: 0;
   transition: fill-opacity 0.15s ease;
 }
 .pmap__shade.is-active { fill-opacity: 1; }
-.pmap__stop-near { stop-color: var(--phantom); stop-opacity: var(--shade-near, 0.6); }
+.pmap__shade.is-translated.is-active,
+.pmap__shade.is-planned.is-active { fill-opacity: 0.55; }
+.pmap__stop-near { stop-color: var(--phantom); stop-opacity: 1; }
 .pmap__stop-far { stop-color: var(--phantom); stop-opacity: 0; }
 .pmap__across.is-translated .pmap__stop-near,
 .pmap__across.is-planned .pmap__stop-near { stop-color: var(--phantom-soft); }
