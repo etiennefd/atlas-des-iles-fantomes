@@ -175,28 +175,12 @@ export async function mount(cfg: Cfg) {
 
   // An open coast is a shore seen from a ship and never sailed round, so it is
   // a line, not a ring: the land behind it is shaded and fades out inland and
-  // past both ends, because nobody saw how far it went. Two gradients, both in
-  // screen space, so their endpoints are reprojected every frame:
-  // `across` runs from the shore inland, `along` from one end to the other and
-  // feeds a mask that softens the ends. build_geojson.py supplies the shade
-  // polygon and both axes.
-  type Coast = {
-    line: SVGPathElement;
-    shade: SVGPathElement;
-    across: SVGLinearGradientElement;
-    along: SVGLinearGradientElement;
-    maskPath: SVGPathElement;
-    lineGeo: any;
-    shadeGeo: any;
-    axes: { across: [number, number][]; along: [number, number][] };
-  };
+  // at both ends, because nobody saw how far it went. build_geojson.py lays
+  // the shade as a stack of translucent layers per stretch of shore, all
+  // running along the shore itself, so it is solid there and thins inland.
+  type Shade = { g: SVGGElement; layers: { el: SVGPathElement; geo: any }[] };
+  type Coast = { line: SVGPathElement; lineGeo: any; shades: Shade[] };
   const coasts = new Map<string, Coast>();
-  const gradient = (id: string, cls: string, stops: [string, string][]) => {
-    const g = el("linearGradient", { id, class: cls, gradientUnits: "userSpaceOnUse" });
-    for (const [offset, c] of stops) g.append(el("stop", { offset, class: c }));
-    defs.append(g);
-    return g as SVGLinearGradientElement;
-  };
 
   for (const f of feats) {
     const id = f.properties.id as string;
@@ -204,8 +188,9 @@ export async function mount(cfg: Cfg) {
     drawn.set(id, f);
 
     const sh = f.properties.shade;
-    if (sh && f.geometry.type === "GeometryCollection") {
-      const parts = f.geometry.geometries;
+    if (sh) {
+      // a lone shore is a bare LineString; one with islets or breaks, a collection
+      const parts = f.geometry.type === "GeometryCollection" ? f.geometry.geometries : [f.geometry];
       drawn.set(id, {
         type: "Feature",
         properties: f.properties,
@@ -214,32 +199,35 @@ export async function mount(cfg: Cfg) {
           geometries: parts.filter((g: any) => g.type !== "LineString"),
         },
       });
-      const across = gradient(`pmap-across-${id}`, `pmap__across is-${m.state}`,
-        [["0", "pmap__stop-near"], ["1", "pmap__stop-far"]]);
-      const along = gradient(`pmap-along-${id}`, "pmap__along",
-        [["0", "pmap__stop-out"], ["0.2", "pmap__stop-in"],
-         ["0.8", "pmap__stop-in"], ["1", "pmap__stop-out"]]);
-      const mask = el("mask", { id: `pmap-ends-${id}`, maskUnits: "userSpaceOnUse",
-                                x: "-1e5", y: "-1e5", width: "2e5", height: "2e5" });
-      const maskPath = el("path", { fill: `url(#pmap-along-${id})` }) as SVGPathElement;
-      mask.append(maskPath);
-      defs.append(mask);
-      const shade = el("path", {
-        class: `pmap__shade is-${m.state}`,
-        "data-id": id,
-        fill: `url(#pmap-across-${id})`,
-        mask: `url(#pmap-ends-${id})`,
-      }) as SVGPathElement;
-      gShades.append(shade);
+      const shores = parts.filter((g: any) => g.type === "LineString");
+      const shades = (Array.isArray(sh) ? sh : [sh]).map((s: any, i: number): Shade => {
+        const g = el("g", { class: `pmap__shade is-${m.state}`, "data-id": id }) as SVGGElement;
+        const n = s.alpha.length;
+        const layers = (s.alpha as number[]).map((a, j) => {
+          // layer j reaches (j + 1) / n of full depth, measured along each
+          // near-far pair from where it clears the shore
+          const q = (j + 1) / n;
+          const inland = s.near.map((p: number[], k: number) => {
+            const r = s.start[k];
+            const w = r >= 1 ? 0 : Math.max(0, q - r) / (1 - r);
+            return [p[0] + w * (s.far[k][0] - p[0]), p[1] + w * (s.far[k][1] - p[1])];
+          });
+          const ring = [...shores[i].coordinates, ...inland.reverse().slice(1, -1)];
+          ring.push(ring[0]);
+          const e = el("path", { "fill-opacity": String(a) }) as SVGPathElement;
+          g.append(e);
+          return { el: e, geo: { type: "Polygon", coordinates: [ring] } };
+        });
+        gShades.append(g);
+        return { g, layers };
+      });
       const line = el("path", { class: `pmap__coast is-${m.state}`, "data-id": id }) as SVGPathElement;
       gIslands.append(line);
       coasts.set(id, {
-        line, shade, across, along, maskPath,
+        line, shades,
         lineGeo: { type: "MultiLineString",
                    coordinates: parts.filter((g: any) => g.type === "LineString")
                                      .map((g: any) => g.coordinates) },
-        shadeGeo: { type: "Polygon", coordinates: [sh.ring] },
-        axes: { across: sh.across, along: sh.along },
       });
     }
 
@@ -297,18 +285,8 @@ export async function mount(cfg: Cfg) {
     }
     for (const c of coasts.values()) {
       c.line.setAttribute("d", path(c.lineGeo) ?? "");
-      const d = path(c.shadeGeo) ?? "";
-      c.shade.setAttribute("d", d);
-      c.maskPath.setAttribute("d", d);
-      for (const [g, ends] of [[c.across, c.axes.across], [c.along, c.axes.along]] as const) {
-        const a = projection(ends[0]);
-        const b = projection(ends[1]);
-        if (!a || !b) continue;
-        g.setAttribute("x1", String(a[0]));
-        g.setAttribute("y1", String(a[1]));
-        g.setAttribute("x2", String(b[0]));
-        g.setAttribute("y2", String(b[1]));
-      }
+      for (const s of c.shades)
+        for (const l of s.layers) l.el.setAttribute("d", path(l.geo) ?? "");
     }
     anchors.length = 0;
     // projection() still returns a point for the far side of the globe — it
@@ -433,7 +411,7 @@ export async function mount(cfg: Cfg) {
     if (id === active) return;
     if (active) {
       coasts.get(active)?.line.classList.remove("is-active");
-      coasts.get(active)?.shade.classList.remove("is-active");
+      coasts.get(active)?.shades.forEach((s) => s.g.classList.remove("is-active"));
       shapes.get(active)?.classList.remove("is-active");
       halos.get(active)?.classList.remove("is-active");
       chips.get(active)?.classList.remove("is-active");
@@ -441,7 +419,7 @@ export async function mount(cfg: Cfg) {
     active = id;
     if (id) {
       coasts.get(id)?.line.classList.add("is-active");
-      coasts.get(id)?.shade.classList.add("is-active");
+      coasts.get(id)?.shades.forEach((s) => s.g.classList.add("is-active"));
       shapes.get(id)?.classList.add("is-active");
       halos.get(id)?.classList.add("is-active");
       chips.get(id)?.classList.add("is-active");
@@ -464,7 +442,7 @@ export async function mount(cfg: Cfg) {
       const el = shapes.get(id);
       if (el && el.isPointInFill(pt)) return id;
       // pointing at the shaded land behind a coast counts as pointing at it
-      if (coasts.get(id)?.shade.isPointInFill(pt)) return id;
+      if (coasts.get(id)?.shades.some((s) => s.layers.at(-1)!.el.isPointInFill(pt))) return id;
     }
     return null;
   }

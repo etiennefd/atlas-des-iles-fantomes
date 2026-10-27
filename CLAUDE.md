@@ -105,19 +105,23 @@ Filename is the id. `kind` drives rendering:
   misdrawn island needs no special styling at all — outline at rest, burgundy
   on hover, like every other phantom. See **Replacing the basemap** below.
   That supersedes the older suspension of the question.
-- `coast` — an **open shore**, seen from a ship and never sailed round
-  (`terre-de-davis`). A LineString with the land on its right, plus any
-  islets as polygons, in one GeometryCollection. **It follows the same rules
-  as every island, with a gradient standing in for the coast nobody saw**: at
+- `coast` — an **open shore**, seen from a ship or a sledge and never
+  reached (`terre-de-davis`, `crocker-land`, `bradley-land`). A LineString
+  with the land on its right — several where the chart breaks the shore —
+  plus any islets as polygons, in one GeometryCollection. **It follows the same rules
+  as every island, with a fade standing in for the coast nobody saw**: at
   rest only the line, solid or dashed by state; on hover the land behind it
-  fills, solid at the shore and fading out 150 km inland and past both ends —
-  full burgundy for a story here, soft rose at 0.55 otherwise. Étienne,
-  October 2026, chose the land side at 150 km over 400 km and over a
-  sea-side shade like the chart's hatching, then made it hover-only and
-  solid at the shore: "it is the equivalent of filling the island with
-  color." The candidates for it next are Crocker Land and
-  Bradley Land, both coasts seen from far off; neither is converted yet. See
-  **Open coasts** below.
+  fills as **a band that follows the shore**, solid against it and fading out
+  inland and into both ends — full burgundy for a story here, soft rose at
+  0.55 otherwise. Étienne, October 2026, chose the land side over a sea-side
+  shade like the chart's hatching, then made it hover-only and solid at the
+  shore: "it is the equivalent of filling the island with color." The first
+  version, linear gradients over a box behind the shore, he called ugly; of
+  three replacements he picked the band ("B is clearly best") over an
+  island-shaped fade deepest in the middle and over fading echo lines with
+  no fill. The band is 0.285 of the shore's chord deep — 75 km on Davis
+  Land — since a fixed depth turns Bradley Land's 30-50 km brackets into
+  long bars. See **Open coasts** below.
 
 `coords_confidence` is one of `attested | approximate | conjectural | unknown`,
 with `coords_note` recording provenance. **Six islands are `conjectural`** —
@@ -296,11 +300,12 @@ earth.
 
 ## Adding an island
 
-Done twenty-three times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-five times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-`ile-aux-vaches`, and `terre-de-davis` as an open coast. `bacalao`, `los-jardines` and `zanara` were done
+`ile-aux-vaches`, and `terre-de-davis`, `crocker-land` and `bradley-land` as
+open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
@@ -599,6 +604,18 @@ python3 scripts/trace_coast.py terre-de-davis --chart vaugondy-1750 \
     --islet 1162,1394 --islet-coast-bbox 1040,1300,1220,1470 \
     --islet-land 1060,1450 --overlay /tmp/davis-overlay.png
 
+# Crocker Land — Peary's dashed shore across a polar graticule: scanned by
+# rays from inside the crescent, the graticule's lines ignored
+python3 scripts/trace_coast.py crocker-land --chart peary-1907 \
+    --image ~/scratch/charts/crocker/peary-1907-detail.jpg \
+    --radial 668,770,55,105,10,150 --threshold 180 --rule-width 2 --tolerance 1
+
+# Bradley Land — Balch's two dashed brackets, one --radial spec each
+python3 scripts/trace_coast.py bradley-land --chart balch-1912 \
+    --image ~/scratch/charts/crocker/balch-1912.jpg \
+    --radial "795,1917,15,52,-95,115;765,2052,25,75,-95,118" \
+    --blank-box 700,1850,790,1890 --threshold 130 --rule-width 6.5 --tolerance 1.5
+
 npm run geo    # rebuild geometry AND copy it to public/ — both, always
 node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 ```
@@ -610,12 +627,29 @@ prefers one over a blob, so **one island is a complete unit of work**.
 on their charts: Vaugondy draws Davis Land as a shore with hatching on the
 sea side and nothing behind, which is what Wafer saw from the deck. Closing
 it would invent the far side, so it is written as a line with the land on its
-right, and `build_geojson.py` lays a shade polygon behind it (the coast plus
-its chord pushed `shade_km` inland — not an offset of every vertex, which
-self-intersects in every bay). `map.ts` paints the shade with two
-screen-space gradients reprojected each frame: one across, shore to inland,
-and one along, through a mask that softens both ends. Pointing at the shade
-counts as pointing at the island.
+right, and the land behind it is shaded on hover.
+
+**The shade is 32 stacked translucent layers, not a gradient or a blur.**
+Each layer runs along the shore from one end to the other and closes inland
+a little deeper than the last, so all of them overlap at the shore — solid
+along its whole length — and they thin out inland. Each layer's opacity is
+set so the total at depth x is 0.97 (1 − smoothstep(x)), which leaves the
+outermost too faint to read as an edge. The inland edges follow a *smoothed*
+shore, not every bay (which made a zigzag), and taper into both ends.
+`build_geojson.py` writes only each stretch's two edges — `near` on the
+shore, `far` at full depth, and per point the depth fraction where a layer
+first clears the shore — and `map.ts` builds the layers, because 32 copies
+of the shore took islands.geojson from 310 kB to 1 MB. Depth is `shade_km`
+in the outline file if set, else 0.285 of the chord.
+
+Two dead ends, so nobody walks into them again. Linear gradients in screen
+space — one across the shore, one along it through a mask — draw a fuzzy
+rectangle with straight sides, which is what got called ugly. A blur
+(`feGaussianBlur`) can keep the shore hard only by clipping, and wherever
+that clip runs through open sea past the shore's ends it shows as a straight
+cut; making the fill fade out before the ends removes the cut but leaves the
+last fifth of the shore bare. Layers need neither. Pointing at the shade
+(the deepest layer) counts as pointing at the island.
 
 The coast is the land-side edge of the hatch band: ink density, the band's
 outline split at its two farthest-apart points, and the half nearer `--land`
@@ -633,6 +667,25 @@ offset "seaward" from there put Moll's islet straight back on the shore.
 Moll's islet core is 10 x 6 px, too small for `--islet` (which refuses cores
 under 60 px), and does not need sealing: it is simply the pale component
 under the seed, stable from grey 90 to 110.
+
+**A dashed shore across a graticule defeats every band threshold**, which is
+how Peary drew Crocker Land and Balch drew Bradley Land. The sheet's lines
+cut the dashes into pieces, and painting the lines out cuts them again: on
+Peary the band came back as whichever fragment lay between two meridians.
+`--radial` scans rays from a centre on the shore's concave, land side and
+takes the middle of the outermost run of ink on each, skipping the
+graticule's own lines and dropping outliers against a running median. One
+spec per stretch, so Bradley Land's two brackets — Cook's "distinct break
+for 15 or 20 miles" — stay two. Both sheets are polar, georeferenced with
+the same `polar` block trace_outline.py reads, fitted by least squares on
+the graticule's crossings (`pole_px`, `k`, `lon0`, equidistant on both).
+Check the result against what the chart writes: Balch labels Bradley
+84 20' to 85 11' and the trace gives 84.35 to 85.21. Widen `--rule-width`
+until the trace stops spiking where a line crosses the shore — 6.5 on
+Balch, whose lines are thick and fitted to 3 px.
+
+`--edge x,y` and `--parts N` exist for band-traced shores whose drawn coast
+is the band's sea-side edge, or which come in pieces.
 
 Headless Chrome renders the real map at 2x for mock-ups (a temporary page in
 `public/` that drives the globe from an iframe), but it never captures the
@@ -915,8 +968,8 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
-- 23 traced outlines (one of them an open coast), 10 placeholder blobs, and
-  `aurora` as three blobs at attested positions; 22 chart records in
+- 25 traced outlines (three of them open coasts), 8 placeholder blobs, and
+  `aurora` as three blobs at attested positions; 24 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -947,7 +1000,9 @@ output `dist`, no adapter (static). Nothing to configure.
   drawing from Drake's voyage, turned north-up, 48 km), and `thule`
   (Olaus Magnus' Carta Marina 1539, moved off Iceland, which stays), and
   `ile-aux-vaches` (Piri Reis 1513, with its ring of rock dots as islets),
-  and `terre-de-davis` (Vaugondy 1750's open shore, with Moll 1701's islet)
+  and `terre-de-davis` (Vaugondy 1750's open shore, with Moll 1701's islet),
+  and `crocker-land` (Peary's own 1907 map, its dashed shore) and
+  `bradley-land` (Balch 1912, the story's plate, in two stretches)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -995,7 +1050,7 @@ output `dist`, no adapter (static). Nothing to configure.
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-   `ile-aux-vaches`, `terre-de-davis`. No placeholder blob now actively
+   `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**

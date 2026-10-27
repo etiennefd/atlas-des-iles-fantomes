@@ -312,8 +312,9 @@ a:hover {
 
 /* An open coast: the shore is a line, styled like any island's outline, and
    at rest that is all there is. The shade is its fill: it appears on hover
-   exactly as other islands fill, solid at the shore and fading inland and
-   past both ends, a gradient standing in for the coast nobody saw. */
+   exactly as other islands fill, solid at the shore and fading out inland
+   and at both ends, standing in for the coast nobody saw. Its layers carry
+   their own fill-opacity, so the hover state lives on the group. */
 .pmap__coast {
   fill: none;
   stroke: var(--phantom);
@@ -325,18 +326,15 @@ a:hover {
 .pmap__coast.is-planned { stroke-dasharray: 2 2; }
 .pmap__coast.is-active { stroke-width: 1.25; }
 .pmap__shade {
-  fill-opacity: 0;
-  transition: fill-opacity 0.15s ease;
+  fill: var(--phantom);
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
-.pmap__shade.is-active { fill-opacity: 1; }
+.pmap__shade.is-active { opacity: 1; }
+.pmap__shade.is-translated,
+.pmap__shade.is-planned { fill: var(--phantom-soft); }
 .pmap__shade.is-translated.is-active,
-.pmap__shade.is-planned.is-active { fill-opacity: 0.55; }
-.pmap__stop-near { stop-color: var(--phantom); stop-opacity: 1; }
-.pmap__stop-far { stop-color: var(--phantom); stop-opacity: 0; }
-.pmap__across.is-translated .pmap__stop-near,
-.pmap__across.is-planned .pmap__stop-near { stop-color: var(--phantom-soft); }
-.pmap__stop-in { stop-color: white; }
-.pmap__stop-out { stop-color: black; }
+.pmap__shade.is-planned.is-active { opacity: 0.55; }
 
 .pmap__halo {
   fill: none;

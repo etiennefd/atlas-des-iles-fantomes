@@ -1,0 +1,154 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "bradley-land",
+  "traced_from": "Edwin Swift Balch, Chart of Segment of the Western Arctic North and North West of Grant Land, December 1912, in The North Pole and Bradley Land (Philadelphia, 1913), p. 83",
+  "source_url": "https://archive.org/details/northpolebradley00balcrich/page/n90",
+  "georeference": "the sheet's own graticule, fitted on the engraved lines",
+  "open_coast": true,
+  "land_side": "right",
+  "centre": [
+   -103.94,
+   84.817
+  ],
+  "coast_km": [
+   51,
+   70
+  ]
+ },
+ "geometry": {
+  "type": "GeometryCollection",
+  "geometries": [
+   {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -104.7321,
+      85.2135
+     ],
+     [
+      -104.677,
+      85.1952
+     ],
+     [
+      -104.4118,
+      85.1945
+     ],
+     [
+      -104.3892,
+      85.1752
+     ],
+     [
+      -104.0854,
+      85.1628
+     ],
+     [
+      -103.5509,
+      85.1155
+     ],
+     [
+      -103.3366,
+      85.0585
+     ],
+     [
+      -103.4271,
+      85.0263
+     ],
+     [
+      -103.6174,
+      85.025
+     ],
+     [
+      -103.6883,
+      85.0138
+     ],
+     [
+      -103.4022,
+      84.9767
+     ],
+     [
+      -103.4998,
+      84.9673
+     ],
+     [
+      -104.1555,
+      84.9308
+     ],
+     [
+      -104.6645,
+      84.9225
+     ],
+     [
+      -104.7492,
+      84.9298
+     ]
+    ]
+   },
+   {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -104.7496,
+      84.787
+     ],
+     [
+      -104.6968,
+      84.7764
+     ],
+     [
+      -104.2585,
+      84.7666
+     ],
+     [
+      -104.1767,
+      84.747
+     ],
+     [
+      -103.63,
+      84.7324
+     ],
+     [
+      -103.2804,
+      84.6952
+     ],
+     [
+      -103.1168,
+      84.6684
+     ],
+     [
+      -102.9723,
+      84.6122
+     ],
+     [
+      -102.9426,
+      84.5275
+     ],
+     [
+      -103.1852,
+      84.4473
+     ],
+     [
+      -103.5549,
+      84.4028
+     ],
+     [
+      -103.8553,
+      84.3796
+     ],
+     [
+      -104.2509,
+      84.365
+     ],
+     [
+      -104.3833,
+      84.3491
+     ],
+     [
+      -104.7657,
+      84.3465
+     ]
+    ]
+   }
+  ]
+ }
+}

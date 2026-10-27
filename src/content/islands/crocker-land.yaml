@@ -1,10 +1,21 @@
 name_fr: "Crocker Land"
 name_en: "Crocker Land"
-kind: island
+kind: coast
 ocean: arctique
-coords: [-100.0, 83.0]
+coords: [-102.84, 82.81]
 span: [1906, 1914]
 coords_confidence: attested
 coords_note: >-
-  Peary, Nearest the Pole: sighted from Cape Colgate, c. 130 miles NW, at
-  83 N 100 W.
+  Peary, Nearest the Pole (1907): sighted from Cape Colgate, c. 130 miles NW.
+  Placed where Peary's own map of that book draws it, read off its polar
+  graticule (fitted to 1.8 px, about 1.4 km): the shore runs from 101.3 W
+  83.2 N to 105.8 W 82.5 N, matching Balch's reading of the same chart,
+  82 30' to 83 20' N and 106 to 103 W. Was -100, 83, from "83 N 100 W".
+outline_note: >-
+  An OPEN coast. Peary's map of 1907, the first depiction, draws Crocker Land
+  as a crescent of hachured high ground, its south shore - the side he saw
+  it from - a dashed line and its north edge left to fade. The dashed shore
+  is traced, about 128 km of it, and the land behind it is shaded on hover:
+  the fade is Peary's. Étienne's choice of source, October 2026, over
+  Grosvenor's National Geographic map of 1910 (a copy of Peary's) and
+  Balch's of 1912 (a dashed bracket).

@@ -1,0 +1,19 @@
+{
+  "name": "Edwin Swift Balch, Chart of Segment of the Western Arctic North and North West of Grant Land, December 1912, in The North Pole and Bradley Land (Philadelphia, 1913), p. 83",
+  "holding": "Internet Archive northpolebradley00balcrich, leaf n90; a 554 x 596 copy on Commons as File:Bradley_Land.jpg",
+  "source_url": "https://archive.org/details/northpolebradley00balcrich/page/n90",
+  "raster_url": "https://archive.org/download/northpolebradley00balcrich/page/n90.jpg",
+  "licence": "public domain (published 1913)",
+  "note": "2502x3932. The story's own plate. Balch draws Bradley Land and Crocker Land as dashed brackets, convex to the east, with the latitudes of their ends written beside them: Bradley 84 20' to 85 11' N in two pieces, Crocker 82 30' to 83 20' N. Cook's own chart of Bradley Land, which Balch says he follows, is in no scan of My Attainment of the Pole that could be found (four Internet Archive copies, none with its maps or plates). Used for Bradley Land, by Etienne's choice, October 2026.",
+  "polar_note": "An equidistant polar sheet with the pole at (1136, 614): meridians every 5 degrees, 90 W straight down (bottom labels 110 W to 65 W), parallels every degree 273 px apart. Fitted by least squares on 47 meridian and 37 parallel crossings (81-86 N, 50-115 W): RMS 3.2 px, about 1.3 km.",
+  "polar": {
+    "law": "equidistant",
+    "pole_px": [
+      1135.8,
+      613.9
+    ],
+    "k": 273.15,
+    "lon0": -90.056
+  },
+  "landmarks": []
+}

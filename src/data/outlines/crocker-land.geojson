@@ -1,0 +1,89 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "crocker-land",
+  "traced_from": "Robert E. Peary, The Polar Regions showing the Routes and Explorations of Robert E. Peary, U.S.N., from 1892 to 1906, in Nearest the Pole (New York, 1907)",
+  "source_url": "https://archive.org/details/nearestpolenarra00pear/page/n442",
+  "georeference": "the sheet's own graticule, fitted on the engraved lines",
+  "open_coast": true,
+  "land_side": "right",
+  "centre": [
+   -102.842,
+   82.813
+  ],
+  "coast_km": 128
+ },
+ "geometry": {
+  "type": "LineString",
+  "coordinates": [
+   [
+    -102.2618,
+    83.224
+   ],
+   [
+    -102.2187,
+    83.2013
+   ],
+   [
+    -102.0007,
+    83.2021
+   ],
+   [
+    -101.8659,
+    83.173
+   ],
+   [
+    -101.4643,
+    83.1306
+   ],
+   [
+    -101.2772,
+    83.0508
+   ],
+   [
+    -101.3867,
+    82.9134
+   ],
+   [
+    -101.9017,
+    82.7699
+   ],
+   [
+    -102.5324,
+    82.6808
+   ],
+   [
+    -102.668,
+    82.6451
+   ],
+   [
+    -102.8667,
+    82.6465
+   ],
+   [
+    -103.1484,
+    82.619
+   ],
+   [
+    -103.3501,
+    82.5732
+   ],
+   [
+    -103.597,
+    82.552
+   ],
+   [
+    -104.5451,
+    82.4964
+   ],
+   [
+    -105.4282,
+    82.4737
+   ],
+   [
+    -105.8048,
+    82.4739
+   ]
+  ]
+ }
+}

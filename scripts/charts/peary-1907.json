@@ -1,0 +1,19 @@
+{
+  "name": "Robert E. Peary, The Polar Regions showing the Routes and Explorations of Robert E. Peary, U.S.N., from 1892 to 1906, in Nearest the Pole (New York, 1907)",
+  "holding": "Internet Archive nearestpolenarra00pear, leaf n442",
+  "source_url": "https://archive.org/details/nearestpolenarra00pear/page/n442",
+  "raster_url": "https://archive.org/download/nearestpolenarra00pear/page/n442.jpg",
+  "licence": "public domain (published 1907)",
+  "note": "2729x2344. The first depiction of Crocker Land, on the foldout map in Peary's own account of the 1906 sledge journey: a crescent of hachured high ground at about 103 W, 82.9 N, concave to the north, its south shore - the side he saw it from, at Cape Thomas Hubbard - drawn as a dashed line, the north edge left to fade. Grosvenor's 1910 National Geographic map copies it. Chosen by Etienne, October 2026, over Grosvenor 1910 and Balch 1912.",
+  "polar_note": "An equidistant polar sheet with the pole drawn on it at (1370, 75): meridians every 5 degrees of longitude are 5 degrees of angle apart about it, 60 W straight down (bottom-border labels 90 W at x 143, 60 W at x 1383, 30 W at x 2600), and parallels every degree are 142 px apart. Fitted by least squares on 26 meridian and 24 parallel crossings near Crocker Land (80-85 N, 90-120 W): RMS 1.8 px, about 1.4 km.",
+  "polar": {
+    "law": "equidistant",
+    "pole_px": [
+      1370.2,
+      75.1
+    ],
+    "k": 141.95,
+    "lon0": -60.302
+  },
+  "landmarks": []
+}

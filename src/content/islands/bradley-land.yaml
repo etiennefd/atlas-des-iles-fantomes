@@ -1,10 +1,23 @@
 name_fr: "Bradley Land"
 name_en: "Bradley Land"
-kind: island
+kind: coast
 ocean: arctique
-coords: [-102.0, 84.75]
+coords: [-103.94, 84.82]
 span: [1907, 1918]
 coords_confidence: attested
 coords_note: >-
-  Cook: extended 84 deg 20' N to 85 deg 11' N at about 102 W. Midpoint
-  used. Some sources give the southern limit as 83 deg 20'.
+  Cook: extended 84 20' N to 85 11' N, "a shore line along the one hundred
+  and second meridian". Placed where Balch's chart of 1912 draws it, read off
+  its polar graticule (fitted to 3.2 px, about 1.3 km): 84.35 to 85.21 N,
+  which matches the latitudes Balch writes beside it, but at 102.9 to
+  104.8 W, a degree or two west of Cook's 102. Was -102, 84.75, the midpoint
+  of Cook's figures. Some sources give the southern limit as 83 20'.
+outline_note: >-
+  An OPEN coast in two stretches, 51 and 70 km. Balch, The North Pole and
+  Bradley Land (1913), draws it as two dashed brackets convex to the east -
+  the side Cook passed it on - with a gap between them: Cook's "distinct
+  break for 15 or 20 miles", which "suggested two distinct islands". Both
+  brackets are traced as they are drawn and the land behind each is shaded
+  on hover. Cook's own chart in My Attainment of the Pole, which Balch says
+  he follows, is missing from every scan that could be found. Étienne's
+  choice, October 2026.

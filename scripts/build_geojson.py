@@ -118,42 +118,111 @@ def wind_cw(pts):
     return pts + [pts[0]]
 
 
-# An open coast's land is shaded this far behind the line, fading to nothing.
-SHADE_KM = 150
+# An open coast's land is shaded behind the line as a band that follows the
+# shore, solid there and fading out inland and at both ends. Its depth is in
+# proportion to the shore, 0.285 of its chord — 75 km on Davis Land's 263 km —
+# since a fixed depth turns short shores (Bradley Land's brackets are 30-50 km
+# across) into long bars. `shade_km` in an outline file overrides it.
+SHADE_RATIO = 0.285
+SHADE_LAYERS = 32
+R_KM = 6371.0
 
 
-def destination(lon, lat, bearing, km):
-    """Great-circle step from a point, bearing in degrees from north."""
-    p1, l1, b, d = math.radians(lat), math.radians(lon), math.radians(bearing), km / 6371.0
-    p2 = math.asin(math.sin(p1) * math.cos(d) + math.cos(p1) * math.sin(d) * math.cos(b))
-    l2 = l1 + math.atan2(math.sin(b) * math.sin(d) * math.cos(p1),
-                         math.cos(d) - math.sin(p1) * math.sin(p2))
-    return [round(math.degrees(l2), 4), round(math.degrees(p2), 4)]
+def chord_km(line):
+    (l1, p1), (l2, p2) = [map(math.radians, q) for q in (line[0], line[-1])]
+    return R_KM * math.acos(max(-1.0, min(1.0, math.sin(p1) * math.sin(p2) +
+                                          math.cos(p1) * math.cos(p2) * math.cos(l2 - l1))))
 
 
-def bearing(a, b):
-    p1, p2, dl = math.radians(a[1]), math.radians(b[1]), math.radians(b[0] - a[0])
-    return math.degrees(math.atan2(math.sin(dl) * math.cos(p2),
-                                   math.cos(p1) * math.sin(p2) -
-                                   math.sin(p1) * math.cos(p2) * math.cos(dl)))
+def aeqd_fwd(lon, lat, lon0, lat0):
+    p, p0, dl = math.radians(lat), math.radians(lat0), math.radians(lon - lon0)
+    cc = max(-1.0, min(1.0, math.sin(p0) * math.sin(p) + math.cos(p0) * math.cos(p) * math.cos(dl)))
+    c = math.acos(cc)
+    k = 1.0 if c < 1e-12 else c / math.sin(c)
+    return (R_KM * k * math.cos(p) * math.sin(dl),
+            R_KM * k * (math.cos(p0) * math.sin(p) - math.sin(p0) * math.cos(p) * math.cos(dl)))
+
+
+def aeqd_inv(x, y, lon0, lat0):
+    p0 = math.radians(lat0)
+    rho = math.hypot(x, y)
+    if rho < 1e-9:
+        return [lon0, lat0]
+    c = rho / R_KM
+    lat = math.asin(math.cos(c) * math.sin(p0) + y * math.sin(c) * math.cos(p0) / rho)
+    lon = math.radians(lon0) + math.atan2(x * math.sin(c),
+                                          rho * math.cos(p0) * math.cos(c) - y * math.sin(p0) * math.sin(c))
+    return [round(math.degrees(lon), 4), round(math.degrees(lat), 4)]
 
 
 def shade(line, km):
     """The land behind an open coast, which trace_coast.py writes with the land
-    on its right. Its far edge is the coast's chord pushed inland, not an
-    offset of every vertex: an offset of a wiggly shore self-intersects in
-    every bay, and the far edge is invisible anyway, the gradient having
-    faded out by then. map.ts paints it with two gradients, `across` (coast
-    to inland) and `along` (fading out past both ends of the shore), both
-    as pairs of points so they can be reprojected each frame."""
+    on its right, as a stack of translucent layers rather than a gradient.
+
+    Each layer runs from one end of the shore to the other along the shore
+    itself and closes inland a little deeper than the last, so all of them
+    overlap at the shore, which is solid along its whole length, and they thin
+    out inland. Each layer's opacity is set so the stack's total at depth x
+    (0 at the shore, 1 at the far edge) is 0.97 (1 - smoothstep(x)): the
+    outermost layer is too faint to read as an edge. Two things were tried
+    first and dropped (October 2026). Linear gradients across and along the
+    shore drew a fuzzy rectangle. A blurred fill can only keep the shore hard
+    by being clipped, and wherever the clip runs through open sea past the
+    shore's ends it shows as a straight cut — unless the fill fades out well
+    before the ends, which leaves them bare.
+
+    The inland edges follow a smoothed copy of the shore, not every bay in
+    it, and taper into both ends. Built in a frame on an azimuthal-equidistant
+    plane centred on the chord's midpoint: s along the chord, t inland."""
     a, b = line[0], line[-1]
-    right = bearing(a, b) + 90
-    ring = wind_cw([list(p) for p in line] +
-                   [destination(*b, right, km), destination(*a, right, km)])
-    mid = [sum(p[0] for p in line) / len(line), sum(p[1] for p in line) / len(line)]
-    return {"ring": ring, "km": km,
-            "across": [[round(v, 4) for v in mid], destination(*mid, right, km)],
-            "along": [list(a), list(b)]}
+    ax, ay = aeqd_fwd(*b, *a)
+    m = aeqd_inv(ax / 2, ay / 2, *a)
+    pts = [aeqd_fwd(*q, *m) for q in line]
+    (x0, y0), (x1, y1) = pts[0], pts[-1]
+    L = math.hypot(x1 - x0, y1 - y0)
+    u = ((x1 - x0) / L, (y1 - y0) / L)
+    n = (u[1], -u[0])
+    st = [(x * u[0] + y * u[1], x * n[0] + y * n[1]) for x, y in pts]
+    back = lambda s, t: aeqd_inv(s * u[0] + t * n[0], s * u[1] + t * n[1], *m)
+
+    def shore_t(f):
+        # the shore's offset from the chord at fraction f along it
+        goal = st[0][0] + f * (st[-1][0] - st[0][0])
+        i = min(range(len(st) - 1), key=lambda i: abs((st[i][0] + st[i + 1][0]) / 2 - goal))
+        (s0, t0), (s1, t1) = st[i], st[i + 1]
+        g = 0.0 if s1 == s0 else max(0.0, min(1.0, (goal - s0) / (s1 - s0)))
+        return t0 + g * (t1 - t0)
+
+    fs = [i / 80 for i in range(81)]
+    ts = [shore_t(f) for f in fs]
+    soft = []
+    for i in range(81):
+        w = [math.exp(-0.5 * ((j - i) / 8) ** 2) for j in range(81)]
+        soft.append(sum(p * q for p, q in zip(w, ts)) / sum(w))
+    taper = lambda f: max(0.0, 1 - abs(2 * f - 1) ** 4) ** 0.25
+
+    # Every layer runs straight inland from the same points on the shore, so
+    # rather than 32 copies of the shore this writes each point's two ends —
+    # `near` on the shore, `far` at full depth — and `start`, the fraction of
+    # full depth at which a layer's inland edge clears the shore there (the
+    # edge follows a smoothed shore, so in a bay it starts behind the coast).
+    # map.ts interpolates the layers; `alpha` is each one's opacity.
+    N = SHADE_LAYERS
+    def total(x):
+        return 0.97 * (1 - x * x * (3 - 2 * x))
+    O = [total((k - 0.5) / N) for k in range(1, N + 1)] + [0.0]
+    alpha = [round(1 - (1 - O[k]) / (1 - O[k + 1]), 4) for k in range(N)]
+    near, far, start = [], [], []
+    for i, f in enumerate(fs):
+        sx = st[0][0] + f * (st[-1][0] - st[0][0])
+        span = km * taper(f)
+        t_far = max(ts[i], soft[i] + span)
+        near.append(back(sx, ts[i]))
+        far.append(back(sx, t_far))
+        # negative where a headland stands out past the smoothed edge: there
+        # even the thinnest layer starts inland of the coast
+        start.append(round(min(1.0, (ts[i] - soft[i]) / span), 4) if span > 0 else 1.0)
+    return {"km": km, "near": near, "far": far, "start": start, "alpha": alpha}
 
 
 features, skipped, outlined = [], [], []
@@ -184,7 +253,10 @@ for path in sorted(glob.glob(os.path.join(SRC, "*.yaml"))):
             lines = [g["coordinates"] for g in
                      (geom["geometries"] if geom["type"] == "GeometryCollection" else [geom])
                      if g["type"] == "LineString"]
-            props["shade"] = shade(lines[0], f["properties"].get("shade_km", SHADE_KM))
+            # one shade per stretch of shore: Balch draws Bradley Land in two
+            props["shade"] = [shade(l, f["properties"].get("shade_km",
+                                                           round(SHADE_RATIO * chord_km(l))))
+                              for l in lines]
         outlined.append(iid)
     elif kind == "reef":
         geom = {"type": "Point", "coordinates": [lon, lat]}

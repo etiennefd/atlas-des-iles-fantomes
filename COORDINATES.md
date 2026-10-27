@@ -18,8 +18,8 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | id | position | source |
 |---|---|---|
 | `jacquet` | −43.0, 47.0 | Charted just east of the Flemish Cap. Reported by John Scott of the *Seaflower*, 1836. |
-| `crocker-land` | −100.0, 83.0 | Peary, *Nearest the Pole*: sighted from the summit of Cape Colgate, c. 130 miles NW. |
-| `bradley-land` | −102.0, 84.75 | Cook: extended 84°20′N to 85°11′N at about 102°W. Midpoint used. **Sources differ** — some give the southern limit as 83°20′N, which would move the midpoint to 84.26. |
+| `crocker-land` | −102.84, 82.81 | Peary, *Nearest the Pole*: sighted from the summit of Cape Colgate, c. 130 miles NW. **Placed Oct 2026** where the map in that book draws it, read off its polar graticule: the shore runs 101.3 W 83.2 N to 105.8 W 82.5 N. Was −100.0, 83.0. |
+| `bradley-land` | −103.94, 84.82 | Cook: extended 84°20′N to 85°11′N at about 102°W. **Placed Oct 2026** where Balch's 1912 chart draws it: 84.35 to 85.21 N, matching his written latitudes, but at 102.9 to 104.8 W, a degree or two west of Cook's 102. Was −102.0, 84.75, the midpoint. **Sources differ** — some give the southern limit as 83°20′N. |
 | `maria-de-lajara` | −140.0, 27.0 | Pacific charts registered it around 27°N, 140°W from the late 17th to early 19th century. |
 | `ernest-legouve` | −150.667, −35.2 | International Hydrographic Bureau, 9 Feb 1957: 35°12′S 150°40′W. Searched 1982–83, not found. |
 | `maria-theresa` | −136.65, −36.833 | Reported 16 Nov 1843 by Capt. Asaph P. Taber of the *Maria-Theresa*. Note: Verne gives 37°11′S 153°00′W on the Paris meridian. |
