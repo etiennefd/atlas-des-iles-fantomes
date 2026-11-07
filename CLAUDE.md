@@ -300,11 +300,11 @@ earth.
 
 ## Adding an island
 
-Done twenty-five times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-six times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-`ile-aux-vaches`, and `terre-de-davis`, `crocker-land` and `bradley-land` as
+`ile-aux-vaches`, `maria-de-lajara`, and `terre-de-davis`, `crocker-land` and `bradley-land` as
 open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -594,6 +594,13 @@ python3 scripts/trace_outline.py ile-aux-vaches --chart piri-reis-1513 \
     --blank-box 985,1298,1013,1318 --tolerance 1 \
     --bbox 930,1300,1110,1470 --height-km 352 --centre=-35.0,6.2
 
+# María de Lajara — an engraved outline with no wash, crossed by two rhumb
+# lines as thin as its coast: fill first, then strip the lines (--strip)
+python3 scripts/trace_outline.py maria-de-lajara --chart anson-1748 \
+    --image ~/scratch/charts/lajara-anson-1748-rmg.png \
+    --mode dark --threshold 145 --strip 3 --closing 2 --tolerance 0.75 \
+    --bbox 4750,775,4825,835 --height-km 52.2 --centre=-140.0,27.0
+
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
 # graticule's lines painted out; Moll 1701's islet carried across
@@ -755,6 +762,17 @@ path's sealing applied locally; it is stable across closing radii 2-8 there.
 another mode (colour, band or ink); `--islet-threshold` sets its ink level,
 and a core too big for the 80 px window is retried in a 160 px one. The
 first `--seed` is the main island.
+
+An **engraved outline with no wash, crossed by rhumb lines as thin as its
+coast** (Seale's Donna Maria Lazara, Anson 1748) defeats `--open`, which
+erases the coast with the lines, and `--mode ink`, whose flood stops at every
+hatched patch of the interior — it lost the head and the toe, 24 x 22 px of a
+35 x 28 px island. `--strip R` on a colour mode (here `dark`) fills holes
+*first*, so the outline goes solid while the lines stay lines, and only then
+opens with `disk(R)`. And beware a colourist's wash on another copy of the
+same plate: it is a brush, not the engraving. On the Geographicus copy the
+green dab cuts the toe short and runs over the coast; the engraved line is
+the shape.
 
 **Choose the treatment and the source together** where a phantom shares a
 place with real land. Thule on a Ptolemaic sheet *is* the island at Iceland's
@@ -968,8 +986,8 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
-- 25 traced outlines (three of them open coasts), 8 placeholder blobs, and
-  `aurora` as three blobs at attested positions; 24 chart records in
+- 26 traced outlines (three of them open coasts), 7 placeholder blobs, and
+  `aurora` as three blobs at attested positions; 25 chart records in
   `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
@@ -1002,7 +1020,9 @@ output `dist`, no adapter (static). Nothing to configure.
   `ile-aux-vaches` (Piri Reis 1513, with its ring of rock dots as islets),
   and `terre-de-davis` (Vaugondy 1750's open shore, with Moll 1701's islet),
   and `crocker-land` (Peary's own 1907 map, its dashed shore) and
-  `bradley-land` (Balch 1912, the story's plate, in two stretches)
+  `bradley-land` (Balch 1912, the story's plate, in two stretches), and
+  `maria-de-lajara` (Seale's engraving of the Covadonga's galleon chart,
+  Anson 1748, 52 x 68 km at the sheet's scale, position unchanged)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1050,7 +1070,8 @@ output `dist`, no adapter (static). Nothing to configure.
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-   `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`. No placeholder blob now actively
+   `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
+   `maria-de-lajara`. No placeholder blob now actively
    misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
    the shape of should look vague.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**
@@ -1060,6 +1081,18 @@ output `dist`, no adapter (static). Nothing to configure.
    Espinosa y Tello's *Memorias* (1809), longitudes west of Cádiz. The one
    lead left is Museo Naval Ms. 634 ff. 11r–14v, the Atrevida's own extract;
    a sketch there would replace the blobs.
+   **The other six blobs were searched the same way in November 2026**, and
+   only `maria-de-lajara` had a coastline. `dougherty`, `nimrod`, `tuanaki`
+   and `jacquet` are dots or rings on every chart checked (Bartholomew 1905,
+   Davis' Nimrod track 1909, Admiralty 5098 of 1914, Stieler, the Stanford
+   Polynesia, Bowles 1779, the Dépôt's Cartes réduites of 1738-1786, Bellin
+   and Sayer & Bennett on the Banks, which stop west of Jacquet). `emerald`
+   is a hachured stock small-island figure on the Admiralty's Chart of the
+   South Polar Sea (1839, Rumsey 364749, 23 x 49 px), not drawn from Elliot,
+   and was left a blob. Leads not reached: the Nautical Magazine reports of
+   Dougherty (1842), Keates (1860) and Stannard (1886), where a captain's
+   sketch is likeliest; the Admiralty's Cook Islands charts for Tuanaki;
+   19th-c. blue-backs for Jacquet.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
    Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map

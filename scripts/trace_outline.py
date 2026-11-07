@@ -102,7 +102,7 @@ def residuals(p, K, landmarks):
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
                 seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
-                islets=None, islet_thr=110, dots=None):
+                islets=None, islet_thr=110, dots=None, strip=0):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -155,6 +155,14 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
     if smooth:
         score = gaussian_filter(score.astype(float), smooth)
     m = (score < thr) if bright else (score > thr)
+    if strip:
+        # An island drawn as an engraved outline with no wash, crossed by
+        # rhumb lines as thin as its own coast (Seale's Donna Maria Lazara,
+        # Anson 1748). Opening first would erase the coast along with the
+        # lines, and an ink flood from inside loses every part of the
+        # interior the engraver hatched. So fill first — the island becomes
+        # solid, the lines stay lines — and only then open them away.
+        m = binary_opening(binary_fill_holes(m), disk(strip))
     if open_r:
         # Squared bays need a square element: a disk cannot hold a right angle,
         # and rounds every notch into a wave. (Canepa's north-west bay.)
@@ -738,7 +746,8 @@ def polar(a, chart):
     mask, (ox, oy) = island_mask(Image.open(os.path.expanduser(a.image)), a.mode,
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                                  a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
-                                 a.seed, window=a.window, relief=a.relief)
+                                 a.seed, window=a.window, relief=a.relief,
+                                 strip=a.strip)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -823,7 +832,8 @@ def manual(a, chart):
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots)
+                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
+                          strip=a.strip)
     if a.satellites or a.islet or a.dots or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
@@ -924,6 +934,10 @@ def main():
     ap.add_argument("--closing", type=int, default=21)
     ap.add_argument("--open", type=int, default=0, dest="open_r",
                     help="opening radius, applied before anything else")
+    ap.add_argument("--strip", type=int, default=0,
+                    help="colour modes: fill holes, THEN open with this radius — "
+                         "for an engraved outline crossed by rhumb lines as thin "
+                         "as its coast, which --open would erase too")
     ap.add_argument("--upsample", type=int, default=1,
                     help="resample the crop before thresholding. A mark only "
                          "20 px across quantises into axis-aligned steps; "
@@ -1038,7 +1052,8 @@ def main():
                           a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
-                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots)
+                          islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
+                          strip=a.strip)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass

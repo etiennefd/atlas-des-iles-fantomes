@@ -8,3 +8,30 @@ coords_confidence: attested
 coords_note: >-
   Pacific charts registered it at about 27 N, 140 W (ENE of Hawaii) from
   the late 17th to early 19th century.
+  Unchanged by the November 2026 tracing. The traced chart agrees on the
+  latitude: read as the Mercator chart it is, Seale's plate puts the
+  island's centre at 27.0 N. Its longitude is not used — the plate counts
+  east from San Bernardino, and the island lies some 2000 km out into ocean
+  the galleon chart never surveyed, so carrying a fit on the American coast
+  out to it would repeat the Antillia mistake. In open water, 1724 km from
+  the nearest land (Hawai‘i).
+outline_note: >-
+  Traced from the Spanish galleon chart Anson took from the Covadonga in
+  1743, engraved by R. W. Seale as Plate XLI of Walter's Voyage Round the
+  World (1748), where 'Donna Maria Lazara' has a drawn coast: a crooked
+  boot, toe to the west, a hook to the east. Scan: Royal Museums Greenwich
+  F0126, uncoloured, 35 x 28 px. No other depiction with a coastline was
+  found; Stieler 1826, the story's plate, names it with no island.
+  Étienne first picked the hand-coloured Geographicus copy of the same
+  plate, on my recommendation that its green wash would separate the island
+  from the rhumb line crossing it. The wash turned out not to follow the
+  engraving — it cuts the toe short, rounds off the hook and runs over the
+  coast on the west — so he chose the engraved line on the RMG scan instead
+  (November 2026).
+  Extracted with `--mode dark --strip 3`: fill the outline, then open away
+  the two rhumb lines that cross it, which are as thin as its coast. The
+  ink flood lost the hatched head and toe. Plateau grey 110-120, 469-471 px.
+  SIZE AT THE SHEET'S SCALE, 52 x 68 km: 53.15 px per degree, fitted on the
+  equator scale, read at the island's own chart latitude. The sheet oversizes
+  islands — Guadalupe is drawn ~60 x 65 km against a real ~35 x 10 — but its
+  scale is kept, as for Saint-Mathieu.

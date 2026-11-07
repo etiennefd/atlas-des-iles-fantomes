@@ -1,0 +1,102 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "maria-de-lajara",
+  "traced_from": "A Chart of the Pacific Ocean from the Equinoctial to the Latitude of 39\u00bdd. No., engraved by R. W. Seale, Plate XLI in Richard Walter, A Voyage Round the World ... by George Anson (London, 1748)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:A_chart_of_the_Pacific_Ocean_from_the_equinoctial_to_the_latitude_of_39_1-2d._No._RMG_F0126.tiff",
+  "georeference": null,
+  "scale_source": "height set by hand; chart not yet georeferenced",
+  "centre": [
+   -140.0,
+   27.0
+  ],
+  "turned_deg": null,
+  "size_km": [
+   68,
+   52
+  ]
+ },
+ "geometry": {
+  "type": "Polygon",
+  "coordinates": [
+   [
+    [
+     -140.039,
+     26.7562
+    ],
+    [
+     -140.2339,
+     26.7562
+    ],
+    [
+     -140.3119,
+     26.791
+    ],
+    [
+     -140.3411,
+     26.8345
+    ],
+    [
+     -140.3119,
+     26.8781
+    ],
+    [
+     -140.2339,
+     26.9129
+    ],
+    [
+     -140.1754,
+     26.9129
+    ],
+    [
+     -140.0487,
+     27.0261
+    ],
+    [
+     -140.0682,
+     27.1306
+    ],
+    [
+     -140.0195,
+     27.2264
+    ],
+    [
+     -139.8636,
+     27.2438
+    ],
+    [
+     -139.7661,
+     27.1742
+    ],
+    [
+     -139.6881,
+     27.1568
+    ],
+    [
+     -139.6589,
+     27.1132
+    ],
+    [
+     -139.7076,
+     27.0523
+    ],
+    [
+     -139.7661,
+     27.0348
+    ],
+    [
+     -139.8148,
+     26.9913
+    ],
+    [
+     -139.9123,
+     26.8171
+    ],
+    [
+     -140.039,
+     26.7562
+    ]
+   ]
+  ]
+ }
+}
