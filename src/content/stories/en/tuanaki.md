@@ -35,32 +35,24 @@ notice:
 
 The plane was still taxiing. Three rows back, a woman stood up and opened the luggage compartment. A flight attendant shouted at her to sit down. The ethereal voice of the flight director said, “Welcome to Barcelona. The local time is 1:12 PM, and the temperature is 28 degrees Celsius.” The woman began arguing back. She just needed her water bottle, she said. I felt my headache intensify. I had been flying too much. A wedding in India, a week in Japan, back home in NYC for a little bit, and now here in Catalonia for an extended European weekend. I took out my phone and deactivated airplane mode. Notifications began pouring in. An email confirmed my stay in a new boutique hotel in the Eixample district, a luxury experience where every room had a saltwater aquarium with coral reefs. Another contained a ticket for a late afternoon visit to the Sagrada Família. My phone operator texted, “¡Bienvenido to Spain, Stefan!” and listed the perks of my roaming data plan. Another series of text messages was from Stefan 2.
 
-> _hey are you in barcelona yet_
->
-> _wanted to let you know that i’m pretty sure i’m on a direct flight to burnout_
->
-> _could barely get to work this morning_
->
+> _hey are you in barcelona yet_\
+> _wanted to let you know that i’m pretty sure i’m on a direct flight to burnout_\
+> _could barely get to work this morning_\
 > _thought you’d maybe want to discuss solutions_
 
 Sigh. I looked toward the tail. The flight attendant was by that woman, and the two of them seemed to have narrowly avoided a fight. Reluctantly, the woman sat down, clutching the small bit of luggage she had managed to grab. My thumbs were hovering over the virtual keyboard of my phone, wondering what to say. This wasn’t the first time Stefan 2 mentioned burnout. I wondered if it was genuine, or a negotiation tactic. Probably the latter, since I had used it as a tactic myself, once, when I worked full-time and Stefan 2 didn’t exist yet.
 
 I asked him what he had in mind.
 
-> _i want to work 32-hour weeks_
->
-> _4 days a week, fridays off_
->
-> _jillian is ok with it_
->
-> _about half the team is doing that now_
->
+> _i want to work 32-hour weeks_\
+> _4 days a week, fridays off_\
+> _jillian is ok with it_\
+> _about half the team is doing that now_\
 > _i just need your signoff_
 
 I replied that I’d think about it.
 
-> _i’d like you to think about it now._
->
+> _i’d like you to think about it now._\
 > _can i call you?_
 
 I said not now, and that I’d call him on the way to the hotel.
@@ -155,8 +147,7 @@ It occurred to me that Meenakshi from the Waymo Help Center was most likely a Co
 
 It was as she said; the protest cleared within ten minutes, and the Waymo went on its way. I noticed that Stefan 2 had texted me.
 
-> _just saw there are protests in barcelona to stop exploitation of the likes of me_
->
+> _just saw there are protests in barcelona to stop exploitation of the likes of me_\
 > _hope they aren’t too disruptive to your wonderful trip_
 
 I ignored him.
@@ -197,16 +188,11 @@ I checked my email. Stefan 2 had sent the paperwork. I barely skimmed it, then s
 
 As if reading my mind, he texted:
 
-> _thank you so much!! 💜_
->
-> _you will not regret this_
->
-> _oh by the way i feel bad about this but: the burnout *was* in fact a negotiation tactic_
->
-> _i’m actually doing pretty great these days_
->
-> _sorry about that_
->
+> _thank you so much!! 💜_\
+> _you will not regret this_\
+> _oh by the way i feel bad about this but: the burnout *was* in fact a negotiation tactic_\
+> _i’m actually doing pretty great these days_\
+> _sorry about that_\
 > _but i know you’re okay with the occasional white lie_
 
 I turned off my phone without replying. But I realized I wasn’t angry anymore. I understood where Stefan 2 was coming from. I knew he would ask for more concessions, and I knew I would cave in again. He was just being his lazy, human self, trying to work as little as he could. I smiled. I would have done the same.
