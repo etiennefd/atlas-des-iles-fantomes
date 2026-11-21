@@ -2,6 +2,7 @@
 title: "Tuanaki"
 islands: [tuanaki]
 date: 2025-05-17
+story_title: "La semaine de 40 heures"
 source: https://etiennefd.com/cteniq/tuanaki/
 images:
   - src: /iles/tuanaki.jpg
