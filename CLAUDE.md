@@ -1068,9 +1068,24 @@ output `dist`, no adapter (static). Nothing to configure.
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
-- English has only `hy-brasil`, so 30 islands sit in `translated` state there
+- **8 written in English** (`aurora`, `bermeja`, `groclant`, `hy-brasil`,
+  `ile-des-demons`, `kianida`, `los-jardines`, `tuanaki`), so 23 islands sit
+  in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
-- Geometry is placeholder blobs except `antillia` (Canepa 1489), `frisland`
+- **No island is a default blob any more** (November 2026). The five left
+  became shapes built from their reports, four of them moved onto primary
+  sources on the way: `jacquet` (Purdy's 46 55 N 39 30 W, ~265 km east of
+  a 1904 newspaper's position, and now a reef), `emerald` (the island, not
+  Nockells' ship), `nimrod` (Eilbeck's figures) and `tuanaki` (the charted
+  26 30 S 160 25 W, ~400 km SW, a 60 km atoll). `dougherty` stayed put. The
+  default blob is still what a new island gets until it is traced or
+  described. The four moved islands' coordinate notes were rewritten from
+  the primary text; the old ones followed secondary sources. Two notice
+  slips were fixed in the story files the same way: Émeraude's captain is
+  Nockells, not Elliot, and Keates saw Dougherty in 1859, not 1860.
+  Jacquet's "1728" stays in its notice and its hover date, unconfirmed —
+  the earliest evidence found is Bowles' map of 1779.
+- Traced: `antillia` (Canepa 1489), `frisland`
   (1562 plate, 23 parts — the first MultiPolygon), `bermeja`
   (19th-c. English Gulf chart), `nakanotorishima` (Yamada's own 1908 survey
   sketch — see below), `kianida` (Ulm 1482, fully georeferenced from the
@@ -1145,15 +1160,16 @@ output `dist`, no adapter (static). Nothing to configure.
    checked November 2026 on six posts), so a one-off re-import would need
    only a new fetch that takes the post body out of
    `/archive/cartographier/{slug}/` — title and date come from the page too.
-2. **Trace real outlines** — see *Adding an island*. Sixteen done:
+2. **Trace real outlines** — see *Adding an island*. Twenty-six done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
-   `maria-de-lajara`. No placeholder blob now actively
-   misleads. Everything else can stay a blob indefinitely; an island nobody agreed on
-   the shape of should look vague.
+   `maria-de-lajara`. The rest are built from their reports or drawn as
+   reefs (November 2026), so no default blob is left; a new island starts as
+   one. An island nobody agreed on the shape of should still look vague in
+   its coastline, which a described shape invents and says so.
    **`aurora` is three placeholder blobs at the Atrevida's three positions**
    (October 2026), not a tracing: a time-boxed search found no depiction with
    a coastline — the 1800 Spanish hydrographic chart, the story's Spruner
