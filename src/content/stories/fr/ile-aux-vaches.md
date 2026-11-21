@@ -69,7 +69,7 @@ Hasdrubal lança :
 
 — « Nous savons en tout cas que l’attente fut longue. La pêche, s’ils s’y adonnaient, n’était pas miraculeuse. Certains voulurent repartir, ils pensaient qu’Hannon serait tué au sud et ne repasserait jamais; d’autres restaient fidèles au Roi-Navigateur; des conflits éclatèrent. Un homme mourut.
 
-« Ceux qui restaient, enfin, choisirent de retourner au nord. Ils laissèrent dans leur cabane en pierre un message pour Hannon, puis ils mirent, à l’aube, leur navire à l’eau. Mais alors que les hommes étaient assis devant leurs rames, prêts à entamer le long voyage, on aperçut à l’horizon un petit carré jaune. C’était la voile de la *Main d’Eschmoûn *qui revenait! »
+« Ceux qui restaient, enfin, choisirent de retourner au nord. Ils laissèrent dans leur cabane en pierre un message pour Hannon, puis ils mirent, à l’aube, leur navire à l’eau. Mais alors que les hommes étaient assis devant leurs rames, prêts à entamer le long voyage, on aperçut à l’horizon un petit carré jaune. C’était la voile de la *Main d’Eschmoûn* qui revenait! »
 
 Magon s’était réveillé; ses deux frères étaient suspendus aux lèvres pourpres de Salammbô. Elle décrivit le retour de la galère perdue. On y avait embarqué six bêtes étranges. C’étaient comme des taureaux ou des vaches, mais elles avaient sur le front une corne unique, grise, de la longueur d’un pied, large sur leur base et diminuant vers un pic émoussé. Leur corps était couvert d’un cuir de la couleur de la poussière. Hannibal demanda à Taanach de répandre du sable sur les dalles. Il y traçait avec un bâton la créature telle qu’il l’imaginait; Salammbô le corrigeait en riant :
 

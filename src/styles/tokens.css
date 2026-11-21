@@ -40,6 +40,14 @@ body {
   font-variant-numeric: oldstyle-nums;
 }
 
+/* Emphasis inside italic goes roman, as on the blog: a title inside an italic
+   caption or note ("paru dans *Protocolized*") is set upright there. */
+em em,
+.story__figure figcaption em,
+.crosslang em {
+  font-style: normal;
+}
+
 a {
   color: var(--phantom);
   text-decoration-thickness: 1px;

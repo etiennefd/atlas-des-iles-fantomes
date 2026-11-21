@@ -4,16 +4,16 @@ export type Lang = (typeof LANGS)[number];
 export const ui = {
   fr: {
     siteTitle: "Atlas des îles fantômes",
-    tagline: "Des îles qu'on a cru voir",
+    tagline: "Des îles qu’on a cru voir",
     list: "Liste des îles",
     map: "Carte",
     about: "À propos",
     forthcoming: "à venir",
     sources: "Sources",
-    originally: "Publié d'abord sur",
+    originally: "Publié d’abord sur",
     otherLang: "English",
     onlyInOther:
-      "Cette histoire n'existe qu'en anglais pour l'instant.",
+      "Cette histoire n’existe qu’en anglais pour l’instant.",
     read: "Lire en anglais",
     written: "écrites",
     reset: "Réinitialiser la carte",

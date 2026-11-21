@@ -85,7 +85,7 @@ La surprise m’a empêché de réagir pendant trois longues secondes.
 
 — Oui, ben, logiquement, ça serait Maxime, mais… bien franchement, je suis pas sûr qu’il va revenir de son arrêt de travail. Et même s’il revient, je doute que ça l’intéresse d’avoir des nouvelles responsabilités et le stress qui vient avec. Donc… donc c’est pour ça que je voulais te parler. Et plus tôt que tard. Je voulais te demander si ça t’intéresserait potentiellement de devenir chef d’équipe.
 
-La surprise m’a empêché de réagir pendant dix *très *longues secondes. Constatant cela, Sébastien a poursuivi :
+La surprise m’a empêché de réagir pendant dix *très* longues secondes. Constatant cela, Sébastien a poursuivi :
 
 — Je sais que ça fait pas très longtemps que t’es à Wispyr, mais t’as accompli un très bon travail pendant les deux dernières années, et j’ai l’impression que tu serais parfaitement capable de gérer une petite équipe. Je te vois plus faire un travail de priorisation, de planification, etc. que Jason, par exemple, qui est plus calé dans les aspects très techniques de la magie. Bref, si ça t’intéresse, je vais en parler à Martin quand je vais lui annoncer mon départ. Ça serait de lui que tu répondrais à l’avenir. S’il approuve, bien sûr.
 

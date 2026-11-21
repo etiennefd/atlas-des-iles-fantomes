@@ -37,11 +37,11 @@ RI : Gloire au Leader suprême et au peuple coréen! Quelles sont les instructio
 
 KIM : Nous allons annoncer la transformation de la Corée en une île.
 
-*Ri Su-gil ne comprend pas. Il fronce les sourcils. *
+*Ri Su-gil ne comprend pas. Il fronce les sourcils.*
 
 RI : Une île, M. Kim?
 
-*Kim Thae-bot sourit et se met à marcher vers un corridor, suivi de Ri Su-gil. *
+*Kim Thae-bot sourit et se met à marcher vers un corridor, suivi de Ri Su-gil.*
 
 KIM : Une île, M. Ri. Voyez-vous, le Leader suprême m’a appris tout à l’heure que la péninsule coréenne a déjà été séparée du continent.
 
@@ -55,7 +55,7 @@ KIM : Le destin de la République populaire démocratique de Corée est de servi
 
 RI : Je ne suis pas certain de comprendre, M. Kim.
 
-*Kim Thae-bot fait un geste pour inviter Ri Su-gil à entrer dans un bureau. Ils s’assoient sur deux fauteuils entre lesquels est placé un bouquet de fleurs artificielles. Sur le mur, on distingue les portraits de Kim Il-sung et de Kim Jong-il**.*
+*Kim Thae-bot fait un geste pour inviter Ri Su-gil à entrer dans un bureau. Ils s’assoient sur deux fauteuils entre lesquels est placé un bouquet de fleurs artificielles. Sur le mur, on distingue les portraits de Kim Il-sung et de Kim Jong-il.*
 
 KIM : Nous avons une frontière avec la Russie. Or la Russie a une frontière, notamment, avec la Norvège. Et la Norvège fait partie de l’OTAN, la créature malfaisante des États-Unis d’Amérique.
 

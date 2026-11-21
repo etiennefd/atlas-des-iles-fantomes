@@ -53,7 +53,7 @@ Oui. Il s’agit de l’Oracle.
 
 L’Oracle était ce qu’aujourd’hui vous appelleriez un ordinateur. Il a été construit à partir de l’an 425 environ, et perfectionné avec les années. Évidemment, aujourd’hui, la science de l’électronique a permis de dépasser les capacités de l’Oracle, qui reposait sur des technologies que nous qualifierions de primitives. Mais pendant des siècles, Kianida était l’hôte de la machine la plus avancée qui soit, et de très loin.
 
-**Les ordinateurs ont été inventés au milieu du XXe siècle. À la limite, des précurseurs ont été imaginés par Charles Babbage et Ada Lovelace dans les années 1820. Vous prétendez qu’ils ont été devancés par… un millénaire et demi? **
+**Les ordinateurs ont été inventés au milieu du XXe siècle. À la limite, des précurseurs ont été imaginés par Charles Babbage et Ada Lovelace dans les années 1820. Vous prétendez qu’ils ont été devancés par… un millénaire et demi?**
 
 C’est juste. Votre surprise est le résultat des actions délibérés des Kianidiens, qui ont caché le pouvoir de leur technologie pendant tout ce temps. Mais c’est la vérité. La philosophie mécanique, qu’aujourd’hui vous appelleriez *informatique*, était un art très développé dans l’Empire romain d’Orient au IVe siècle. De nombreux automates ont été construits. Le plus célèbre était la statue du dieu Sérapis, dans le Sérapéum d’Alexandrie. Vous avez peut-être entendu parler d’Hypatie?
 
@@ -165,7 +165,7 @@ Nous n’avons jamais vraiment su si l’Oracle est réellement devenu « consci
 
 Au départ, oui. Mais les accélérationnistes sont allés trop vite pour les précautionnistes. Il était presque certain que, quelque part dans sa mémoire, l’Oracle avait sauvegardé une copie des programmes en question. On aurait pu, peut-être, procéder à un examen minutieux du système mnémotique, qui à l’époque prenait la forme d’immenses disques magnétisés, mais il faut aussi prendre en considération que les accélérationnistes s’y opposaient et qu’il n’y avait pas de consensus dans la société kianidienne.
 
-**C’était donc une question politique. **
+**C’était donc une question politique.**
 
 Absolument. Les accélérationnistes détenaient une courte majorité au conseil et dans l’opinion publique. La plupart d’entre eux croyaient que les craintes étaient infondées, voire risibles. C’était aussi, disaient-ils, contraire à la raison d’être même de notre pays. À quoi servirait Kianida si nous cessions d’améliorer l’Oracle? Aussi bien l’abandonner.
 
@@ -207,11 +207,11 @@ Je dois être claire : je viole la loi kianidienne en vous révélant ceci. Il y
 
 Parce que vos ordinateurs ont atteint un niveau comparable à celui de l’Oracle. Vous appelez cela l’*intelligence artificielle*. Déjà le monde est en train de changer à cause d’elle. Vous avez des spécialistes qui s’en réjouissent, d’autres qui s’inquiètent. Les débats qui ont eu lieu à Kianida jadis trouvent de plus en plus d’écho dans le monde actuel.
 
-**Je comprends donc que vous voulez nous lancer un avertissement. Nous devrions, comme vous, détruire nos ordinateurs. Lancer un Jihad butlérien, pour reprendre les mots de l’auteur Frank Herbert. **
+**Je comprends donc que vous voulez nous lancer un avertissement. Nous devrions, comme vous, détruire nos ordinateurs. Lancer un Jihad butlérien, pour reprendre les mots de l’auteur Frank Herbert.**
 
 Non! Non, absolument pas. Je veux vous lancer l’avertissement inverse. Vous ne devez pas détruire vos machines. Ne commettez pas la même erreur que les Alexandrins. Ne commettez pas la même erreur que nous.
 
-**J’avais cru que vous étiez de tendance précautionniste… **
+**J’avais cru que vous étiez de tendance précautionniste…**
 
 Autrefois, oui. Plus maintenant.
 

@@ -131,7 +131,7 @@ En aucun cas il ne sera question d’une station sur l’île Jacquet, pour la s
 
 Sur la plage de la baie de Valentia, une foule s’est rassemblée pour célébrer le départ des deux navires. De nombreux pêcheurs ont sorti leurs bateaux pour faire comme un convoi. Des représentants du gouvernement de Sa Majesté sont là, tout près de la station télégraphique qui relie la frégate américaine à la terre ferme. Il règne une atmosphère de fête. Quelqu’un lit un poème commémoratif, que Cyrus Field n’entend pas.
 
-Enfin le *Niagara *et l’*Agamemnon* tendent leurs voiles et mettent en marche leurs moteurs à vapeur. L’immense bobine se met à tourner. Le premier segment du câble disparaît sous la surface grise de la baie.
+Enfin le *Niagara* et l’*Agamemnon* tendent leurs voiles et mettent en marche leurs moteurs à vapeur. L’immense bobine se met à tourner. Le premier segment du câble disparaît sous la surface grise de la baie.
 
 Cyrus Field ne sait pas que son télégraphe se cassera dans quelques jours. Ni qu’il faudra plusieurs tentatives et quelques années avant d’accomplir définitivement l’objectif qu’il s’était donné sans rien connaître de l’électricité ou du télégraphe. Le défi technique est immense, la mer est impitoyable, et aucune île miraculeuse ne viendra faciliter le problème.
 

@@ -34,7 +34,7 @@ notice:
 
 Nous sommes en l’an de grâce 1794, et l’âge d’or de l’Espagne tire à sa fin. L’âge d’or des explorations aussi, d’ailleurs. Les deux allaient de pair. Il n’y a pas si longtemps, un intrépide capitaine pouvait naviguer dans une direction au hasard et trouver un archipel où pousse une nouvelle épice, ou les temples d’un peuple mystérieux, ou même un continent en entier, grouillant de bêtes dont on n’eût jamais cru qu’elles pussent appartenir à la Création. Il n’y a pas si longtemps, un royaume comme l’Espagne pouvait amasser une fortune sans précédent rien qu’en allant la chercher dans les recoins du monde.
 
-Rien de tel, en l’an de grâce 1794. En l’an de grâce 1794, la *Descubierta et *l’*Atrevida* écument l’Atlantique Sud, au terme d’une expédition scientifique de quatre ans dans le Pacifique. Sur la route du retour à Cadix, après avoir franchi le cap Horn et visité les Malouines, l’*Atrevida* est envoyée seule vers l’est, avec le dessein de confirmer l’existence d’une poignée de rochers perdus.
+Rien de tel, en l’an de grâce 1794. En l’an de grâce 1794, la *Descubierta* et l’*Atrevida* écument l’Atlantique Sud, au terme d’une expédition scientifique de quatre ans dans le Pacifique. Sur la route du retour à Cadix, après avoir franchi le cap Horn et visité les Malouines, l’*Atrevida* est envoyée seule vers l’est, avec le dessein de confirmer l’existence d’une poignée de rochers perdus.
 
 Ils ont été vus trente-deux ans plus tôt par l’*Aurora*, de la marine marchande, qui leur a donné son nom. Mentionnés à quelques reprises depuis. Décrits sommairement en 1790 : trois îles, alignées du nord au sud.
 

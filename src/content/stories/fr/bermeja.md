@@ -45,7 +45,7 @@ Il y a cependant beaucoup de ceci : des explosifs.
 
 ***
 
-Pas si loin au nord de la position actuelle de la *Dolores*, on trouve ce qui s’appelle un *trou de beigne *: une région de la mer qui ne relève d’aucun pays, mais qui est entourée par des eaux territoriales, en l’occurrence celles du Mexique et des États-Unis. Les limites de ce trou de beigne ne sont cependant pas précisément définies. Elles dépendent de la proximité des terres émergées appartenant aux deux États, mais doivent encore faire l’objet d’un traité.
+Pas si loin au nord de la position actuelle de la *Dolores*, on trouve ce qui s’appelle un *trou de beigne* : une région de la mer qui ne relève d’aucun pays, mais qui est entourée par des eaux territoriales, en l’occurrence celles du Mexique et des États-Unis. Les limites de ce trou de beigne ne sont cependant pas précisément définies. Elles dépendent de la proximité des terres émergées appartenant aux deux États, mais doivent encore faire l’objet d’un traité.
 
 Or, une compagnie a récemment découvert, sous les eaux des environs, un important gisement de pétrole.
 

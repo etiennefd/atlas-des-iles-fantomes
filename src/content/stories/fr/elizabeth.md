@@ -36,7 +36,7 @@ notice:
   - label: "À ne pas confondre avec"
     body: >-
       l’[île Isabel](https://fr.wikipedia.org/wiki/%C3%8Ele_Isabel_(Chili)),
-      dans le détroit de Magellan, qui a aussi été appelée *île Elizabeth *et
+      dans le détroit de Magellan, qui a aussi été appelée *île Elizabeth* et
       que les plus fins observateurs auront remarquée dans la carte ci-dessus
   - label: "Pour le fun"
     body: >-

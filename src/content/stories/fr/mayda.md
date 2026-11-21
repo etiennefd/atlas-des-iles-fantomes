@@ -32,7 +32,7 @@ notice:
       grande île extraterrestre connue à ce jour.
 ---
 
-*[Carte des communications télégraphiques atlantiques entre la France, l’Angleterre et l’Amérique](https://commons.wikimedia.org/wiki/File:1869_map_of_the_Atlantic_telegraphic_communication_between_France,_England_%26_America.tif), 1869. *
+*[Carte des communications télégraphiques atlantiques entre la France, l’Angleterre et l’Amérique](https://commons.wikimedia.org/wiki/File:1869_map_of_the_Atlantic_telegraphic_communication_between_France,_England_%26_America.tif), 1869.*
 
 ***
 

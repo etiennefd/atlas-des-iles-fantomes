@@ -139,7 +139,7 @@ Son agacement était désormais clairement visible. Je devais déjà savoir, inc
 
 C’était *lui* qui m’accusait d’être ennuyant? L’audace! Le culot!
 
-— On n’a certainement *pas* déjà réglé la question, j’ai dit. Mon point, c’est que vous accumulez une fortune en faisant des choses qui détruisent lentement la planète, et vous utilisez ensuite cette fortune pour vous magasiner une île artificielle autosuffisante où aller vivre si tout s’effondre, alors que vous pourriez simplement *ne pas *faire les choses qui détruisent la planète.
+— On n’a certainement *pas* déjà réglé la question, j’ai dit. Mon point, c’est que vous accumulez une fortune en faisant des choses qui détruisent lentement la planète, et vous utilisez ensuite cette fortune pour vous magasiner une île artificielle autosuffisante où aller vivre si tout s’effondre, alors que vous pourriez simplement *ne pas* faire les choses qui détruisent la planète.
 
 — Dit celui qui travaille comme vendeur d’îles artificielles autosuffisantes.
 

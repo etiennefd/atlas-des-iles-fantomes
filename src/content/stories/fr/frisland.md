@@ -455,7 +455,7 @@ Pfff… Non. C’est beaucoup trop de travail. Vaut mieux juste restaurer un ét
 
 Il fouille sur son bureau en désordre, trouve son disque dur de backups, le connecte à l’ordi, et…
 
-*Ben voyons, voir que j’ai pas fait de backups depuis un an et demi? *
+*Ben voyons, voir que j’ai pas fait de backups depuis un an et demi?*
 
 Un calcul rapide : environ 30 ans se sont écoulés dans le Zeno World depuis le dernier backup, dont 20 pendant la seule semaine de relâche. 30 ans de vie perdue, pour les 11 000 habitants de Fixland. Ça lui fait un pincement au cœur. Mais l’alternative, c’est de les laisser vivre dans cet enfer jusqu’à la fin des temps. Ce ne serait pas moral.
 
