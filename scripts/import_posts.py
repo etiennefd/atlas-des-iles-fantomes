@@ -91,12 +91,12 @@ def is_sep(text):
 
 def parse(post):
     h = post["content"]["rendered"]
-    blocks = re.findall(r"<(p|ul)\b[^>]*>(.*?)</\1>", h, re.S | re.I)
+    blocks = re.findall(r"<(p|ul)\b([^>]*)>(.*?)</\1>", h, re.S | re.I)
 
     images, notice, body = [], [], []
     pending_caption_for = None
 
-    for tag, inner in blocks:
+    for tag, attrs, inner in blocks:
         if tag.lower() == "ul":
             for li in re.findall(r"<li\b[^>]*>(.*?)</li>", inner, re.S | re.I):
                 t = inline(li)
@@ -125,8 +125,11 @@ def parse(post):
             continue
         # a centred/italic paragraph straight after images is the plate caption
         if pending_caption_for is not None and not body:
-            centred = "text-align: center" in tag or "text-align:center" in inner
-            italic = inner.strip().startswith("<em") or "<em" in inner[:40]
+            # The alignment is on the <p> itself, and the italic is usually <i>
+            # inside a font-size <span>: six captions were missed by testing
+            # the tag name for the style and looking only for <em> up front.
+            centred = re.search(r"text-align:\s*center", attrs + inner[:120]) is not None
+            italic = re.search(r"<(em|i)\b", inner[:120], re.I) is not None
             if centred or italic:
                 m = re.fullmatch(r"\*(.+)\*", text, re.S)
                 if m:

@@ -6,6 +6,10 @@ source: https://etiennefd.com/cteniq/ile-saint-mathieu/
 images:
   - src: /iles/saint-mathieu.jpg
     alt: ""
+    caption: >-
+      Détail d’une [Carte générale de l’Afrique divisée en plusieurs
+      royaumes](http://www.ibiblio.org/pha/USN/africa_1829.jpg) de 1829. L’« I.
+      S. Mathieu » est juste en bas du mot « Équinoxiale » au centre.
 notice:
   - label: "Où"
     body: >-
@@ -26,8 +30,6 @@ notice:
       d’[Annobón](https://fr.wikipedia.org/wiki/Annob%C3%B3n), située à la même
       latitude dans ce qui est maintenant la Guinée-Équatoriale
 ---
-
-*Détail d’une [Carte générale de l’Afrique divisée en plusieurs royaumes](http://www.ibiblio.org/pha/USN/africa_1829.jpg) de 1829. L’« I. S. Mathieu » est juste en bas du mot « Équinoxiale » au centre.*
 
 ***
 

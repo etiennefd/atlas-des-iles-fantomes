@@ -5,6 +5,11 @@ date: 2023-02-26
 images:
   - src: /iles/los-jardines.jpg
     alt: ""
+    caption: >-
+      [Map of the
+      Pacific](https://en.wikipedia.org/wiki/Los_Jardines#/media/File:Maris_Pacifici_Quad_Vulga_Mar_del_Zur_-_Abraham_Ortelius,_1595.jpg)
+      by Abraham Ortelius, 1595. "Los Iardinos" is on the left, north of the big
+      yellow New Guinea.
 notice:
   - label: "Where"
     body: >-
@@ -27,8 +32,6 @@ notice:
       Atoll](https://en.wikipedia.org/wiki/Kwajalein_Atoll) or [Ujelang
       Atoll](https://en.wikipedia.org/wiki/Ujelang_Atoll), among others.
 ---
-
-*[Map of the Pacific](https://en.wikipedia.org/wiki/Los_Jardines#/media/File:Maris_Pacifici_Quad_Vulga_Mar_del_Zur_-_Abraham_Ortelius,_1595.jpg) by Abraham Ortelius, 1595. "Los Iardinos" is on the left, north of the big yellow New Guinea.*
 
 ***
 

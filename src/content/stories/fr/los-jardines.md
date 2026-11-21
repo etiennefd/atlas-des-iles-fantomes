@@ -6,6 +6,11 @@ source: https://etiennefd.com/cteniq/los-jardines/
 images:
   - src: /iles/los-jardines.jpg
     alt: ""
+    caption: >-
+      [Carte du
+      Pacifique](https://fr.wikipedia.org/wiki/Los_Jardines#/media/Fichier:Maris_Pacifici_Quad_Vulga_Mar_del_Zur_-_Abraham_Ortelius,_1595.jpg)
+      par Abraham Ortelius, 1595. On voit « Los Iardinos » à gauche, au nord de
+      la grosse Nouvelle-Guinée jaune.
 notice:
   - label: "Où"
     body: >-
@@ -28,8 +33,6 @@ notice:
       de [Kwajalein](https://fr.wikipedia.org/wiki/Kwajalein) ou l’atoll
       d’[Ujelang](https://fr.wikipedia.org/wiki/Ujelang), entre autres.
 ---
-
-*[Carte du Pacifique](https://fr.wikipedia.org/wiki/Los_Jardines#/media/Fichier:Maris_Pacifici_Quad_Vulga_Mar_del_Zur_-_Abraham_Ortelius,_1595.jpg) par Abraham Ortelius, 1595. On voit « Los Iardinos » à gauche, au nord de la grosse Nouvelle-Guinée jaune.*
 
 ***
 

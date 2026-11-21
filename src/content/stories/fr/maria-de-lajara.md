@@ -6,6 +6,11 @@ source: https://etiennefd.com/cteniq/ile-maria-de-lajara/
 images:
   - src: /iles/maria-de-lajara.jpg
     alt: ""
+    caption: >-
+      [Carte de l’Australie et du
+      Pacifique](https://antiqueprintmaproom.com/product/entwickelung-des-kartenbildes-von-asutralien-wilhem-sievers/)
+      par Adolf Stieler, 1826. L’île « D. Maria Laxara » est visible tout en
+      haut, au nord des îles Sandwich (Hawaï).
 notice:
   - label: "Où"
     body: >-
@@ -21,8 +26,6 @@ notice:
       Ogasawara)](https://fr.wikipedia.org/wiki/Archipel_Ogasawara) (27 degrés
       nord et 140 degrés *est*)
 ---
-
-*[Carte de l’Australie et du Pacifique](https://antiqueprintmaproom.com/product/entwickelung-des-kartenbildes-von-asutralien-wilhem-sievers/) par Adolf Stieler, 1826. L’île « D. Maria Laxara » est visible tout en haut, au nord des îles Sandwich (Hawaï).*
 
 ***
 

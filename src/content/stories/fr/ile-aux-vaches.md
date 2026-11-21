@@ -6,6 +6,10 @@ source: https://etiennefd.com/cteniq/ile-aux-vaches/
 images:
   - src: /iles/ile-aux-vaches.jpg
     alt: ""
+    caption: >-
+      Fragment survivant de la [carte de l’amiral ottoman Piri
+      Reis](https://fr.wikipedia.org/wiki/Carte_de_Piri_Reis), 1513. L’île aux
+      Vaches est en rouge en plein centre, pas trop loin de la côte brésilienne.
 notice:
   - label: "Où"
     body: "dans l’Atlantique, entre l’Amérique du Sud et l’Afrique"
@@ -16,8 +20,6 @@ notice:
   - label: "Aussi connue sous le nom de"
     body: "İzle de Vaka (transcription turque du portugais)"
 ---
-
-*Fragment survivant de la [carte de l’amiral ottoman Piri Reis](https://fr.wikipedia.org/wiki/Carte_de_Piri_Reis), 1513. L’île aux Vaches est en rouge en plein centre, pas trop loin de la côte brésilienne.*
 
 ***
 
