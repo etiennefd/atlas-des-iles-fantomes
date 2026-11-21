@@ -10,13 +10,31 @@ import { frenchSpacing } from "../../../lib/typo.mjs";
 
 export async function getStaticPaths() {
   const stories = await getCollection("stories");
-  return stories.map((story) => {
+  const pages = stories.map((story) => {
     const { lang, slug } = splitStoryId(story.id);
-    return { params: { lang, slug }, props: { story } };
+    return { params: { lang, slug }, props: { story, placeholder: false } };
   });
+  // A story written in one language only gets a placeholder page in the
+  // other, at the URL its translation will have, so the language switch on
+  // a story always lands on the same island. Drafts get none.
+  for (const story of stories) {
+    if (story.data.draft) continue;
+    const { lang, slug } = splitStoryId(story.id);
+    const o = other(lang);
+    const translated = stories.some(
+      (s) =>
+        splitStoryId(s.id).lang === o &&
+        s.data.islands.some((id) => story.data.islands.includes(id))
+    );
+    if (!translated) {
+      pages.push({ params: { lang: o, slug }, props: { story, placeholder: true } });
+    }
+  }
+  return pages;
 }
 
-const { story } = Astro.props;
+// On a placeholder, `story` is the one in the other language.
+const { story, placeholder } = Astro.props;
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
 const o = other(lang);
@@ -25,6 +43,13 @@ const islands = await getCollection("islands");
 const covered = story.data.islands
   .map((id) => islands.find((i) => i.id === id))
   .filter(Boolean);
+
+// A placeholder is titled by its islands, named in this language.
+const title = placeholder
+  ? covered
+      .map((i) => (lang === "fr" ? i!.data.name_fr : i!.data.name_en))
+      .join(lang === "fr" ? " et " : " and ")
+  : story.data.title;
 
 // The signature: each island's lifespan, joined when a story covers several.
 const spans = covered
@@ -44,9 +69,12 @@ const counterpart = stories.find((s) => {
     p.lang === o && s.data.islands.some((id) => story.data.islands.includes(id))
   );
 });
+// With no counterpart, the other language has this story's placeholder.
 const altHref = counterpart
   ? `/${o}/iles/${splitStoryId(counterpart.id).slug}/`
-  : undefined;
+  : story.data.draft
+    ? undefined
+    : `/${o}/iles/${splitStoryId(story.id).slug}/`;
 
 // A plate named in frontmatter but absent from public/ would render as a
 // broken-image icon. Skip it, and say so at build time, so the gap stays
@@ -80,16 +108,16 @@ const inline = (md: string) =>
   marked.parseInline(spaced(md).replace(/\[\^(\d+)\]/g, (_, n) => noteRef(n)));
 ---
 
-<Base lang={lang} title={story.data.title} altHref={altHref}>
+<Base lang={lang} title={title} altHref={altHref}>
   <article class="story">
-    <h1 class="story__title">{story.data.title}</h1>
+    <h1 class="story__title">{title}</h1>
     {spans.length > 0 && <span class="story__span sc">{spans.join(" · ")}</span>}
 
     {
       images.map((img) => (
         <figure class="story__figure">
           <img src={img.src} alt={img.alt} loading="lazy" />
-          {img.caption && (
+          {img.caption && !placeholder && (
             <figcaption set:html={inline(img.caption)} />
           )}
         </figure>
@@ -97,7 +125,15 @@ const inline = (md: string) =>
     }
 
     {
-      story.data.notice.length > 0 && (
+      placeholder && (
+        <p class="crosslang">
+          {t.onlyInOther} <a href={altHref}>{t.read}</a>
+        </p>
+      )
+    }
+
+    {
+      !placeholder && story.data.notice.length > 0 && (
         <div class="notice">
           {story.data.notice.map((row) => (
             <p class="notice__row">
@@ -109,6 +145,7 @@ const inline = (md: string) =>
       )
     }
 
+    {!placeholder && (
     <div class="prose">
       <Content />
       {
@@ -136,7 +173,9 @@ const inline = (md: string) =>
         )
       }
     </div>
+    )}
 
+    {!placeholder && (
     <footer class="story__foot">
       {
         story.data.source && (
@@ -161,5 +200,6 @@ const inline = (md: string) =>
         )
       }
     </footer>
+    )}
   </article>
 </Base>

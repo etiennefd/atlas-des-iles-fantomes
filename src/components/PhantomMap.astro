@@ -13,7 +13,9 @@ const meta = resolved.map((r) => ({
   id: r.island.id,
   name: r.name,
   state: r.state,
-  href: r.href,
+  // Only a story in this language is a click away; an island written in the
+  // other language only is reached by the language switch on its page.
+  href: r.state === "available" ? r.href : undefined,
   lifespan: lifespan(r.island),
   forthcoming: t.forthcoming,
 }));
