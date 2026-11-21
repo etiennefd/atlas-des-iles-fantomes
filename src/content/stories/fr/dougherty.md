@@ -21,7 +21,7 @@ notice:
       Nouvelle-Zélande.
   - label: "Quand"
     body: >-
-      identifiée en 1841 par le capitaine Dougherty; confirmée en 1860 par le
+      identifiée en 1841 par le capitaine Dougherty; confirmée en 1859 par le
       capitaine Keates et en 1886 par le capitaine Stannard. Des expéditions au
       début du XXe siècle, dont celle du *Nimrod*, ont ensuite prouvé son
       inexistence.

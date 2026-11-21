@@ -20,7 +20,7 @@ notice:
     body: "au sud de l’île Macquarie, elle-même au sud de la Nouvelle-Zélande"
   - label: "Quand"
     body: >-
-      aperçue en 1821 par le capitaine Elliot du phoquier *Emerald*; pas
+      aperçue en 1821 par le capitaine Nockells du phoquier *Emerald*; pas
       retrouvée par une expédition en 1840 ni celle du *Nimrod* en 1909.
       Supposément encore visible dans un calendrier publié par American Express
       en 1987.
