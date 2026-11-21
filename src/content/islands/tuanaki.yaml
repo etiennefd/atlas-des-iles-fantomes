@@ -2,9 +2,27 @@ name_fr: "Tuanaki"
 name_en: "Tuanaki"
 kind: island
 ocean: pacifique-sud
-coords: [-158.0, -23.5]
+coords: [-160.417, -26.5]
 span: [1842, 1856]
 coords_confidence: approximate
 coords_note: >-
-  South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks
-  proposed as a remnant. Missionary searches failed 1844 and 1856.
+  26°30' S 160°25' W, the position the charts carried: Hamond of HMS
+  Salamander (Nautical Magazine 1847) and still Richards' General notes on
+  South Pacific island groups (1920). Other positions printed: 25°15' S
+  160°35' W (Index Geographicus 1864) and about 25°50' S 160°55' W (the US
+  consul at Tahiti), both searched by the Gazelle in 1876. The accounts
+  put it closer: "not more than 200 miles" S or SW of Rarotonga (Gill
+  1856), one night and day from Mangaia (Soma). Moved November 2026 from
+  -158.0, -23.5, a point picked from those accounts; the charted position
+  is ~400 km further SW.
+outline_note: >-
+  No depiction exists; maps give a name or a dot. The shape is BUILT FROM
+  THE ACCOUNTS by scripts/describe_island.py: "three low islands within one
+  reef" (Gill, Gems from the Coral Islands, 1856, ii, p. 73), and Soma's
+  captain looking for the ava, the passage into the lagoon (JPS 20, 1911).
+  So an atoll: a reef ring with a passage, its rim widening on the lagoon
+  side at three islets. No size is reported. 60 km across is Étienne's
+  choice (November 2026), so the atoll reads at full zoom; at 25 km,
+  Penrhyn's size, it was a 6 px ring at 8x. The size of the reefs' rock
+  cluster, and as much a stand-in. Not to be confused with Tuanake, a real
+  Tuamotu atoll 4 miles across. Was a 322 x 210 km blob.

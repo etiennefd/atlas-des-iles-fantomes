@@ -2,8 +2,22 @@ name_fr: "L’île Emerald"
 name_en: "Emerald Island"
 kind: island
 ocean: antarctique
-coords: [162.2, -57.5]
+coords: [163.0, -57.25]
 span: [1821, 1909]
 coords_confidence: attested
 coords_note: >-
-  Capt. William Elliot of the Emerald, December 1821: 57 30' S 162 12' E.
+  57°15' S 163°00' E, where Findlay's Directory for the Pacific (1851,
+  p. 678) puts the island. Capt. C. J. Nockells of the ship Emerald saw
+  it at 11 a.m. on 13 December 1821 from 57°30' S 162°12' E by
+  chronometer, bearing E by N about 25 miles off; that was the ship's
+  position, which the atlas carried until November 2026 (~55 km away).
+  The captain is Nockells in his own letter, which Findlay quotes; the
+  "Captain Elliot" of later accounts is not in the primary text.
+outline_note: >-
+  No depiction with a coastline exists. The Admiralty's Chart of the South
+  Polar Sea (1839) gives it a stock hachured small-island figure not drawn
+  from the report. The shape is BUILT FROM THE REPORT by
+  scripts/describe_island.py: Nockells, 25 miles off and never closer,
+  "very high, with peaked mountains ... Direction, N.E. and S.W., about 30
+  miles", before a two-day gale. So 30 nm (56 km) on a NE-SW axis. The
+  width (24 km) and the coastline are invented. Was a 235 x 305 km blob.

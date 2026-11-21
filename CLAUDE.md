@@ -648,6 +648,25 @@ node scripts/check_overlap.mjs groclant   # and check it is not sitting on land
 Traced outlines live in `src/data/outlines/{id}.geojson`; `build_geojson.py`
 prefers one over a blob, so **one island is a complete unit of work**.
 
+**Islands nobody drew** — `scripts/describe_island.py`. Where every chart
+draws a dot and the report is text, the report still gives *something*: a
+length, a bearing, a high end and a low end, "a group", "three low islands
+within one reef". That script lays those facts out as geometry and writes an
+outline file like any tracing, marked `described`, with what the report said
+in `scale_source` and everything else listed as invented. Done for
+`dougherty` (5.5 nm NE-SW, wider at the NE bluff), `emerald` (30 nm NE-SW),
+`nimrod` (a group: four islets, count and sizes invented) and `tuanaki` (an
+atoll: a reef ring with a passage, its rim widening on the lagoon side at
+three islets). Étienne, November 2026, chose "sized, groups as groups" over
+sized blobs; the older line below, that an island nobody agreed on should
+look vague, still holds for its *coastline*, which is invented here and says
+so. The atoll is 60 km across by his choice — at a plausible 25 km it was a
+6 px ring at 8x and did not read — the same stand-in size as the reefs'
+rock cluster. Something smaller than a few km (Jacquet, half a mile) is
+drawn as a reef. Check the report before the secondary literature: the
+second search found Emerald's captain was Nockells, not Elliot, and that
+Jacquet had been placed 265 km off on a 1904 newspaper's word.
+
 **Open coasts** — `scripts/trace_coast.py`. Some phantoms were never islands
 on their charts: Vaugondy draws Davis Land as a shore with hatching on the
 sea side and nothing behind, which is what Wafer saw from the deck. Closing
@@ -1022,9 +1041,10 @@ from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
 - 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
-- 26 traced outlines (three of them open coasts), 7 placeholder blobs, and
-  `aurora` as three blobs at attested positions; 25 chart records in
-  `scripts/charts/`
+- 26 traced outlines (three of them open coasts), 4 shapes built from
+  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
+  nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
+  blobs at attested positions; 25 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 34 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -1122,17 +1142,20 @@ output `dist`, no adapter (static). Nothing to configure.
    lead left is Museo Naval Ms. 634 ff. 11r–14v, the Atrevida's own extract;
    a sketch there would replace the blobs.
    **The other six blobs were searched the same way in November 2026**, and
-   only `maria-de-lajara` had a coastline. `dougherty`, `nimrod`, `tuanaki`
+   only `maria-de-lajara` had a coastline. A second search later that month
+   reached the leads listed below and found none either, but did find the
+   reports' sizes, so the five became shapes built from those reports —
+   see *Islands nobody drew*. What follows is the first search's record. `dougherty`, `nimrod`, `tuanaki`
    and `jacquet` are dots or rings on every chart checked (Bartholomew 1905,
    Davis' Nimrod track 1909, Admiralty 5098 of 1914, Stieler, the Stanford
    Polynesia, Bowles 1779, the Dépôt's Cartes réduites of 1738-1786, Bellin
    and Sayer & Bennett on the Banks, which stop west of Jacquet). `emerald`
    is a hachured stock small-island figure on the Admiralty's Chart of the
-   South Polar Sea (1839, Rumsey 364749, 23 x 49 px), not drawn from Elliot,
-   and was left a blob. Leads not reached: the Nautical Magazine reports of
-   Dougherty (1842), Keates (1860) and Stannard (1886), where a captain's
-   sketch is likeliest; the Admiralty's Cook Islands charts for Tuanaki;
-   19th-c. blue-backs for Jacquet.
+   South Polar Sea (1839, Rumsey 364749, 23 x 49 px), not drawn from the
+   report. Leads still unreached: Le Gros' lost sketch of Jacquet's profile
+   (Norie/Imray archives, Jersey Heritage); the Admiralty's *Pacific
+   Islands* vol. 3 (1900) for Stannard's own words; Stommel's *Lost
+   Islands* (1984), lending-only; the Admiralty's Cook Islands charts.
    Outstanding on `antillia`: its scale is inherited from a Pizzigano
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
    Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map

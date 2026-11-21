@@ -1,10 +1,24 @@
 name_fr: "L’île Jacquet"
 name_en: "Jacquet Island"
-kind: island
+kind: reef
 ocean: atlantique-nord
-coords: [-43.0, 47.0]
+coords: [-39.5, 46.917]
 span: [1836, 1900]
 coords_confidence: attested
 coords_note: >-
-  Charted at approximately 47 N 43 W, just east of the Flemish Cap.
-  Reported by John Scott of the Seaflower, 1836.
+  46°55' N 39°30' W, as Purdy's Memoir on the Atlantic gives it (1840,
+  pp. 434-435), restored to the charts after a reported sighting in 1789.
+  The brig Seaflower of Jersey saw it at 5 a.m. on 25 April 1836, by dead
+  reckoning in about 46°53' N 39°29' W: "half a mile in length, and about
+  300 feet ... high", rocks a cable's length off its SSE cape. Its mate
+  Thomas Le Gros sketched its profile, now lost; John Scott of Jersey sent
+  the account to Norie (Nautical Magazine 1838, p. 366). Blunt's Memoir of
+  1868: "does not exist". Moved November 2026 from -43.0, 47.0, which
+  traces to a New York Times piece of 1904 and Wikipedia, ~265 km west of
+  every primary source. Half a mile long, it is drawn as a reef.
+outline_note: >-
+  No depiction with a coastline was found; Le Gros' sketch of its profile
+  (1836) is lost. Half a mile long, it is drawn as a reef: the same rock
+  cluster, a ~60 km stand-in for something too small to see, so at full
+  zoom it looks larger than 30-mile Emerald. A true 1 km islet, a dot in
+  its halo like Bermeja, was the alternative. Was a 227 x 318 km blob.

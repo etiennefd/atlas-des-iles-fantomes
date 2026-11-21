@@ -17,15 +17,15 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 
 | id | position | source |
 |---|---|---|
-| `jacquet` | −43.0, 47.0 | Charted just east of the Flemish Cap. Reported by John Scott of the *Seaflower*, 1836. |
+| `jacquet` | −39.5, 46.917 | Purdy's *Memoir* (1840): 46°55′N 39°30′W, restored to the charts after a sighting reported in 1789; seen by the brig *Seaflower* of Jersey, 25 April 1836, its mate Thomas Le Gros sketching it (*Nautical Magazine* 1838, p. 366). **Moved Nov 2026** from −43.0, 47.0, which traces to the *New York Times* of 1904 and Wikipedia, ~265 km west of every primary source. |
 | `crocker-land` | −102.84, 82.81 | Peary, *Nearest the Pole*: sighted from the summit of Cape Colgate, c. 130 miles NW. **Placed Oct 2026** where the map in that book draws it, read off its polar graticule: the shore runs 101.3 W 83.2 N to 105.8 W 82.5 N. Was −100.0, 83.0. |
 | `bradley-land` | −103.94, 84.82 | Cook: extended 84°20′N to 85°11′N at about 102°W. **Placed Oct 2026** where Balch's 1912 chart draws it: 84.35 to 85.21 N, matching his written latitudes, but at 102.9 to 104.8 W, a degree or two west of Cook's 102. Was −102.0, 84.75, the midpoint. **Sources differ** — some give the southern limit as 83°20′N. |
 | `maria-de-lajara` | −140.0, 27.0 | Pacific charts registered it around 27°N, 140°W from the late 17th to early 19th century. |
 | `ernest-legouve` | −150.667, −35.2 | International Hydrographic Bureau, 9 Feb 1957: 35°12′S 150°40′W. Searched 1982–83, not found. |
 | `maria-theresa` | −136.65, −36.833 | Reported 16 Nov 1843 by Capt. Asaph P. Taber of the *Maria-Theresa*. Note: Verne gives 37°11′S 153°00′W on the Paris meridian. |
 | `aurora` | −47.865, −52.975 | The Spanish *San Miguel* fixed them at 52°37′S, 47°49′W; surveyed by the *Atrevida*, **21–27 January** 1794 (not 20 Feb). **Now three positions, Oct 2026**, from Espinosa y Tello's *Memorias* (1809, p. 31), W of Cádiz + 6°17′15″: 53°15′22″S 47°57′15″W; 53°02′40″S 47°55′15″W (la Rasa); 52°37′24″S 47°43′15″W (Isla Nueva). `coords` is the group's centre. |
-| `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 1841. Keates 1860 and Stannard 1886 gave slightly different fixes. |
-| `emerald` | 162.2, −57.5 | Capt. William Elliot of the *Emerald*, December 1821: 57°30′S 162°12′E. |
+| `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 29 May 1841 (*Nautical Magazine* 1841, p. 783). Keates (September 1859, not 1860) and Stannard 1886 gave slightly different fixes. |
+| `emerald` | 163.0, −57.25 | Capt. C. J. Nockells of the *Emerald*, 13 December 1821, in his own letter quoted by Findlay (1851, p. 678); not "Elliot". The island at 57°15′S 163°E, seen E by N 25 miles from the ship at 57°30′S 162°12′E. **Moved Nov 2026** from the ship's position, ~55 km. |
 
 ## Approximate (12)
 
@@ -39,7 +39,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
 | `californie` | −116.65, 32.8 | Derived, not chosen: the island is real land, so its own headlands have modern positions and Vinckeboons names them. Eight landmarks fit to RMS 127 km. Traced from Vinckeboons c. 1650, 16 parts. Was −114.0, 28.0, a point for a placeholder blob. |
 | `coree` | 127.52, 37.64 | Derived, not chosen, as for Californie: six landmarks round Korea (Tsushima, Hirado, Gotō, Kagoshima Bay, Cape Sata, the Ningbo coast) fit Hondius' copy of Teixeira 1595 to RMS 35 km. The island lands at 33.1–42.4 N, about a degree south of the real peninsula. 4 parts. Was 127.5, 37.0, a point for a placeholder blob. |
-| `tuanaki` | −158.0, −23.5 | South of Rarotonga, within two days' sail of Mangaia. Haymet Rocks proposed as a remnant. |
+| `tuanaki` | −160.417, −26.5 | The charted position: Hamond, *Nautical Magazine* 1847, still in Richards 1920. Also printed: 25°15′S 160°35′W and ~25°50′S 160°55′W. The accounts put it nearer, "not more than 200 miles" from Rarotonga (Gill 1856). **Moved Nov 2026** from −158.0, −23.5, a point picked from the accounts, ~400 km NE. |
 | `kianida` | 29.62, 42.13 | Georeferenced from the Ulm 1482 sheet, not estimated: eleven coastal city dots from Histria round to Perinthus fit a similarity transform to RMS 35 km, and the island lies inside the ring they enclose. About 130 km off the Bulgarian coast, east of Burgas. Was 33.0, 43.5 — a guess, some 300 km ENE of where the map draws it. |
 | `groclant` | −67.75, 73.95 | Ortelius 1570, fitted on twelve landmarks to RMS 208 km, puts it at −58.6, 77.5 — on northern Greenland and Ellesmere. **Moved into Baffin Bay by hand**, turned −32.5° and reduced to 91%, because nothing at the chart's bearing fits above 75% and nothing at full size fits between −60° and +45°. Anticlockwise is the cheap direction. Was −45.0, 72.0, a guess entirely inside the ice sheet. |
 | `elizabeth` | −70.0, −57.0 | Drake, October 1578, at latitude 57°S (Hakluyt: "57 and a terce"). **Longitude is unrecorded** — I used the Pactolus Bank area west of Cape Horn. |
@@ -105,7 +105,7 @@ the Black Sea. Two of thirty-four islands are now in enclosed seas.
 | id | position | basis |
 |---|---|---|
 | `nakanotorishima` | 154.0, 30.1 | North Pacific east of Japan, charted around 30°N 154°E. Approximate — worth checking against the 1941 chart. |
-| `nimrod` | −158.0, −56.0 | **Attested.** Approximately 56°S 158°W, east of Emerald and west of Dougherty. |
+| `nimrod` | −158.5, −56.5 | **Attested.** Eilbeck, 1828: 56°30′S 158°30′W (Findlay 1851, after Horsburgh). Biscoe 1831 gave 56°03′S 157°50′W. **Moved Nov 2026** from a rounded −158.0, −56.0. |
 
 Both have `draft: true` story files carrying their notice and map image, which
 keeps them showing as *à venir* on the map until the prose is finished.

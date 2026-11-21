@@ -8,3 +8,14 @@ coords_confidence: attested
 coords_note: >-
   Capt. Daniel Dougherty of the James Stewart, 1841: 59 20' S 120 20' W.
   Still on maps in 1934.
+outline_note: >-
+  No depiction with a coastline exists: every chart draws a dot (searched
+  November 2026, including the Nautical Magazine of 1841, Findlay 1884 and
+  Davis' 1910 report). The shape is BUILT FROM THE REPORT by
+  scripts/describe_island.py: Dougherty saw it at 2 a.m. within a quarter
+  mile, "five or six miles in length, running N.E. and S.W., with a high
+  round bluff on the N.E. end, with low land to the S.W.", an ice-filled
+  valley between. So 5.5 nm (10 km) on a NE-SW axis, the NE end wider.
+  Stannard (1886) agreed: 6 miles, 300 ft high at the NE. The width (4 km)
+  and the coastline are invented. Keates (September 1859) saw instead "a
+  round island, about 80 ft. high". Was a 238 x 303 km blob.
