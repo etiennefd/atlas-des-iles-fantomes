@@ -4,8 +4,11 @@ A bilingual literary atlas: a world map of islands that were believed to exist
 and did not, each linking to a short story. Fiction, not reference — the
 stories are the point; the cartography is the frame.
 
-Written by Étienne Fortier-Dubois. Stories originate on his French blog at
-`etiennefd.com/cteniq` (WordPress, staying online, not being migrated away).
+Written by Étienne Fortier-Dubois. Stories originate on his French blog, now
+a static archive at `etiennefd.com/archive/cartographier/`; the old
+`etiennefd.com/cteniq/{slug}/` URLs redirect there (308), so `source:` links
+still resolve. The WordPress install and its REST API are gone — known, no
+need to report it.
 28 stories written of ~50 planned.
 
 ## Commands
@@ -1076,10 +1079,14 @@ output `dist`, no adapter (static). Nothing to configure.
 ## Next, roughly in order
 
 1. ~~Migrate the 28 stories~~ **Done**, by `scripts/import_posts.py`, which
-   reads the WordPress REST API rather than the rendered page so the prose
-   arrives verbatim — no model in the loop. Re-runnable: `--slug X --dry-run`
-   to preview one, `--all --images --force` to redo everything. If a post is
-   edited on the blog, re-run rather than hand-patching.
+   read the WordPress REST API rather than the rendered page so the prose
+   arrived verbatim — no model in the loop. **That API no longer exists**: the
+   blog is now the static archive, so `fetch()` cannot run as written and the
+   files in this repo are the working text. `parse()` still handles the
+   archive's markup (its post bodies keep the same `<p>`/`<ul>` structure;
+   checked November 2026 on six posts), so a one-off re-import would need
+   only a new fetch that takes the post body out of
+   `/archive/cartographier/{slug}/` — title and date come from the page too.
 2. **Trace real outlines** — see *Adding an island*. Sixteen done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,

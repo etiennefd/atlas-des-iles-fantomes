@@ -2,8 +2,13 @@
 """
 Import stories from the CTENIQ blog into src/content/stories/fr/.
 
-Reads the WordPress REST API rather than scraping the rendered page, so the
-prose arrives verbatim — no model in the loop, nothing paraphrased. The posts
+Read the WordPress REST API rather than scraping the rendered page, so the
+prose arrived verbatim — no model in the loop, nothing paraphrased.
+
+The API is gone: the blog is now a static archive at
+etiennefd.com/archive/cartographier/{slug}/, so fetch() below no longer works.
+parse() handles the archive's post bodies unchanged; a re-import needs only a
+fetch that reads them from there. The posts
 turn out to be structurally uniform: images, an optional centred caption, one
 <ul> that is exactly the `notice` block, `//` scene breaks, then prose.
 
@@ -19,10 +24,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 OUT = os.path.join(ROOT, "src", "content", "stories", "fr")
 IMGDIR = os.path.join(ROOT, "public", "iles")
-API = "https://etiennefd.com/cteniq/wp-json/wp/v2/posts"
+API = "https://etiennefd.com/cteniq/wp-json/wp/v2/posts"   # gone since the archive move
 # Wikimedia asks for a descriptive agent rather than a browser string.
 UA = "atlas-des-iles-fantomes/1.0 (import of author's own posts; contact via etiennefd.com)"
-POST_URL = "https://etiennefd.com/cteniq/{slug}/"
+POST_URL = "https://etiennefd.com/archive/cartographier/{slug}/"
 
 # blog slug -> island ids. Three posts cover more than one island; the file is
 # named for the first, which is what the map already assumes.
