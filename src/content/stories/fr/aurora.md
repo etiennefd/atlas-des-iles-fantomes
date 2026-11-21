@@ -17,10 +17,7 @@ notice:
   - label: "Pourraient être en réalité"
     body: >-
       les [Shag Rocks](https://fr.wikipedia.org/wiki/Shag_Rocks), un archipel de
-      six rochers rattaché à la Géorgie du Sud[1](javascript:void(0))Voir [ce
-      lien](http://jot101ok.blogspot.com/2014/06/the-auroras-and-other-doubtful-islands.html)
-      pour une analyse de la découverte des îles Aurora et de ce qu’elles
-      pourraient avoir été
+      six rochers rattaché à la Géorgie du Sud[^1]
   - label: "Font une apparition littéraire dans"
     body: >-
       [*Les Aventures d’Arthur Gordon
@@ -28,6 +25,8 @@ notice:
       d’Edgar Allan Poe (1838) et [*Terrae
       Incognitae*](https://www.babelio.com/livres/Hodgson-Terrae-Icognitae/296058)
       de Barbara Hodgson (2001)
+notes:
+  - "Voir [ce lien](http://jot101ok.blogspot.com/2014/06/the-auroras-and-other-doubtful-islands.html) pour une analyse de la découverte des îles Aurora et de ce qu’elles pourraient avoir été"
 ---
 
 ***

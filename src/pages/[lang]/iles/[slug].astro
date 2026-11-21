@@ -61,8 +61,23 @@ const images = story.data.images.filter((img) => {
 const { Content } = await render(story);
 // Notice and caption markdown never contains " :" or "« " inside a URL, so the
 // spacing can be applied to the source before it is parsed.
+const spaced = (md: string) => (lang === "fr" ? frenchSpacing(md) : md);
+
+// Footnotes called from the notice or a caption. They are written out with the
+// same markup remark-gfm gives the prose's own footnotes, so one stylesheet
+// serves both. The prose numbers its footnotes from 1 too, so a story may use
+// one kind or the other.
+const notes = story.data.notes;
+if (notes.length && /^\[\^[^\]]+\]:/m.test(story.body ?? "")) {
+  throw new Error(
+    `${story.id}: footnotes in both the frontmatter and the prose would collide`
+  );
+}
+const noteRef = (n: string) =>
+  `<sup><a href="#user-content-fn-${n}" id="user-content-fnref-${n}" ` +
+  `data-footnote-ref aria-describedby="footnote-label">${n}</a></sup>`;
 const inline = (md: string) =>
-  marked.parseInline(lang === "fr" ? frenchSpacing(md) : md);
+  marked.parseInline(spaced(md).replace(/\[\^(\d+)\]/g, (_, n) => noteRef(n)));
 ---
 
 <Base lang={lang} title={story.data.title} altHref={altHref}>
@@ -96,6 +111,30 @@ const inline = (md: string) =>
 
     <div class="prose">
       <Content />
+      {
+        notes.length > 0 && (
+          <section data-footnotes class="footnotes">
+            <h2 id="footnote-label">{t.notes}</h2>
+            <ol>
+              {notes.map((note, i) => (
+                <li id={`user-content-fn-${i + 1}`}>
+                  <p>
+                    <Fragment set:html={inline(note)} />{" "}
+                    <a
+                      href={`#user-content-fnref-${i + 1}`}
+                      data-footnote-backref
+                      class="data-footnote-backref"
+                      aria-label={t.backToText}
+                    >
+                      ↩
+                    </a>
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
     </div>
 
     <footer class="story__foot">

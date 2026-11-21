@@ -22,10 +22,11 @@ notice:
     body: >-
       Satanazes, une autre île fantôme en lien avec le diable; et [l’île
       Harrington](https://fr.wikipedia.org/wiki/Harrington_Harbour), sur la
-      Côte-Nord[1](javascript:void(0))où se trouve le village de Harrington
-      Harbour, lieu de tournage, notamment, de *La Grande Séduction*, qui serait
+      Côte-Nord[^1], qui serait
       l’île des Démons où a été abandonnée Marguerite de La Rocque par son oncle
       Jean-François de La Rocque de Roberval en 1542.
+notes:
+  - "où se trouve le village de Harrington Harbour, lieu de tournage, notamment, de *La Grande Séduction*"
 ---
 
 ***

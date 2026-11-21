@@ -94,6 +94,15 @@ const stories = defineCollection({
       .array(z.object({ label: z.string(), body: z.string() }))
       .default([]),
 
+    /**
+     * Footnotes called from the notice or a caption, as `[^1]`, `[^2]`…
+     * Markdown. Listed with the prose's own footnotes at the end of the
+     * story; prose footnotes stay ordinary `[^1]: …` definitions in the body.
+     * A story may use one kind or the other, not both (the numbers would
+     * collide): the story page refuses to build if it does.
+     */
+    notes: z.array(z.string()).default([]),
+
     /** Historical map details shown above the notice. */
     images: z
       .array(

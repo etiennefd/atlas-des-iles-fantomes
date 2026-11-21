@@ -46,9 +46,9 @@ On voit le Nimrod, un trois-mâts goélette, quelque part dans l’océan Austra
 
 INTERTITRE : Nous sommes en 1909, et les nations du monde s’intéressent à la dernière frontière de la planète : l’Antarctique.
 
-INTERTITRE : Après s’être lancé à l’assaut du pôle Sud, l’équipage du Nimrod, dirigé par le capitaine John King Davis[1](javascript:void(0))à ne pas confondre avec le pirate [Edward Davis](https://etiennefd.com/cteniq/la-terre-de-davis/), met à profit son voyage de retour, entre Sydney et le cap Horn, pour cartographier les îles censées se trouver dans l’océan Austral.
+INTERTITRE : Après s’être lancé à l’assaut du pôle Sud, l’équipage du Nimrod, dirigé par le capitaine John King Davis[^1], met à profit son voyage de retour, entre Sydney et le cap Horn, pour cartographier les îles censées se trouver dans l’océan Austral.
 
-INTERTITRE : Les îles de la Royal Company, l’île Emerald, les îles Nimrod[2](javascript:void(0))Oui, c’est le même nom que le navire. Se référer à l’épisode 3 (pas encore disponible en ligne). : tous ces lieux se sont avérés réels. Mais chaque fois, des prodiges de la nature ont fait douter au capitaine Davis et à ses hommes de leur raison.
+INTERTITRE : Les îles de la Royal Company, l’île Emerald, les îles Nimrod[^2] : tous ces lieux se sont avérés réels. Mais chaque fois, des prodiges de la nature ont fait douter au capitaine Davis et à ses hommes de leur raison.
 
 INTERTITRE : Qu’en sera-t-il de l’île Dougherty?…
 
@@ -237,3 +237,7 @@ Les deux autres hochent la tête pour signifier leur assentiment. Le capitaine p
 EXT. OCÉAN. CRÉPUSCULE.
 
 Tandis que le Nimrod poursuit son voyage vers l’est, on voit au loin derrière lui, là où le soleil de couche, un grand mur de glace.
+
+[^1]: à ne pas confondre avec le pirate [Edward Davis](https://etiennefd.com/cteniq/la-terre-de-davis/)
+
+[^2]: Oui, c’est le même nom que le navire. Se référer à l’épisode 3 (pas encore disponible en ligne).

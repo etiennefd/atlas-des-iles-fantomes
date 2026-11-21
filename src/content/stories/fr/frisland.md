@@ -32,15 +32,13 @@ notice:
     body: "Fixland, Freezeland, Friesland, Frischlant ou Frislandia"
   - label: "Pourrait être"
     body: >-
-      l’Islande ou les îles Féroé, voire un canular[1](javascript:void(0))La
-      carte Zeno inclut plusieurs lieux fantaisistes : Drogeo, Estotiland,
-      Icaria. Les récits de voyage qui l’accompagnent semblent indiquer un
-      voyage en Amérique 100 ans avant Colomb. Bref, leur authenticité est, au
-      mieux, douteuse.
+      l’Islande ou les îles Féroé, voire un canular[^1]
   - label: "À ne pas confondre avec"
     body: >-
       la Frise, une province des Pays-Bas qui s’appelle *Friesland* en
       néerlandais et en anglais et *Fryslân* en frison occidental.
+notes:
+  - "La carte Zeno inclut plusieurs lieux fantaisistes : Drogeo, Estotiland, Icaria. Les récits de voyage qui l’accompagnent semblent indiquer un voyage en Amérique 100 ans avant Colomb. Bref, leur authenticité est, au mieux, douteuse."
 ---
 
 ***

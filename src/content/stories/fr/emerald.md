@@ -43,7 +43,7 @@ On voit le Nimrod, un trois-mâts goélette, quelque part dans l’océan Austra
 
 INTERTITRE : Nous sommes en 1909, et les nations du monde s’intéressent à la dernière frontière de la planète : l’Antarctique.
 
-INTERTITRE : Après s’être lancé à l’assaut du pôle Sud, l’équipage du Nimrod, dirigé par le capitaine John King Davis[1](javascript:void(0))à ne pas confondre avec le pirate [Edward Davis](https://etiennefd.com/cteniq/la-terre-de-davis/), met à profit son voyage de retour, entre Sydney et le cap Horn, pour cartographier les îles censées se trouver dans l’océan Austral.
+INTERTITRE : Après s’être lancé à l’assaut du pôle Sud, l’équipage du Nimrod, dirigé par le capitaine John King Davis[^1], met à profit son voyage de retour, entre Sydney et le cap Horn, pour cartographier les îles censées se trouver dans l’océan Austral.
 
 INTERTITRE : Après leur étonnante visite de l’archipel de la Royal Company, le capitaine et ses hommes approchent de ce qui devrait être l’île Emerald…
 
@@ -322,3 +322,5 @@ Le navire déploie ses voiles et commence à avancer dans la tempête.
 EXT. SOUS L’OCÉAN. JOUR.
 
 Les cristaux d’émeraude ne brillent pas, mais un peu de lumière parvient de la surface. La caméra plonge dans le gouffre, effectue quelques détours dans les conduits, s’arrête devant un grand cristal. Il fait sombre, mais on distingue la forme d’un scaphandre à l’intérieur du cristal, immobile, prisonnier. Soudain, les cristaux s’allument tous en même temps.
+
+[^1]: à ne pas confondre avec le pirate [Edward Davis](https://etiennefd.com/cteniq/la-terre-de-davis/)

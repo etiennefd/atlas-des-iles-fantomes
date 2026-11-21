@@ -190,6 +190,52 @@ a:hover {
   letter-spacing: 0.04em;
 }
 
+/* Footnotes: remark-gfm's markup, which the story page also writes for notes
+   called from the notice or a caption. One list, at the end, as on the blog. */
+sup {
+  line-height: 0; /* keep the call from opening up its line */
+}
+[data-footnote-ref] {
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+.footnotes {
+  margin-top: calc(var(--step) * 2);
+  padding-top: var(--step);
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.footnotes h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--body);
+  font-size: inherit;
+  font-weight: 400;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.07em;
+  color: var(--land);
+}
+.footnotes ol {
+  margin: 0;
+  padding-left: 1.4em;
+}
+.footnotes li + li {
+  margin-top: 0.6rem;
+}
+.footnotes p {
+  margin: 0 0 0.6em;
+}
+.footnotes li p:last-child {
+  margin-bottom: 0;
+}
+.prose .footnotes p:first-of-type::first-line {
+  font-variant-caps: normal;
+  letter-spacing: 0;
+}
+.data-footnote-backref {
+  text-decoration: none;
+}
+
 .story__foot {
   margin-top: calc(var(--step) * 2.5);
   padding-top: var(--step);

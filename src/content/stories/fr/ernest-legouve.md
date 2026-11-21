@@ -15,11 +15,7 @@ images:
       y voit du nord au sud : le banc Wachusett (г. Уочусетm), le récif
       Ernest-Legouvé (риф. Эрнест-Легуве), le récif Maria-Theresa (риф.
       Мария-Тереза) et le banc Sophie-Kristensen (г.
-      Софи-Кристенсен)*[1](javascript:void(0))Le saviez-vous? L’équivalent en
-      russe du « t » ressemble à un « m » minuscule dans une police italique. La
-      preuve : en romain т, en italique *т*. C’était mêlant quand j’essayais
-      d’utiliser mes maigres connaissances de l’alphabet cyrillique pour
-      déchiffrer la carte.*. La carte ne montre pas le récif Jupiter, censé se
+      Софи-Кристенсен)[^1]. La carte ne montre pas le récif Jupiter, censé se
       trouver près du Maria-Theresa.
 notice:
   - label: "Où"
@@ -32,6 +28,8 @@ notice:
       autres. Certaines cartes du XXIe siècle les montrent pourtant encore.
   - label: "Aussi connus sous le nom de"
     body: "île Tabor (Maria-Theresa)"
+notes:
+  - "Le saviez-vous? L’équivalent en russe du « t » ressemble à un « m » minuscule dans une police italique. La preuve : en romain т, en italique *т*. C’était mêlant quand j’essayais d’utiliser mes maigres connaissances de l’alphabet cyrillique pour déchiffrer la carte."
 ---
 
 ***

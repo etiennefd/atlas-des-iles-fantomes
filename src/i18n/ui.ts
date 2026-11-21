@@ -17,6 +17,8 @@ export const ui = {
     read: "Lire en anglais",
     written: "écrites",
     reset: "Réinitialiser la carte",
+    notes: "Notes",
+    backToText: "Retour au texte",
   },
   en: {
     siteTitle: "Atlas of Phantom Islands",
@@ -33,6 +35,8 @@ export const ui = {
     read: "Read it in French",
     written: "written",
     reset: "Reset the map",
+    notes: "Notes",
+    backToText: "Back to the text",
   },
 } as const;
 
