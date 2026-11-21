@@ -69,8 +69,7 @@ export async function resolveIslands(lang: Lang): Promise<Resolved[]> {
           story: theirs,
           storyLang: otherLang,
           // The placeholder page in this language, at the URL the translation
-          // will have; it says where to read the story. The map does not link
-          // here — only to stories that exist in its own language.
+          // will have; it says where to read the story.
           href: `/${lang}/iles/${splitStoryId(theirs.id).slug}/`,
         };
       }
