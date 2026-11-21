@@ -103,7 +103,7 @@ Salammbô termina son récit. Nul, dit-elle, n’avait jamais retrouvé l’île
 
 ***
 
-Note historique
+## Note historique
 
 Jusque dans sa typographie, ce texte est un pastiche et un hommage à [*Salammbô*](https://mediterranees.net/romans/salammbo/index.html), le roman classique de Gustave Flaubert. J’ai repris son personnage titre, fille du général et politicien Hamilcar Barca. Salammbô est essentiellement une invention de Flaubert, mais on sait qu’Hamilcar eut trois filles plus âgées que ses trois fils. Le roman imagine Hannibal — le célèbre Hannibal qui traversa les Alpes avec des éléphants — comme un fils secret d’Hamilcar, et ne mentionne ni Hasdrubal ni Magon, mais j’ai préféré leur donner une vie de famille plus normale.
 

@@ -970,9 +970,26 @@ rendered, inspected and approved three times while lying across Ellesmere.
 --phantom-soft: #B08089;  --ink: #16191B;  --rule: #C7CCCF;
 ```
 
-**Spectral throughout** (Production Type — real small caps, proper French
-spacing), body and display alike. `--display` is set to `var(--body)` and kept
-only as the seam where a display face would go.
+**Newsreader throughout** (Production Type), body and display alike, loaded
+from Google Fonts with its optical-size axis so titles and labels each get the
+right cut on their own. `--display` is set to `var(--body)` and kept only as
+the seam where a display face would go.
+
+**It replaced Spectral in November 2026, over the apostrophe.** Spectral draws
+’ as a straight tapered wedge that reads as a prime (′), and French prose is
+full of them; Étienne: "I hate the apostrophe." Spectral has no alternate —
+none of its six stylistic sets touches the quotes. Seven options were rendered
+on Kianida's text: Spectral, Spectral with only ’ borrowed from Newsreader
+(the recommendation), and Newsreader, Literata, Source Serif 4, Crimson Pro
+and Alegreya. He chose the whole switch to Newsreader, the closest in texture
+to Spectral and from the same foundry. The specimen is easy to rebuild: one
+static page in `public/`, rendered at 2x with headless Chrome.
+
+**Google Fonts strips small caps and old-style figures** from every family it
+serves — checked on nine, Spectral and Newsreader included — so the site's
+`all-small-caps` is synthesised by the browser and `oldstyle-nums` does
+nothing. The full font files keep both (`smcp`, `onum`, `c2sc`). Self-hosting
+them would bring real small caps back; not done yet.
 
 **A second family was tried and rejected** in August 2026 — don't re-propose
 one casually. Faune (Alice Savoie / Cnap) was picked in the first design
@@ -983,7 +1000,8 @@ plastiques with the Imprimerie Nationale, and — decisively — its upright is 
 flared humanist **sans**, not the engraved serif the story implied. Against
 Spectral's serif body it read as a clash. EB Garamond, Playfair Display,
 Bodoni Moda, Libre Bodoni and Theano Didot were compared on the real site;
-Spectral alone won.
+Spectral alone won (and was itself replaced by Newsreader, above, for one
+glyph rather than for its character).
 
 Two things to carry forward if it's ever revisited. A display face needs a
 **real italic cut**, because map labels are italic by the hydrography

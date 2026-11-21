@@ -66,7 +66,7 @@ Mes regrets sont grands de n’avoir point su persuader le capitaine Davis d’a
 
 ***
 
-Note historique
+## Note historique
 
 J’ai réellement basé ce texte sur un passage de *A New Voyage and Description of the Isthmus of America*, par Lionel Wafer, compagnon de voyage d’Edward Davis, mais je l’ai considérablement rallongé et y ai ajouté toutes sortes de choses qui ne se trouvent pas dans l’original. Notamment, rien ne permet de croire que Lionel Wafer croyait que les îles qu’il a décrites étaient réellement le continent austral inconnu; cette hypothèse revient plutôt à William Dampier, qui a publié en 1697 le même récit des voyages d’Edward Davis, mais sans l’avoir vécu lui-même.
 

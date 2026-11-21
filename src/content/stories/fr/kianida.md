@@ -35,7 +35,7 @@ Ce qui suit est tiré d’une entrevue avec Eleni*, résidante de Rhodes, Grèce
 
 ***
 
-**Vous dites être née à Kianida [NDLR: aussi nommée Cyanida]. Pouvez-vous nous dire où cela se trouve?**
+**Vous dites être née à Kianida [NDLR : aussi nommée Cyanida]. Pouvez-vous nous dire où cela se trouve?**
 
 Kianida était une île dans la mer Noire, au nord d’Istanbul et environ 60 km à l’est de ce qui est aujourd’hui la frontière turco-bulgare. Je dis « était » parce que l’île n’existe plus depuis les années 1940. Je fais partie de la dernière génération à y être née.
 

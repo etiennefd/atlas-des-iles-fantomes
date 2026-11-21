@@ -12,8 +12,10 @@
   --rule: #c7cccf;
 
   /* One family throughout. --display stays as the seam for a display face
-     if the atlas ever wants one; see README for what was tried. */
-  --body: "Spectral", Georgia, "Times New Roman", serif;
+     if the atlas ever wants one; see CLAUDE.md for what was tried.
+     Newsreader replaced Spectral in November 2026, for its apostrophe.
+     Its optical-size axis follows the font size on its own. */
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
   --display: var(--body);
 
   --measure: 34rem; /* ~68 characters at this size */
@@ -184,6 +186,14 @@ a:hover {
 
 .prose p {
   margin: 0 0 1.1em;
+}
+/* A heading inside a story ("Note historique"): small, well under the title. */
+.prose > h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin: calc(var(--step) * 1.4) 0 0.6rem;
 }
 .prose p:first-of-type::first-line {
   font-variant-caps: all-small-caps;
