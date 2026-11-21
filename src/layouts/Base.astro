@@ -19,11 +19,14 @@ const o = other(lang);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title ? `${title} — ${t.siteTitle}` : t.siteTitle}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Piazzolla is self-hosted (public/fonts, scripts/build_fonts.py); the
+         roman is on every page, so it is fetched before the CSS asks. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap"
+      rel="preload"
+      href="/fonts/piazzolla-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     {altHref && <link rel="alternate" hreflang={o} href={altHref} />}
   </head>

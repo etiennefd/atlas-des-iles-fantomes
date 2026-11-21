@@ -3,6 +3,24 @@
    The page background IS the ocean. No panel chrome over the map.
    --------------------------------------------------------------- */
 
+/* Piazzolla, self-hosted so its small caps and old-style figures survive
+   (Google Fonts strips both). Built by scripts/build_fonts.py: weights to
+   700, optical size whole, Latin only — Cyrillic falls back to Georgia. */
+@font-face {
+  font-family: "Piazzolla";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/fonts/piazzolla-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Piazzolla";
+  font-style: italic;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/fonts/piazzolla-italic.woff2") format("woff2");
+}
+
 :root {
   --water: #edeff0;
   --land: #383d40;
@@ -13,9 +31,9 @@
 
   /* One family throughout. --display stays as the seam for a display face
      if the atlas ever wants one; see CLAUDE.md for what was tried.
-     Newsreader replaced Spectral in November 2026, for its apostrophe.
-     Its optical-size axis follows the font size on its own. */
-  --body: "Newsreader", Georgia, "Times New Roman", serif;
+     Piazzolla, since November 2026 (after Spectral, then Newsreader, both
+     for the apostrophe). Its optical-size axis follows the font size. */
+  --body: "Piazzolla", Georgia, "Times New Roman", serif;
   --display: var(--body);
 
   --measure: 34rem; /* ~68 characters at this size */

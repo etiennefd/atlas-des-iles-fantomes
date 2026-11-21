@@ -989,26 +989,46 @@ rendered, inspected and approved three times while lying across Ellesmere.
 --phantom-soft: #B08089;  --ink: #16191B;  --rule: #C7CCCF;
 ```
 
-**Newsreader throughout** (Production Type), body and display alike, loaded
-from Google Fonts with its optical-size axis so titles and labels each get the
-right cut on their own. `--display` is set to `var(--body)` and kept only as
-the seam where a display face would go.
+**Piazzolla throughout** (Huerta Tipográfica), body and display alike,
+**self-hosted** from `public/fonts/` with its optical-size axis, so titles and
+labels each get the right cut on their own. `--display` is set to
+`var(--body)` and kept only as the seam where a display face would go.
 
-**It replaced Spectral in November 2026, over the apostrophe.** Spectral draws
-’ as a straight tapered wedge that reads as a prime (′), and French prose is
-full of them; Étienne: "I hate the apostrophe." Spectral has no alternate —
-none of its six stylistic sets touches the quotes. Seven options were rendered
-on Kianida's text: Spectral, Spectral with only ’ borrowed from Newsreader
-(the recommendation), and Newsreader, Literata, Source Serif 4, Crimson Pro
-and Alegreya. He chose the whole switch to Newsreader, the closest in texture
-to Spectral and from the same foundry. The specimen is easy to rebuild: one
-static page in `public/`, rendered at 2x with headless Chrome.
+```sh
+python3 scripts/build_fonts.py   # -> public/fonts/piazzolla-{normal,italic}.woff2 + OFL.txt
+```
 
-**Google Fonts strips small caps and old-style figures** from every family it
-serves — checked on nine, Spectral and Newsreader included — so the site's
-`all-small-caps` is synthesised by the browser and `oldstyle-nums` does
-nothing. The full font files keep both (`smcp`, `onum`, `c2sc`). Self-hosting
-them would bring real small caps back; not done yet.
+The script fetches the full files from google/fonts into `~/scratch/fonts`
+(not committed, like the chart rasters), keeps weights up to 700 (the default
+master is 100 and cannot be moved, so 100-700), the whole optical-size axis,
+Latin only and every OpenType feature: 86 + 91 kB. It refuses to write a file
+that has lost `smcp` or `onum`. The OFL licence travels with the fonts.
+
+**Why self-hosted: Google Fonts strips small caps and old-style figures** from
+everything it serves — checked on nine families. The site uses
+`all-small-caps` throughout (labels, nav, lifespans, first lines), so with
+Google's files they were faked from shrunk capitals. Piazzolla's own `smcp`
+and `c2sc` now draw them. Its old-style figures work too but are a hybrid,
+barely different from its default figures (the 9 dips 81 units below the
+line, the 1 is 72 shorter), so at text size they read almost as lining.
+
+**No Cyrillic, by choice.** The one or two places it occurs (Ernest-Legouvé's
+caption and note) fall back to Georgia. Étienne, November 2026: "having an
+exception like Georgia for the 1-2 places where it occurs is totally fine."
+
+**How it got here, over the apostrophe.** Spectral, the face from August,
+draws ’ as a straight tapered wedge that reads as a prime (′) — "I hate the
+apostrophe" — and has no alternate in any of its six stylistic sets. The first
+replacement was Newsreader (Production Type), chosen from Spectral, Spectral
+with only ’ borrowed from Newsreader, Literata, Source Serif 4, Crimson Pro
+and Alegreya. Newsreader has no small caps or old-style figures even in its
+full files, and Étienne was "not attached" to it, so six faces that have both
+were rendered self-hosted at their real sizes: Brygada 1918 (93 kB),
+Baskervville (95), Alegreya (142), Piazzolla (189 before trimming the weights
+to 700), Source Serif 4 (291) and Literata (318). The recommendation was
+Brygada 1918; he picked Piazzolla: "seems to be the nicest". Specimens are
+easy to rebuild: a static page in `public/`, rendered at 2x with headless
+Chrome — delete it afterwards.
 
 **A second family was tried and rejected** in August 2026 — don't re-propose
 one casually. Faune (Alice Savoie / Cnap) was picked in the first design
@@ -1019,8 +1039,8 @@ plastiques with the Imprimerie Nationale, and — decisively — its upright is 
 flared humanist **sans**, not the engraved serif the story implied. Against
 Spectral's serif body it read as a clash. EB Garamond, Playfair Display,
 Bodoni Moda, Libre Bodoni and Theano Didot were compared on the real site;
-Spectral alone won (and was itself replaced by Newsreader, above, for one
-glyph rather than for its character).
+Spectral alone won (and was itself replaced, above, for one glyph rather
+than for its character).
 
 Two things to carry forward if it's ever revisited. A display face needs a
 **real italic cut**, because map labels are italic by the hydrography
