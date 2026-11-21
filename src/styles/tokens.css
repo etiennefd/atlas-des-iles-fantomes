@@ -303,8 +303,8 @@ a:hover {
   fill: var(--phantom-soft);
   stroke-dasharray: 2 2;
 }
-/* A reef is a dot a few px across. There is no outline to read at that size,
-   so it stays filled. */
+/* A reef is a cluster of rocks a few px across (see rockCluster in map.ts).
+   No outline reads at that size, so it stays filled. */
 .pmap__island.kind-reef { fill-opacity: 1; }
 .pmap__island.is-active { fill-opacity: 1; }
 .pmap__island.is-translated.is-active,

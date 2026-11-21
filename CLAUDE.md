@@ -96,7 +96,20 @@ Filename is the id. `kind` drives rendering:
 
 - `island` — a polygon, or a MultiPolygon where the source draws the island's
   satellites too (`frisland` has 23 parts)
-- `reef` — a Point; a small dot, filled even at rest, always haloed
+- `reef` — a Point in the data, drawn as **a cluster of four to six
+  irregular rocks**, filled even at rest (`rockCluster` in `map.ts`, seeded
+  by id so no two reefs match). A 100 m reef is a thousandth of a pixel even
+  at 8x, so the cluster is a stand-in, laid out on the ground at `REEF_KM`
+  (4 km) per unit: ~60 km across, which is ~2 px at world zoom and ~15 px
+  at 8x. It scales with the zoom and takes its halo like any small island.
+  Étienne, November 2026, picked the cluster out of four mock-ups: a plain
+  dot (read as a pin), the cluster, the cluster inside a dotted danger ring
+  (too close to the dashed "no story" outline), and the cluster with *E.D.*
+  lettered beside it (the only text on the globe at rest). The mock-ups drew
+  it at a fixed ~8 px on screen; trying it, he had it scale with the zoom
+  instead: "They're reefs, we don't really need to see them that much."
+  It used to be geoPath's default point circle, a 30 px disc at high zoom.
+  `?at=lon,lat,k` opens the map on a fixed view, for renders.
 - `misdrawn` — a *real place wrongly charted* (Corée, Californie). **The
   basemap is replaced where its chart disagreed**, permanently, not on hover:
   the atlas simply does not carry the real California. Étienne, September

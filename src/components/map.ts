@@ -51,6 +51,33 @@ const el = (n: string, attrs: Record<string, string> = {}) => {
   return e;
 };
 
+// A reef at true size is a thousandth of a pixel even at full zoom, so it is
+// drawn as a small cluster of irregular rocks instead, seeded per id so each
+// reef keeps its own arrangement. The cluster is real geometry, REEF_KM per
+// unit, so it scales with the zoom like any island: ~60 km across, a speck at
+// world zoom and ~15 px at 8x.
+const REEF_KM = 4;
+
+function rockCluster(id: string): [number, number][][] {
+  let h = 2166136261;
+  for (const ch of id) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
+  const rnd = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296;
+  const n = 4 + Math.floor(rnd() * 3);
+  const rocks: [number, number][][] = [];
+  for (let i = 0; i < n; i++) {
+    const r0 = i === 0 ? 1.4 : 0.5 + rnd() * 0.6;
+    const a = rnd() * 2 * Math.PI, d = i === 0 ? 0 : 1.3 * (2.8 + rnd() * 2.4);
+    const cx = Math.cos(a) * d, cy = Math.sin(a) * d * 0.8;
+    const ring: [number, number][] = [];
+    for (let j = 0; j < 7; j++) {
+      const t = (j / 7) * 2 * Math.PI, rr = r0 * (0.7 + rnd() * 0.5);
+      ring.push([cx + Math.cos(t) * rr, cy + Math.sin(t) * rr]);
+    }
+    rocks.push(ring);
+  }
+  return rocks;
+}
+
 export async function mount(cfg: Cfg) {
   const { root, meta } = cfg;
   const byId = new Map(meta.map((m) => [m.id, m]));
@@ -100,6 +127,22 @@ export async function mount(cfg: Cfg) {
         order[byId.get(b.properties.id)!.state]
     );
 
+  // A reef arrives as a Point; lay its rocks out on the ground about it. The
+  // cluster's units run y-down, so latitude is subtracted, which keeps the
+  // rings clockwise as d3-geo needs.
+  for (const f of feats) {
+    if (f.properties.kind !== "reef") continue;
+    const [lon, lat] = f.geometry.coordinates;
+    const dLat = REEF_KM / 111.32, dLon = dLat / Math.cos((lat * Math.PI) / 180);
+    f.geometry = {
+      type: "MultiPolygon",
+      coordinates: rockCluster(f.properties.id).map((r) => {
+        const ring = r.map(([x, y]) => [lon + x * dLon, lat - y * dLat]);
+        return [[...ring, ring[0]]];
+      }),
+    };
+  }
+
   // --- scaffolding -------------------------------------------------------
   root.classList.add("pmap");
   const svg = el("svg", { class: "pmap__svg", role: "img" });
@@ -132,8 +175,10 @@ export async function mount(cfg: Cfg) {
   // Position is rotation, not translation: dragging turns the globe. `lastTx`
   // and `lastTy` exist only to turn d3-zoom's ever-growing x/y into
   // per-gesture deltas.
-  let lambda = HOME_LON;
-  let phi = -HOME_LAT;
+  // ?at=lon,lat,k opens on a fixed view — a dev aid for headless renders.
+  const AT = new URLSearchParams(location.search).get("at")?.split(",").map(Number);
+  let lambda = AT ? -AT[0] : HOME_LON;
+  let phi = AT ? -AT[1] : -HOME_LAT;
   let lastTx = 0;
   let lastTy = 0;
   let offX = 0;
@@ -237,6 +282,7 @@ export async function mount(cfg: Cfg) {
     }) as SVGPathElement;
     gIslands.append(p);
     shapes.set(id, p);
+
 
     const c = el("circle", {
       class: `pmap__halo is-${m.state}`,
@@ -627,6 +673,11 @@ export async function mount(cfg: Cfg) {
   ro.observe(root);
 
   resize();
+  if (AT?.[2]) {
+    suppressRotate = true;
+    sel.call(zoomBehavior.transform as any, zoomIdentity.scale(AT[2]));
+    suppressRotate = false;
+  }
   refreshExtent();
   root.classList.add("is-ready");
 }
