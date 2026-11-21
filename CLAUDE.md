@@ -304,6 +304,17 @@ across is a silent no-op. Worth wiring into an npm script.
 invisible-but-present container, which looks identical to nothing happening.
 Check the console before assuming the component didn't render.
 
+**Typography is applied at build time, and Astro caches it per story.**
+`src/lib/typo.mjs` sets French spacing (non-breaking spaces at : ; ! ? « »,
+with units, thousands, abbreviations and the dialogue dash), and raises
+ordinals: XXᵉ siècle with the numeral in small caps, Élisabeth Iʳᵉ in
+capitals, 17ᵉ. One rehype plugin for the bodies, `typesetMarkdown` for
+notices, captions and notes. The markdown keeps plain spaces and "XXe" on
+purpose. Astro re-renders only stories whose file changed, so after editing
+`typo.mjs` run `npx astro build --force`, or unchanged stories keep the old
+output and look as if the rule did not fire. A lone roman letter with a bare
+"e" is only raised before "siècle": "Le" is L + e.
+
 **Placeholder blobs shrink above 60° latitude.** `build_geojson.py` divides a
 blob's longitude extent by cos(latitude), floored at 0.35, so it stays roughly
 circular *on the ground* rather than smearing east-west near the poles. This

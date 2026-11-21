@@ -6,7 +6,7 @@ import { marked } from "marked";
 import Base from "../../../layouts/Base.astro";
 import { ui, other, type Lang } from "../../../i18n/ui";
 import { splitStoryId, lifespan } from "../../../lib/atlas";
-import { frenchSpacing } from "../../../lib/typo.mjs";
+import { typesetMarkdown } from "../../../lib/typo.mjs";
 
 export async function getStaticPaths() {
   const stories = await getCollection("stories");
@@ -87,9 +87,9 @@ const images = story.data.images.filter((img) => {
 });
 
 const { Content } = await render(story);
-// Notice and caption markdown never contains " :" or "« " inside a URL, so the
-// spacing can be applied to the source before it is parsed.
-const spaced = (md: string) => (lang === "fr" ? frenchSpacing(md) : md);
+// Notice, caption and note markdown gets the same typography as the story
+// bodies (lib/typo.mjs) before it is parsed; link targets are left alone.
+const spaced = (md: string) => typesetMarkdown(md, lang);
 
 // Footnotes called from the notice or a caption. They are written out with the
 // same markup remark-gfm gives the prose's own footnotes, so one stylesheet

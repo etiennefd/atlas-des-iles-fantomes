@@ -14,7 +14,7 @@ images:
       dans la mer Noire (*Pontus Euxinus*).
 notice:
   - label: "Où"
-    body: "dans la Mer Noire, près de la Thrace et de la Bulgarie"
+    body: "dans la mer Noire, près de la Thrace et de la Bulgarie"
   - label: "Quand"
     body: >-
       antiquité. Apparaît sur les cartes qui se basent sur les descriptions de

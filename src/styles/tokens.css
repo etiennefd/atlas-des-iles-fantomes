@@ -85,7 +85,7 @@ a:hover {
 /* --- small caps utility: dates, labels, the counter ------------- */
 .sc {
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   font-size: 0.9em;
 }
 
@@ -170,7 +170,7 @@ a:hover {
 }
 .notice__label {
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.035em;
   color: var(--land);
 }
 .notice__label::after {
@@ -235,13 +235,25 @@ a:hover {
    blockquote and of the footnotes. */
 .prose > p:first-of-type::first-line {
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 /* Footnotes: remark-gfm's markup, which the story page also writes for notes
    called from the notice or a caption. One list, at the end, as on the blog. */
 sup {
   line-height: 0; /* keep the call from opening up its line */
+}
+/* Ordinals, raised by lib/typo.mjs: XXᵉ siècle, 17ᵉ, Élisabeth Iʳᵉ. A
+   century's roman numeral is in small caps, as French books set it. */
+.ord {
+  font-size: 0.68em;
+  vertical-align: 0.42em;
+  line-height: 0;
+  margin-left: 0.02em;
+}
+.century {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.02em;
 }
 [data-footnote-ref] {
   text-decoration: none;
@@ -260,7 +272,7 @@ sup {
   font-size: inherit;
   font-weight: 400;
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.035em;
   color: var(--land);
 }
 .footnotes ol {
@@ -487,7 +499,7 @@ sup {
 }
 .pmap__span {
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   font-size: 0.75rem;
   color: var(--land);
 }
