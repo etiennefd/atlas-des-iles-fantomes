@@ -1,7 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
 import PhantomMap from "../../components/PhantomMap.astro";
-import { ui, LANGS, type Lang } from "../../i18n/ui";
+import { ui, LANGS, other, type Lang } from "../../i18n/ui";
+import { url } from "../../lib/hosts.mjs";
 import { storyCount } from "../../lib/atlas";
 
 export function getStaticPaths() {
@@ -16,9 +17,9 @@ const t = ui[lang];
 const n = await storyCount(lang);
 ---
 
-<Base lang={lang} altHref={`/${lang === "fr" ? "en" : "fr"}/`}>
+<Base lang={lang} altHref={url(other(lang), "/", lang)}>
   <PhantomMap lang={lang} />
   <p class="pmap-foot sc">
-    <a href={`/${lang}/liste/`}>{n} {n === 1 ? t.story : t.stories}</a>
+    <a href={url(lang, "/liste/")}>{n} {n === 1 ? t.story : t.stories}</a>
   </p>
 </Base>

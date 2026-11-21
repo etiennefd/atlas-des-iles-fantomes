@@ -14,7 +14,7 @@ need to report it.
 ## Commands
 
 ```sh
-npm run dev        # localhost:4321, redirects to /fr/
+npm run dev        # localhost:4321, redirects to /fr/ (prefixed layout; see Current state)
 npm run build
 npm run preview
 
@@ -1067,7 +1067,20 @@ interesting object than a clickable index.
 
 ## Current state
 
-**Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>** — Vercel, imported
+**French at <https://ilesfantomes.etiennefd.com/>, English at
+<https://phantomislands.etiennefd.com/>**, each at its host's root (Étienne,
+November 2026, chose subdomains of etiennefd.com over buying a domain, and
+clean URLs over keeping `/fr/` and `/en/`). The build still writes `dist/fr`
+and `dist/en`; `vercel.json` rewrites each host onto its folder and redirects
+prefixed paths and the old `atlas-des-iles-fantomes.vercel.app` to the right
+host. Only the production build links that way: dev, `npm run preview` and
+Vercel previews keep the prefixed layout, so **every internal link goes
+through `url()` in `src/lib/hosts.mjs`**, and links inside stories are
+written relative (`../frisland/`). Vercel applies a rewrite only where no
+file exists, so the production build must write no root `index.html`
+(`astro.config.mjs` adds the `/` redirect only outside production). Check the
+production layout locally with `ATLAS_SPLIT_HOSTS=1 npx astro build`.
+Vercel, imported
 from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
 output `dist`, no adapter (static). Nothing to configure.
 
@@ -1154,11 +1167,11 @@ output `dist`, no adapter (static). Nothing to configure.
   no figure until they arrive: `/iles/nakanotorishima-pacifique-1941.png`
   (`fr/nakanotorishima`) and `/iles/nimrod-perthes-1906.png` (`fr/nimrod`).
   Hy-Brasil's, the third once listed here, was already resolved by the import.
-- **`/` redirects with a 308** from `vercel.json`, instead of Astro's static
+- **`/` redirects** from `vercel.json` (on hosts other than the two
+  subdomains), instead of Astro's static
   redirect page, which is a two-second meta refresh. That page still builds and
   is what `npm run preview` serves.
-- **`site` is `https://atlas-des-iles-fantomes.vercel.app`**, so the canonical
-  link on the redirect page is real. Change it with the domain (Next, item 5).
+- **`site` is the French host**, `ORIGIN.fr` in `src/lib/hosts.mjs`.
 
 ## Next, roughly in order
 
@@ -1209,9 +1222,8 @@ output `dist`, no adapter (static). Nothing to configure.
    fits at RMS 231 km and cannot support one.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
-5. A real domain (Vercel is serving `atlas-des-iles-fantomes.vercel.app`
-   today, and `site` in `astro.config.mjs` points there; move it to whatever
-   the domain becomes).
+5. ~~A real domain~~ **Done**, as two subdomains of etiennefd.com (see
+   *Current state*).
 
 ## Open questions
 

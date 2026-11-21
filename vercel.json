@@ -1,5 +1,18 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/fr/", "permanent": true }
+    { "source": "/fr/:path(.*)", "has": [{ "type": "host", "value": "ilesfantomes.etiennefd.com" }], "destination": "/:path", "permanent": true },
+    { "source": "/en/:path(.*)", "has": [{ "type": "host", "value": "ilesfantomes.etiennefd.com" }], "destination": "https://phantomislands.etiennefd.com/:path", "permanent": true },
+    { "source": "/en/:path(.*)", "has": [{ "type": "host", "value": "phantomislands.etiennefd.com" }], "destination": "/:path", "permanent": true },
+    { "source": "/fr/:path(.*)", "has": [{ "type": "host", "value": "phantomislands.etiennefd.com" }], "destination": "https://ilesfantomes.etiennefd.com/:path", "permanent": true },
+
+    { "source": "/fr/:path(.*)", "has": [{ "type": "host", "value": "atlas-des-iles-fantomes.vercel.app" }], "destination": "https://ilesfantomes.etiennefd.com/:path", "permanent": true },
+    { "source": "/en/:path(.*)", "has": [{ "type": "host", "value": "atlas-des-iles-fantomes.vercel.app" }], "destination": "https://phantomislands.etiennefd.com/:path", "permanent": true },
+    { "source": "/", "has": [{ "type": "host", "value": "atlas-des-iles-fantomes.vercel.app" }], "destination": "https://ilesfantomes.etiennefd.com/", "permanent": true },
+
+    { "source": "/", "missing": [{ "type": "host", "value": "ilesfantomes.etiennefd.com" }, { "type": "host", "value": "phantomislands.etiennefd.com" }], "destination": "/fr/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "ilesfantomes.etiennefd.com" }], "destination": "/fr/:path" },
+    { "source": "/:path(.*)", "has": [{ "type": "host", "value": "phantomislands.etiennefd.com" }], "destination": "/en/:path" }
   ]
 }

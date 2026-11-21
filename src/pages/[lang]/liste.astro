@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { ui, LANGS, type Lang } from "../../i18n/ui";
+import { ui, LANGS, other, type Lang } from "../../i18n/ui";
+import { url } from "../../lib/hosts.mjs";
 import { resolveIslands, lifespan, storyCount } from "../../lib/atlas";
 
 export function getStaticPaths() {
@@ -13,7 +14,7 @@ const islands = await resolveIslands(lang);
 const n = await storyCount(lang);
 ---
 
-<Base lang={lang} title={t.list} altHref={`/${lang === "fr" ? "en" : "fr"}/liste/`}>
+<Base lang={lang} title={t.list} altHref={url(other(lang), "/liste/", lang)}>
   <div class="list">
     <h1>{t.list}</h1>
     <p class="sc counter">{n} {n === 1 ? t.story : t.stories}</p>

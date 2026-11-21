@@ -1,11 +1,13 @@
 ---
 import "../styles/tokens.css";
 import { ui, other, type Lang } from "../i18n/ui";
+import { url } from "../lib/hosts.mjs";
 
 interface Props {
   lang: Lang;
   title?: string;
-  /** Path on the other language site, if a counterpart exists. */
+  /** URL on the other language site (from url() in lib/hosts.mjs), if a
+   *  counterpart exists. */
   altHref?: string;
 }
 const { lang, title, altHref } = Astro.props;
@@ -33,12 +35,12 @@ const o = other(lang);
   <body>
     <header class="masthead">
       <p class="masthead__title">
-        <a href={`/${lang}/`}>{t.siteTitle}</a>
+        <a href={url(lang, "/")}>{t.siteTitle}</a>
       </p>
       <nav class="sc">
-        <a href={`/${lang}/liste/`}>{t.list}</a>
+        <a href={url(lang, "/liste/")}>{t.list}</a>
         {" // "}
-        <a href={altHref ?? `/${o}/`} data-lang-switch>{t.otherLang}</a>
+        <a href={altHref ?? url(o, "/", lang)} data-lang-switch>{t.otherLang}</a>
       </nav>
     </header>
     <main>

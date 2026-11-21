@@ -7,6 +7,7 @@ import Base from "../../../layouts/Base.astro";
 import { ui, other, type Lang } from "../../../i18n/ui";
 import { splitStoryId, lifespan } from "../../../lib/atlas";
 import { typesetMarkdown } from "../../../lib/typo.mjs";
+import { url } from "../../../lib/hosts.mjs";
 
 export async function getStaticPaths() {
   const stories = await getCollection("stories");
@@ -71,10 +72,10 @@ const counterpart = stories.find((s) => {
 });
 // With no counterpart, the other language has this story's placeholder.
 const altHref = counterpart
-  ? `/${o}/iles/${splitStoryId(counterpart.id).slug}/`
+  ? url(o, `/iles/${splitStoryId(counterpart.id).slug}/`, lang)
   : story.data.draft
     ? undefined
-    : `/${o}/iles/${splitStoryId(story.id).slug}/`;
+    : url(o, `/iles/${splitStoryId(story.id).slug}/`, lang);
 
 // A plate named in frontmatter but absent from public/ would render as a
 // broken-image icon. Skip it, and say so at build time, so the gap stays

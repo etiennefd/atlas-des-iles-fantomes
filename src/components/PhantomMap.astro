@@ -1,5 +1,6 @@
 ---
 import { ui, type Lang } from "../i18n/ui";
+import { url } from "../lib/hosts.mjs";
 import { resolveIslands, lifespan } from "../lib/atlas";
 
 interface Props {
@@ -29,7 +30,7 @@ const meta = resolved.map((r) => ({
 >
   <noscript>
     <p class="pmap__noscript">
-      <a href={`/${lang}/liste/`}>{t.list}</a>
+      <a href={url(lang, "/liste/")}>{t.list}</a>
     </p>
   </noscript>
 </div>

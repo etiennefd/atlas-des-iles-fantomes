@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import type { Lang } from "../i18n/ui";
+import { url } from "./hosts.mjs";
 
 export type Island = CollectionEntry<"islands">;
 export type Story = CollectionEntry<"stories">;
@@ -57,7 +58,7 @@ export async function resolveIslands(lang: Lang): Promise<Resolved[]> {
           state: "available",
           story: mine,
           storyLang: lang,
-          href: `/${lang}/iles/${splitStoryId(mine.id).slug}/`,
+          href: url(lang, `/iles/${splitStoryId(mine.id).slug}/`),
         };
       }
       if (theirs) {
@@ -70,7 +71,7 @@ export async function resolveIslands(lang: Lang): Promise<Resolved[]> {
           storyLang: otherLang,
           // The placeholder page in this language, at the URL the translation
           // will have; it says where to read the story.
-          href: `/${lang}/iles/${splitStoryId(theirs.id).slug}/`,
+          href: url(lang, `/iles/${splitStoryId(theirs.id).slug}/`),
         };
       }
       return { island, name, state: "planned" };

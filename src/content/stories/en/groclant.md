@@ -11,7 +11,7 @@ images:
       Detail of a
       [map](https://upload.wikimedia.org/wikipedia/commons/2/23/Abraham_Ortelius-Septentrionalium_Regionum_Descrip.jpg)
       of the northern regions by Abraham Ortelius (c. 1570). “Groclandt” is at
-      the top of Greenland. You can also see [Frisland](/en/iles/frisland/)
+      the top of Greenland. You can also see [Frisland](../frisland/)
       south of Iceland.
 notice:
   - label: "Where"

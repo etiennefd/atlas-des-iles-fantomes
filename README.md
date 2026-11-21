@@ -3,7 +3,8 @@
 A bilingual literary atlas of islands that were believed to exist and did not.
 Astro, static output, French and English.
 
-Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>.
+French at <https://ilesfantomes.etiennefd.com/>, English at
+<https://phantomislands.etiennefd.com/>.
 
 Working notes and decisions: [`CLAUDE.md`](./CLAUDE.md). Coordinate
 provenance: [`COORDINATES.md`](./COORDINATES.md). [`PLAN.md`](./PLAN.md) is the
@@ -91,16 +92,28 @@ ships Regular only.
 
 ## Deploy
 
-Live at <https://atlas-des-iles-fantomes.vercel.app/fr/>, on **Vercel**,
-imported from `etiennefd/atlas-des-iles-fantomes`. Every push to `main`
-redeploys. Static output, no adapter — framework preset Astro, build
-`npm run build`, output `dist`. There is no deploy config in the repo because
-none is needed.
+On **Vercel**, imported from `etiennefd/atlas-des-iles-fantomes`. Every push
+to `main` redeploys. Static output, no adapter — framework preset Astro, build
+`npm run build`, output `dist`.
 
-Vercel serves at the root of a subdomain, which matters: everything here
-assumes root paths (`/data/land-50m.json`, `/iles/…`, `/fr/…`). A host that
-serves from a subdirectory — GitHub Pages under `/atlas-des-iles-fantomes/` —
-would need `base` set and every one of those paths rewritten.
+**Each language has its own subdomain of etiennefd.com and serves from its
+root**: `ilesfantomes.etiennefd.com/iles/antillia/` and
+`phantomislands.etiennefd.com/iles/antillia/`. The build still writes
+`dist/fr/…` and `dist/en/…`; `vercel.json` rewrites each host onto its
+folder, redirects any `/fr/…` or `/en/…` path to the clean URL on the right
+host, and sends the old `atlas-des-iles-fantomes.vercel.app` there too. The
+DNS is two CNAMEs at WHC, where etiennefd.com's zone lives.
+
+Only the production build uses that layout (`VERCEL_ENV=production`, or
+`ATLAS_SPLIT_HOSTS=1` locally). `npm run dev`, `npm run preview` and Vercel's
+preview deployments keep one host with `/fr/` and `/en/`, so internal links
+go through `url()` in `src/lib/hosts.mjs`, never a hand-written
+`/${lang}/…`. A link inside a story is written relative (`../frisland/`),
+which works in both layouts.
+
+Vercel rewrites only where no file exists, so the production build must not
+write a root `index.html` — that is why the `/` → `/fr/` redirect is
+configured in `astro.config.mjs` for non-production builds only.
 
 Note that Vercel's Hobby plan is for non-commercial use. If the atlas ever
 becomes commercial, that needs Pro, or a host without the restriction.
