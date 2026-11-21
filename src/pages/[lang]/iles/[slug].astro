@@ -111,7 +111,7 @@ const inline = (md: string) =>
 <Base lang={lang} title={title} altHref={altHref}>
   <article class="story">
     <h1 class="story__title">{title}</h1>
-    {spans.length > 0 && <span class="story__span sc">{spans.join(" · ")}</span>}
+    {spans.length > 0 && <span class="story__span sc">{spans.join(" // ")}</span>}
 
     {
       images.map((img) => (

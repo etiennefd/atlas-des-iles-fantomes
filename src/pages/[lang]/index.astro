@@ -2,7 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import PhantomMap from "../../components/PhantomMap.astro";
 import { ui, LANGS, type Lang } from "../../i18n/ui";
-import { resolveIslands } from "../../lib/atlas";
+import { storyCount } from "../../lib/atlas";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -10,15 +10,15 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = ui[lang];
-const islands = await resolveIslands(lang);
-const written = islands.filter((i) => i.state === "available").length;
+// The number of stories, not of islands written about: several stories
+// cover two islands, and the islands not yet written make a meaningless
+// denominator.
+const n = await storyCount(lang);
 ---
 
 <Base lang={lang} altHref={`/${lang === "fr" ? "en" : "fr"}/`}>
   <PhantomMap lang={lang} />
   <p class="pmap-foot sc">
-    <span class="counter">{written} / {islands.length} {t.written}</span>
-    {" · "}
-    <a href={`/${lang}/liste/`}>{t.list}</a>
+    <a href={`/${lang}/liste/`}>{n} {n === 1 ? t.story : t.stories}</a>
   </p>
 </Base>

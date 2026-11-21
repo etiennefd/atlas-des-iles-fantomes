@@ -94,6 +94,17 @@ export function lifespan(island: Island): string {
   return `${q}${fmt(a)} – ${fmt(b)}`;
 }
 
+/**
+ * Stories readable in one language: one per text, however many islands it
+ * covers (Crocker Land and Bradley Land are one story), drafts left out.
+ */
+export async function storyCount(lang: Lang) {
+  const stories = await getCollection("stories");
+  return stories.filter(
+    (s) => splitStoryId(s.id).lang === lang && !s.data.draft
+  ).length;
+}
+
 export async function counts(lang: Lang) {
   const resolved = await resolveIslands(lang);
   return {
