@@ -33,12 +33,14 @@ src/
   content/stories/{fr,en}/*.md
   data/islands.geojson    geometry, generated
   lib/atlas.ts            resolves island states, formats lifespans
+  lib/hosts.mjs           where each language lives; url() builds every link
   components/map.ts       the D3 map
   components/PhantomMap.astro
   i18n/ui.ts              ~30 UI strings
   pages/[lang]/{index,liste}.astro, pages/[lang]/iles/[slug].astro
 public/data/              runtime copies of islands.geojson + land-50m.json
 scripts/                  seed_islands.py, build_geojson.py
+vercel.json               per-host rewrites and redirects — see Hosting and URLs
 ```
 
 Metadata and geometry are deliberately separate files: editing a story can
@@ -66,8 +68,8 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
 
   The Van der Grinten implementation is in git history at `170475b` if this
   is ever revisited.
-- **One canonical French slug per island**, used in both language trees:
-  `/en/iles/ile-des-demons`. No slug lookup table.
+- **One canonical French slug per island**, used in both languages:
+  `phantomislands.etiennefd.com/iles/ile-des-demons/`. No slug lookup table.
 - **Stories are many-to-many with islands.** Three existing posts cover more
   than one island (`crocker-land` + `bradley-land`, `juan-de-lisboa` +
   `dos-romeiros`, and the reefs post). Availability is derived at build time.
@@ -1067,22 +1069,68 @@ interesting object than a clickable index.
 
 ## Current state
 
-**French at <https://ilesfantomes.etiennefd.com/>, English at
-<https://phantomislands.etiennefd.com/>**, each at its host's root (Étienne,
-November 2026, chose subdomains of etiennefd.com over buying a domain, and
-clean URLs over keeping `/fr/` and `/en/`). The build still writes `dist/fr`
-and `dist/en`; `vercel.json` rewrites each host onto its folder and redirects
-prefixed paths and the old `atlas-des-iles-fantomes.vercel.app` to the right
-host. Only the production build links that way: dev, `npm run preview` and
-Vercel previews keep the prefixed layout, so **every internal link goes
-through `url()` in `src/lib/hosts.mjs`**, and links inside stories are
-written relative (`../frisland/`). Vercel applies a rewrite only where no
-file exists, so the production build must write no root `index.html`
-(`astro.config.mjs` adds the `/` redirect only outside production). Check the
-production layout locally with `ATLAS_SPLIT_HOSTS=1 npx astro build`.
-Vercel, imported
-from the GitHub repo, redeploys on every push to `main`. Build `npm run build`,
-output `dist`, no adapter (static). Nothing to configure.
+**Live in French at <https://ilesfantomes.etiennefd.com/> and in English at
+<https://phantomislands.etiennefd.com/>** since 21 November 2026. Vercel,
+imported from the GitHub repo, redeploys on every push to `main`. Build
+`npm run build`, output `dist`, no adapter (static).
+
+### Hosting and URLs
+
+**Two subdomains of etiennefd.com, one per language, each serving from its
+root**: `ilesfantomes.etiennefd.com/iles/antillia/`,
+`phantomislands.etiennefd.com/iles/antillia/`. Étienne, November 2026, chose
+subdomains over buying a domain (`ilesfantomes.com` and the rest were free;
+`phantomislands.com` was taken), and clean URLs over keeping `/fr/` and `/en/`
+after the hostname. The path stays French in English too (`/iles/`, `/liste/`),
+following the one-canonical-slug decision.
+
+- **The build is unchanged**: it still writes `dist/fr/` and `dist/en/`.
+  `vercel.json` does the rest, by host: it rewrites `/…` on each subdomain onto
+  its folder, redirects (308) any `/fr/…` or `/en/…` path to the clean URL on
+  the right host, and sends the old `atlas-des-iles-fantomes.vercel.app`
+  addresses to the new hosts, so links shared before the move still work.
+- **Only the production build links that way.** `src/lib/hosts.mjs` switches on
+  `VERCEL_ENV=production` (or `ATLAS_SPLIT_HOSTS=1` locally). Dev,
+  `npm run preview` and Vercel's preview deployments keep one host with `/fr/`
+  and `/en/`, so **every internal link goes through `url(lang, path, from)`**,
+  never a hand-written `` `/${lang}/…` ``: same-language links come out as
+  `/liste/`, cross-language ones as the other host's full address. Links inside
+  a story's markdown are written relative (`../frisland/`), which works in
+  both layouts.
+- **Vercel applies a rewrite only where no file exists**, so the production
+  build must write no root `index.html`, or `/` would serve Astro's redirect
+  page instead of the French home. That is why `src/pages/index.astro` is gone
+  and `astro.config.mjs` adds the `/` → `/fr/` redirect outside production
+  only.
+- **DNS**: etiennefd.com's zone is at WHC (`ns*.whc.ca`). Each subdomain is a
+  CNAME to the same Vercel target, and both are listed under the project's
+  Settings → Domains, connected to Production. Vercel picks the site by
+  hostname, so the shared target is normal.
+
+Checking it: `ATLAS_SPLIT_HOSTS=1 npx astro build --outDir <tmp>` shows the
+production links locally, but the host rules run only on the real hosts — not
+under `npm run dev`, not on preview deployments, not in `vercel dev`. Verify
+with `curl` against the live subdomains after each change to `vercel.json`;
+if the Mac's resolver has not caught up with a DNS change, pin the address
+with `--resolve host:443:<ip from dig>`.
+
+Two things went wrong during the move, both worth not repeating:
+
+- **A permanent redirect is remembered by the browser.** The old config sent
+  `/` to `/fr/` with a 308 and the new one sends `/fr/` back to `/`, so a
+  browser that saw the old redirect on a new host would loop. Hence: don't
+  open a new host until the deploy that serves it is live. Link previews
+  (Slack, iMessage) also cache what they fetched; a stale French preview of
+  the English site was that, not a bug.
+- **Several sessions share this checkout, and a force-push to `main` lost a
+  commit.** The subdomain commit was pushed at 15:43 and overwritten at 15:45
+  by a force-push from elsewhere, which put production back on the old config
+  — both hosts redirected to French and every clean URL returned 404. It was
+  re-applied as `e0d51e8`. Never force-push `main`; when a push is rejected,
+  `git pull --rebase`, and after pushing, check `git log origin/main` still
+  holds the commit.
+
+### The atlas
 
 - 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
 - 26 traced outlines (three of them open coasts), 4 shapes built from
@@ -1156,7 +1204,9 @@ output `dist`, no adapter (static). Nothing to configure.
   Canarian position kept, by Étienne's choice. Check that a "second island"
   is a second legend, not a second placement, before adding one.
 - Map verified in production: globe mounts, 634 landmasses, 34 islands, hover,
-  tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset
+  tap-to-reveal on touch, rotate, tilt, zoom to 8×, reset. Rechecked on the
+  new hosts in November 2026: globe mounts with 34 islands linking to
+  `/iles/…`, map data, fonts and plates load, every redirect lands.
 
 ### Known blemishes — fixed October 2026
 
@@ -1223,7 +1273,7 @@ output `dist`, no adapter (static). Nothing to configure.
 3. Verify the conjectural coordinates against Étienne's own research.
 4. Story-page inset map (same component, zoomed to one island).
 5. ~~A real domain~~ **Done**, as two subdomains of etiennefd.com (see
-   *Current state*).
+   *Hosting and URLs*).
 
 ## Open questions
 
