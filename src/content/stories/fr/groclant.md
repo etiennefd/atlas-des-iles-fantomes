@@ -2,6 +2,8 @@
 title: "Groclant"
 islands: [groclant]
 date: 2020-04-19
+story_title: "La saga de Thorgils Leifsson"
+story_title_face: uncial
 source: https://etiennefd.com/cteniq/groclant/
 images:
   - src: /iles/groclant-1.png
@@ -12,8 +14,6 @@ images:
       des régions nordiques d’Abraham Ortellius (c. 1570). « Groclandt » est en
       haut du Groenland. On reconnaît aussi
       [Frisland](https://etiennefd.com/cteniq/frisland/) au sud de l’Islande.
-  - src: /iles/groclant-2.png
-    alt: ""
 notice:
   - label: "Où"
     body: "à l’ouest du Groenland"

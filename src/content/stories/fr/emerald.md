@@ -2,6 +2,7 @@
 title: "L’île Emerald"
 islands: [emerald]
 date: 2020-02-08
+story_title: "NIMROD : CHASSEURS D’ÎLES FANTÔMES"
 source: https://etiennefd.com/cteniq/ile-emerald/
 images:
   - src: /iles/emerald-1.png
@@ -28,8 +29,6 @@ notice:
 ---
 
 ***
-
-NIMROD : CHASSEURS D’ÎLES FANTÔMES
 
 V.F. de *Nimrod: Phantom Island Hunters*
 

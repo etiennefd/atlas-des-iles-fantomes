@@ -15,6 +15,7 @@ export const ui = {
     onlyInOther:
       "Cette histoire n’existe qu’en anglais pour l’instant.",
     read: "Lire en anglais",
+    otherOnly: "en anglais seulement",
     written: "écrites",
     reset: "Réinitialiser la carte",
     notes: "Notes",
@@ -33,6 +34,7 @@ export const ui = {
     onlyInOther:
       "This story exists only in French for now.",
     read: "Read it in French",
+    otherOnly: "French only",
     written: "written",
     reset: "Reset the map",
     notes: "Notes",

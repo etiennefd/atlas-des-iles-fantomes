@@ -29,7 +29,7 @@ notes:
 
 ***
 
-It is the year 1794, and the golden age of Spain is coming to an end. So is the golden age of exploration. They went hand in hand. Not too long ago, an adventurous captain could sail in a direction at random, and find either an archipelago where a new spice grew, or the temples of a mysterious people, ou even an entire continent, full of marvelous beasts that no one had expected to be found in Creation. Not too long ago, a kingdom like Spain could gather an unprecedented fortune just by picking it up in the nooks of the world.
+It is the year 1794, and the golden age of Spain is coming to an end. So is the golden age of exploration. They went hand in hand. Not too long ago, an adventurous captain could sail in a direction at random, and find either an archipelago where a new spice grew, or the temples of a mysterious people, or even an entire continent, full of marvelous beasts that no one had expected to be found in Creation. Not too long ago, a kingdom like Spain could gather an unprecedented fortune just by picking it up in the nooks of the world.
 
 Not anymore, in the year 1794. In the year 1794, the *Descubierta* and the *Atrevida* are sailing about in the South Atlantic, at the close of a four year scientific expedition in the Pacific under the command of Alejandro Malaspina and José de Bustamante y Guerra. On the return trip to Cadiz, after having cleared Cape Horn and visited the Malvinas Islands, Malaspina sends Bustamante and the *Atrevida* to the east, with the goal of confirming the existence of a handful of remote rocks.
 

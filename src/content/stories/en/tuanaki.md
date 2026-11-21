@@ -2,6 +2,7 @@
 title: "Tuanaki"
 islands: [tuanaki]
 date: 2025-05-14
+story_title: "The 40-Hour Work Week"
 images:
   - src: /iles/tuanaki.jpg
     alt: ""
@@ -160,7 +161,7 @@ It was as she said; the protest cleared within ten minutes, and the Waymo went o
 
 I ignored him.
 
-I barely had time to leave my bags at the hotel and glance at the coral reef tank in my room before I had to head to the Sagrada Família. Why had I booked a visit within hours of my arrival, again? But it was worth it, despite my lingering headache. It was one of the most beautiful sights I had even seen. I sat in the church, admiring the play of light in the stained glass that Stefan 2 had recommended I look at. Like a hundred other tourists, I listened to an audio guide on my phone, when I heard the ringtone. It was Stefan 2, of course. I shouldn’t have taken it, but I did.
+I barely had time to leave my bags at the hotel and glance at the coral reef tank in my room before I had to head to the Sagrada Família. Why had I booked a visit within hours of my arrival, again? But it was worth it, despite my lingering headache. It was one of the most beautiful sights I had ever seen. I sat in the church, admiring the play of light in the stained glass that Stefan 2 had recommended I look at. Like a hundred other tourists, I listened to an audio guide on my phone, when I heard the ringtone. It was Stefan 2, of course. I shouldn’t have taken it, but I did.
 
 “Stefan,” I whispered, “I’m right in the middle of the fucking Sagrada Família. This is not the time.”
 
@@ -209,8 +210,6 @@ As if reading my mind, he texted:
 > _but i know you’re okay with the occasional white lie_
 
 I turned off my phone without replying. But I realized I wasn’t angry anymore. I understood where Stefan 2 was coming from. I knew he would ask for more concessions, and I knew I would cave in again. He was just being his lazy, human self, trying to work as little as he could. I smiled. I would have done the same.
-
-…
 
 ***
 

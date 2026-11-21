@@ -98,6 +98,6 @@ export async function counts(lang: Lang) {
   const resolved = await resolveIslands(lang);
   return {
     total: resolved.length,
-    written: resolved.filter((r) => r.state !== "planned").length,
+    written: resolved.filter((r) => r.state === "available").length,
   };
 }

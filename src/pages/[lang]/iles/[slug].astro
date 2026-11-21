@@ -147,6 +147,21 @@ const inline = (md: string) =>
 
     {!placeholder && (
     <div class="prose">
+      {
+        story.data.story_title_face === "uncial" && (
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
+          />
+        )
+      }
+      {
+        story.data.story_title && (
+          <h2 class="prose__title" data-face={story.data.story_title_face}>
+            {story.data.story_title}
+          </h2>
+        )
+      }
       <Content />
       {
         notes.length > 0 && (

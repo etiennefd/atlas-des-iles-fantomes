@@ -2,6 +2,7 @@
 title: "L’île de Dougherty"
 islands: [dougherty]
 date: 2020-01-26
+story_title: "NIMROD : CHASSEURS D’ÎLES FANTÔMES"
 source: https://etiennefd.com/cteniq/ile-de-dougherty/
 images:
   - src: /iles/dougherty-1.png
@@ -31,8 +32,6 @@ notice:
 ---
 
 ***
-
-NIMROD : CHASSEURS D’ÎLES FANTÔMES
 
 V.F. de *Nimrod: Phantom Island Hunters*
 

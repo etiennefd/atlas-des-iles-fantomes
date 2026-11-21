@@ -187,6 +187,23 @@ a:hover {
 .prose p {
   margin: 0 0 1.1em;
 }
+/* The story's own title, where it has one apart from the island's name. It
+   opens the text, so it takes the place of the opening scene break. */
+.prose > .prose__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4.5vw, 2.1rem);
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+  margin: calc(var(--step) * 1.6) 0;
+}
+.prose > .prose__title + hr {
+  display: none;
+}
+.prose > .prose__title[data-face="uncial"] {
+  font-family: "Uncial Antiqua", var(--display);
+}
 /* A heading inside a story ("Note historique"): small, well under the title. */
 .prose > h2 {
   font-family: var(--display);
@@ -292,6 +309,14 @@ sup {
   align-items: baseline;
 }
 .list li[data-state="planned"] {
+  color: var(--phantom-soft);
+}
+/* Written only in the other language: still a link (to its placeholder),
+   but pale, like its dashed outline on the map. */
+.list li[data-state="translated"] {
+  color: var(--phantom-soft);
+}
+.list li[data-state="translated"] a {
   color: var(--phantom-soft);
 }
 .list__span {

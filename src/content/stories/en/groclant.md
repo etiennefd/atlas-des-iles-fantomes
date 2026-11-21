@@ -2,6 +2,8 @@
 title: "Groclant"
 islands: [groclant]
 date: 2020-04-19
+story_title: "The Saga of Thorgils Leifsson"
+story_title_face: uncial
 images:
   - src: /iles/groclant-1.png
     alt: ""

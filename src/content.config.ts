@@ -84,6 +84,13 @@ const stories = defineCollection({
     draft: z.boolean().default(false),
     /** Original post on the old blog, if any. */
     source: z.string().url().optional(),
+    /**
+     * The story's own title, where it has one apart from the island's name
+     * ("La saga de Thorgils Leifsson"). Set at the start of the text.
+     */
+    story_title: z.string().optional(),
+    /** A face of its own for that title, where the story calls for one. */
+    story_title_face: z.enum(["uncial"]).optional(),
 
     /**
      * The bullet block that precedes every story.
