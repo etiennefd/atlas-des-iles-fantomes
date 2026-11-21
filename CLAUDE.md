@@ -109,7 +109,9 @@ Filename is the id. `kind` drives rendering:
   it at a fixed ~8 px on screen; trying it, he had it scale with the zoom
   instead: "They're reefs, we don't really need to see them that much."
   It used to be geoPath's default point circle, a 30 px disc at high zoom.
-  `?at=lon,lat,k` opens the map on a fixed view, for renders.
+  `?at=lon,lat,k` opens the map on a fixed view, for renders; the language
+  switch also uses it to carry the current view across, and the map drops it
+  from the address bar once read.
 - `misdrawn` — a *real place wrongly charted* (Corée, Californie). **The
   basemap is replaced where its chart disagreed**, permanently, not on hover:
   the atlas simply does not carry the real California. Étienne, September

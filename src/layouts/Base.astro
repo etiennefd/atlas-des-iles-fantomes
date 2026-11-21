@@ -35,7 +35,7 @@ const o = other(lang);
       <nav class="sc">
         <a href={`/${lang}/liste/`}>{t.list}</a>
         {" · "}
-        <a href={altHref ?? `/${o}/`}>{t.otherLang}</a>
+        <a href={altHref ?? `/${o}/`} data-lang-switch>{t.otherLang}</a>
       </nav>
     </header>
     <main>

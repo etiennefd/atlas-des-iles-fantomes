@@ -175,8 +175,16 @@ export async function mount(cfg: Cfg) {
   // Position is rotation, not translation: dragging turns the globe. `lastTx`
   // and `lastTy` exist only to turn d3-zoom's ever-growing x/y into
   // per-gesture deltas.
-  // ?at=lon,lat,k opens on a fixed view — a dev aid for headless renders.
-  const AT = new URLSearchParams(location.search).get("at")?.split(",").map(Number);
+  // ?at=lon,lat,k opens on a fixed view. The language switch carries the
+  // current view this way (see the end of this function); renders use it too.
+  // It is dropped from the address bar once read.
+  const params = new URLSearchParams(location.search);
+  const AT = params.get("at")?.split(",").map(Number);
+  if (AT) {
+    params.delete("at");
+    const q = params.toString();
+    history.replaceState(history.state, "", location.pathname + (q ? `?${q}` : "") + location.hash);
+  }
   let lambda = AT ? -AT[0] : HOME_LON;
   let phi = AT ? -AT[1] : -HOME_LAT;
   let lastTx = 0;
@@ -679,5 +687,21 @@ export async function mount(cfg: Cfg) {
     suppressRotate = false;
   }
   refreshExtent();
+
+  // Switching language would otherwise reopen the globe on the home view.
+  // The view is written into the link only when it is about to be used, so
+  // a middle-click or a long-press gets it too.
+  const langSwitch = document.querySelector<HTMLAnchorElement>("a[data-lang-switch]");
+  if (langSwitch) {
+    const base = langSwitch.getAttribute("href")!.split("?")[0];
+    const carry = () => {
+      const at = [-lambda, -phi].map((v) => +v.toFixed(2)).concat(+k.toFixed(3));
+      langSwitch.href = `${base}?at=${at.join(",")}`;
+    };
+    for (const ev of ["pointerdown", "focus", "contextmenu"]) {
+      langSwitch.addEventListener(ev, carry);
+    }
+  }
+
   root.classList.add("is-ready");
 }
