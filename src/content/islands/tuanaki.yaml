@@ -3,7 +3,11 @@ name_en: "Tuanaki"
 kind: island
 ocean: pacifique-sud
 coords: [-160.417, -26.5]
-span: [1842, 1856]
+# Reported by the missionaries in 1842; on the maps "until the 1920s", as the
+# story's notice says, and still listed as doubtful in Richards' General notes
+# on South Pacific island groups, 1920. Was [1842, 1856], which ended at the
+# last missionary search rather than the last chart.
+span: [1842, 1920]
 coords_confidence: approximate
 coords_note: >-
   26°30' S 160°25' W, the position the charts carried: Hamond of HMS
