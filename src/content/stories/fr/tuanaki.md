@@ -36,25 +36,33 @@ notice:
 
 L’avion était encore en train de rouler. Trois rangées derrière moi, une femme d’environ quarante ans s’est levée et a ouvert le compartiment des bagages. L’agente de bord lui a crié de se rassoir. La voix immatérielle du directeur de vol a dit : « Bienvenue à Barcelone. Il est 13h12 et la température est de 28 degrés Celsius. » La femme a commencé à se défendre, il fallait juste qu’elle prenne sa bouteille d’eau, elle avait la bouche sèche. J’ai senti mon mal de tête s’intensifier. J’avais trop pris l’avion, récemment. Un mariage en Inde, une semaine au Japon, de retour à la maison à New York pendant quelques jours, et maintenant ici en Catalogne pour un long weekend européen. J’ai sorti mon téléphone de ma poche et j’ai désactivé le mode avion. Des notifications ont commencé à envahir mon écran. Un courriel pour me donner les infos sur mon séjour dans un hôtel-boutique du district de l’Eixample, une expérience de luxe où chaque chambre était dotée d’un aquarium salé plein de coraux. Un autre pour confirmer ma visite de la Sagrada Família en fin d’après-midi. Un message texte de mon fournisseur téléphonique me souhaitait « ¡Bienvenido en Espagne, Stefan! » et me vantait les bénéfices de mon forfait à l’étranger. Une autre série de messages textes me venait de Stefan 2.
 
-hey est-ce que t’es arrivé à barcelone 
-je voulais que tu saches que je suis pas mal sûr d’être dans un aller simple vers le burnout 
-grosse misère à me motiver pour aller au travail ce matin 
-me suis dit que tu voudrais peut-être qu’on discute de solutions
+> _hey est-ce que t’es arrivé à barcelone_
+>
+> _je voulais que tu saches que je suis pas mal sûr d’être dans un aller simple vers le burnout_
+>
+> _grosse misère à me motiver pour aller au travail ce matin_
+>
+> _me suis dit que tu voudrais peut-être qu’on discute de solutions_
 
 Soupir. J’ai regardé derrière moi. L’agente de bord était à côté de la femme, et elles semblaient avoir évité de justesse d’en venir aux poings. La femme s’est rassise à contrecœur en se cramponnant au petit sac de voyage qu’elle avait réussi à attraper. Mes pouces flottaient au dessus du clavier virtuel de mon téléphone. Je me demandais quoi répondre. Ce n’était pas la première fois que Stefan 2 mentionnait l’épuisement professionnel. Était-ce sincère, ou une technique de négociation? Considérant que j’avait utilisé la même tactique par le passé, quant je travaillais encore à temps plein, avant que Stefan 2 existe, c’était probablement ça.
 
 Je lui ai demandé ce qu’il avait en tête.
 
-je veux travailler des semaines de 32 heures 
-4 jours/semaine, les vendredis off 
-jillian est d’accord 
-en fait la moitié de l’équipe fait ça maintenant 
-j’ai juste besoin de ta permission
+> _je veux travailler des semaines de 32 heures_
+>
+> _4 jours/semaine, les vendredis off_
+>
+> _jillian est d’accord_
+>
+> _en fait la moitié de l’équipe fait ça maintenant_
+>
+> _j’ai juste besoin de ta permission_
 
 J’ai répondu que j’allais y penser.
 
-cool mais j’aimerais en parler maintenant si tu peux 
-je peux t’appeler?
+> _cool mais j’aimerais en parler maintenant si tu peux_
+>
+> _je peux t’appeler?_
 
 J’ai dit que ce n’était pas le moment et que j’allais l’appeler en chemin vers l’hôtel.
 
@@ -160,8 +168,9 @@ Il m’est venu à l’esprit que Meenakshi du Centre d’aide de Waymo était, 
 
 Ça s’est passé comme elle a dit : la manif s’est dispersée après dix minutes, et le robotaxi a repris sa route. J’ai remarqué que Stefan 2 m’avait texté.
 
-je viens de voir qu’il y a des gens qui manifestent à barcelone contre l’exploitation de mes semblables 
-j’espère qu’ils dérangent pas trop ton beau voyage
+> _je viens de voir qu’il y a des gens qui manifestent à barcelone contre l’exploitation de mes semblables_
+>
+> _j’espère qu’ils dérangent pas trop ton beau voyage_
 
 Je l’ai simplement ignoré.
 
@@ -205,12 +214,17 @@ J’ai pris mes courriels. Stefan 2 avait envoyé la paperasse. J’ai passé vi
 
 Comme s’il lisait mes pensées, il a texté :
 
-merci tellement!! 💜 
-tu ne le regretteras pas 
-oh et en passant, je me sens mal de te dire ça mais : le burnout était en fait une tactique de négo 
-ma santé mentale va super ces temps-ci 
-désolé pour ça 
-mais je sais qu’un petit mensonge ici et là ne va pas te déranger
+> _merci tellement!! 💜_
+>
+> _tu ne le regretteras pas_
+>
+> _oh et en passant, je me sens mal de te dire ça mais : le burnout était en fait une tactique de négo_
+>
+> _ma santé mentale va super ces temps-ci_
+>
+> _désolé pour ça_
+>
+> _mais je sais qu’un petit mensonge ici et là ne va pas te déranger_
 
 J’ai éteint l’écran du téléphone sans répondre. Mais ma frustration, je m’en suis aussitôt rendu compte, s’était évaporée. Je comprenais très bien Stefan 2. Je savais qu’il demanderait de nouvelles concessions, et je savais que je céderais encore et encore. Il était comme moi, comme nous tous : un être humain paresseux qui cherchait simplement à travailler le moins possible. J’ai souri. J’aurais fait pareil.
 

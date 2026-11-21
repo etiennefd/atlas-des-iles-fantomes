@@ -77,7 +77,9 @@ def fetch(slug):
 def inline(frag):
     """Inline HTML to markdown. Order matters: links before tag-stripping."""
     s = frag
-    s = re.sub(r"<br\s*/?>", " ", s, flags=re.I)
+    # a line break inside a paragraph: a hard break, written as a visible
+    # backslash rather than two invisible trailing spaces
+    s = re.sub(r"<br\s*/?>\s*", "\\\n", s, flags=re.I)
     s = re.sub(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>',
                lambda m: f"[{inline(m.group(2))}]({m.group(1)})", s, flags=re.S | re.I)
     s = re.sub(r"<(strong|b)\b[^>]*>(.*?)</\1>", r"**\2**", s, flags=re.S | re.I)

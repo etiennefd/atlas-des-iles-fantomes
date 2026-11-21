@@ -33,9 +33,9 @@ Thorgils Leifsson ne devint pas un personnage populaire dans l’Établissement 
 
 C’était une lune après l’équinoxe d’automne que Thorgils et ses hommes quittèrent l’Établissement de l’Est pour chasser le morse. Lors d’une escale à l’Établissement de l’Ouest, une vieille prophétesse qui refusait encore le christianisme mit en garde Thorgils Leifsson :
 
-« Si tu pars en ce jour, fils de navigateur, 
-Très longtemps durera ton voyage; 
-Car si la richesse se présente à l’homme de valeur, 
+« Si tu pars en ce jour, fils de navigateur,\
+Très longtemps durera ton voyage;\
+Car si la richesse se présente à l’homme de valeur,\
 Elle sait se dérober à qui n’est point sage. »
 
 Thorgils, qui était chrétien, ne fit pas grand cas de cet avertissement. Le vaisseau poursuivit sa route sans connaître d’intempérie. Dans le nord du Groenland, on trouva une baie dont les plages de roche étaient couvertes du troupeau de morse le plus abondant vu en ces parages, de mémoire d’homme. La chasse fut excellente. Or sur le chemin du retour des vents d’est se mirent à souffler très fort, et la neige fit disparaître l’horizon. Certains des chasseurs les plus superstitieux se souvinrent des imprécations de la prophétesse et crurent que leur avidité avait attiré sur eux une épreuve pour les punir. Mais Thorgils, qui excellait dans de telles circonstances, leur fit traverser la tempête. Lorsque les vents et la neige se calmèrent, il fut constaté que les côtes du Groenland n’étaient plus visibles. Croyant aller vers l’est, Thorgils mena le vaisseau jusqu’à l’apparition d’une terre. Celle-ci était semblable en tous points à celle du Groenland; mais il fut établi lorsque les cieux se découvrirent que le soleil se couchait au-delà d’elle, d’où l’on pouvait déduire qu’elle faisait face à l’est et à la côte réelle du Groenland. N’apercevant ni pierres plates, ni forêts, ni vignes, Thorgils sut qu’il avait atteint un pays nouveau, jamais exploré par son père.
