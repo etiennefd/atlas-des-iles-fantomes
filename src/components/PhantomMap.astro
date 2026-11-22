@@ -49,6 +49,7 @@ const meta = resolved.map((r) => ({
       landUrl: "/data/land-50m.json",
       islandsUrl: "/data/islands.geojson",
       misdrawnUrl: "/data/misdrawn.geojson",
+      lakesUrl: "/data/lakes.geojson",
     }).catch((err) => {
       console.error("map failed to mount", err);
       root.classList.add("is-failed");

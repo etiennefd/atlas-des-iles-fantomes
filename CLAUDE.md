@@ -1270,9 +1270,21 @@ Two things went wrong during the move, both worth not repeating:
    measurement because `scripts/charts/canepa.json` has no landmarks yet.
    Outstanding on `frisland`: longitude is chosen, not derived — the Zeno map
    fits at RMS 231 km and cannot support one.
-3. Verify the conjectural coordinates against Étienne's own research.
-4. Story-page inset map (same component, zoomed to one island).
-5. ~~A real domain~~ **Done**, as two subdomains of etiennefd.com (see
+3. **Add the islands that have no story yet** — gradually, and never as a
+   blob: each arrives traced or built from its report. Étienne's list,
+   November 2026 (from his Obsidian note, revised): **yes** — Satanazes,
+   Royllo, Îles de la Compagnie Royale, Île de Sable (Sandy Island, New
+   Caledonia), Phélipeaux et Pontchartrain (needs the Great Lakes cut out of
+   the land: `scripts/build_lakes.py`), Rupes Nigra, Saxemberg, Pepys,
+   Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
+   Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
+   **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite
+   Rock, Petermannland, Victoria (Pacific). **No** to Gillis Land, almost
+   certainly Kvitøya. Wikipedia's list has grown since his note; the
+   entries not on it were compared in November 2026.
+4. Verify the conjectural coordinates against Étienne's own research.
+5. Story-page inset map (same component, zoomed to one island).
+6. ~~A real domain~~ **Done**, as two subdomains of etiennefd.com (see
    *Hosting and URLs*).
 
 ## Open questions

@@ -29,6 +29,8 @@ type Cfg = {
   islandsUrl: string;
   /** Regions where a `misdrawn` island's chart overrides the real coastline. */
   misdrawnUrl?: string;
+  /** Lakes land-50m fills in, cut out through the same mask. */
+  lakesUrl?: string;
 };
 
 // Screen-space radius below which an island gets a halo ring.
@@ -82,12 +84,15 @@ export async function mount(cfg: Cfg) {
   const { root, meta } = cfg;
   const byId = new Map(meta.map((m) => [m.id, m]));
 
-  const [landTopo, islands, misdrawn] = await Promise.all([
+  const optional = (url?: string) =>
+    url
+      ? fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      : Promise.resolve(null);
+  const [landTopo, islands, misdrawn, lakes] = await Promise.all([
     fetch(cfg.landUrl).then((r) => r.json()),
     fetch(cfg.islandsUrl).then((r) => r.json()),
-    cfg.misdrawnUrl
-      ? fetch(cfg.misdrawnUrl).then((r) => (r.ok ? r.json() : null)).catch(() => null)
-      : Promise.resolve(null),
+    optional(cfg.misdrawnUrl),
+    optional(cfg.lakesUrl),
   ]);
   const land = feature(landTopo, landTopo.objects.land);
 
@@ -101,7 +106,9 @@ export async function mount(cfg: Cfg) {
   // real California ever. This is fine, we don't really care about the real
   // land on this map." That holds only while no two misdrawn regions overlap
   // and nothing else of interest sits inside one — true today.
-  const eraseFeats = misdrawn?.features ?? [];
+  // land-50m has no lakes either, so the Great Lakes — where Bellin put Isle
+  // Phelipeaux — are cut out the same way, their own islands kept as holes.
+  const eraseFeats = [...(misdrawn?.features ?? []), ...(lakes?.features ?? [])];
   const eraseAll = eraseFeats.length
     ? {
         type: "Feature",
