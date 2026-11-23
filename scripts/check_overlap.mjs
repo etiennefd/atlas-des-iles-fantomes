@@ -23,6 +23,11 @@ import * as topojson from 'topojson-client';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const topo = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/land-50m.json'), 'utf8'));
 const land = topojson.feature(topo, topo.objects.land);
+// land-50m fills the Great Lakes in; the map cuts them out (lakes.geojson,
+// their own islands kept as holes), so a point in a lake is water here too.
+const lakesPath = path.join(ROOT, 'public/data/lakes.geojson');
+const lakes = fs.existsSync(lakesPath) ? JSON.parse(fs.readFileSync(lakesPath, 'utf8')) : null;
+const onLand = p => d3.geoContains(land, p) && !(lakes && lakes.features.some(l => d3.geoContains(l, p)));
 const fc = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/islands.geojson'), 'utf8'));
 
 const want = process.argv.slice(2);
@@ -54,7 +59,7 @@ for (const f of targets) {
   for (let x = bb[0][0]; x <= bb[1][0]; x += stepX)
     for (let y = bb[0][1]; y <= bb[1][1]; y += stepY)
       if (d3.geoContains(f, [x, y])) pts.push([x, y]);
-  const bad = pts.filter(p => d3.geoContains(land, p));
+  const bad = pts.filter(onLand);
   const pct = (100 * bad.length / pts.length).toFixed(1);
   if (bad.length) anyHit = true;
   const flag = bad.length ? 'ON LAND' : 'clear  ';

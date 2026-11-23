@@ -331,12 +331,13 @@ earth.
 
 ## Adding an island
 
-Done twenty-six times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-seven times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
-`ile-aux-vaches`, `maria-de-lajara`, and `terre-de-davis`, `crocker-land` and `bradley-land` as
-open coasts. `bacalao`, `los-jardines` and `zanara` were done
+`ile-aux-vaches`, `maria-de-lajara`, `phelipeaux-et-pontchartrain` (the
+first island with no story, four islands in one entry), and `terre-de-davis`,
+`crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
 Read this before the next — it is written so Étienne does not have to explain the
@@ -631,6 +632,23 @@ python3 scripts/trace_outline.py maria-de-lajara --chart anson-1748 \
     --image ~/scratch/charts/lajara-anson-1748-rmg.png \
     --mode dark --threshold 145 --strip 3 --closing 2 --tolerance 0.75 \
     --bbox 4750,775,4825,835 --height-km 52.2 --centre=-140.0,27.0
+
+# Phélipeaux et Pontchartrain — four islands on one sheet, each traced on
+# its own (--mode band, seeded inside, walled by the lake's hatching), then
+# merged into one MultiPolygon; nine landmarks round Lake Superior fit at
+# RMS 41 km. Phélipeaux's lettering is painted out in seven boxes cut to the
+# shore, from a 5 px grid zoom: one box across the text cut the island in
+# two, a larger one let the flood out through the coast
+python3 scripts/trace_outline.py phel-phel --chart bellin-1744 \
+    --image ~/scratch/charts/bellin1744-thumb.jpg \
+    --mode band --threshold 0.25 --window 8 --closing 3 --grow 2 \
+    --seed "700,726;855,676" --islet 627,718 --tolerance 1 \
+    --blank-box "699,709,712,730;704,706,745,742;747,692,767,723;768,690,790,715;790,672,814,710;814,662,840,701;840,668,850,696" \
+    --bbox 590,615,900,780
+# likewise phel-pont (--seed 1120,525 --bbox 1040,470,1215,585), phel-maur
+# (--seed 1235,370 --bbox 1140,290,1325,455), phel-anne (--seed 1205,720
+# --bbox 1160,675,1260,780); then the four merged by hand, the temporary
+# outlines deleted, and two islands moved off land (see the trap below)
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -989,6 +1007,21 @@ range where the extent stops changing.
 **Look at the mask, not the numbers.** Every real fault here was invisible in
 the summary statistics and obvious the moment the mask was rendered.
 
+**An island the fit sets on land goes into open water, not just off the
+land.** Bellin's lake is not the real one's shape, so the landmark fit put
+Maurepas half on the north-east shore and Phélipeaux's end on the Keweenaw.
+The first fix searched for the smallest move that cleared land by 3 km, and
+Étienne called the result plainly wrong: 3 km is under a pixel even at 8x,
+so the islands still read as touching the coast. He asked for each island to
+be placed on its own, its arrangement with the others mattering less. The
+placement that stuck is the centre of the open water in the island's own
+part of the lake, found by maximising its least distance to any shore within
+that part: Phélipeaux at the midpoint of the Isle Royale–Keweenaw channel
+where Bellin draws it (17 km from both), Maurepas in the north-east quarter
+(36 km). Within the part, not the whole lake: unconstrained, the search
+carries an island to the widest water, far from where its chart put it.
+`check_overlap.mjs` counts a point in a Great Lake as water.
+
 **The map cannot show you an overlap with real land**, so run
 `node scripts/check_overlap.mjs <id>`. An island is a thin outline and the
 basemap a dark fill, so where the outline crosses a coast it disappears into
@@ -1132,13 +1165,13 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 34 islands with coordinates; 11 attested, 17 approximate, 6 conjectural
-- 26 traced outlines (three of them open coasts), 4 shapes built from
+- 35 islands with coordinates; 11 attested, 18 approximate, 6 conjectural
+- 27 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
   nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
-  blobs at attested positions; 25 chart records in `scripts/charts/`
+  blobs at attested positions; 26 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
-- **31 of 34 written in French** — all 28 blog posts imported verbatim,
+- **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
 - **8 written in English** (`aurora`, `bermeja`, `groclant`, `hy-brasil`,
   `ile-des-demons`, `kianida`, `los-jardines`, `tuanaki`), so 23 islands sit
@@ -1185,7 +1218,10 @@ Two things went wrong during the move, both worth not repeating:
   and `crocker-land` (Peary's own 1907 map, its dashed shore) and
   `bradley-land` (Balch 1912, the story's plate, in two stretches), and
   `maria-de-lajara` (Seale's engraving of the Covadonga's galleon chart,
-  Anson 1748, 52 x 68 km at the sheet's scale, position unchanged)
+  Anson 1748, 52 x 68 km at the sheet's scale, position unchanged), and
+  `phelipeaux-et-pontchartrain` (Bellin 1744, the four islands Charlevoix
+  named in Lake Superior, as one entry; two moved off real land into open
+  water, the first island added with no story)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1234,13 +1270,13 @@ Two things went wrong during the move, both worth not repeating:
    checked November 2026 on six posts), so a one-off re-import would need
    only a new fetch that takes the post body out of
    `/archive/cartographier/{slug}/` — title and date come from the page too.
-2. **Trace real outlines** — see *Adding an island*. Twenty-six done:
+2. **Trace real outlines** — see *Adding an island*. Twenty-seven done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
-   `maria-de-lajara`. The rest are built from their reports or drawn as
+   `maria-de-lajara`, `phelipeaux-et-pontchartrain`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1274,13 +1310,17 @@ Two things went wrong during the move, both worth not repeating:
    blob: each arrives traced or built from its report. Étienne's list,
    November 2026 (from his Obsidian note, revised): **yes** — Satanazes,
    Royllo, Îles de la Compagnie Royale, Île de Sable (Sandy Island, New
-   Caledonia), Phélipeaux et Pontchartrain (needs the Great Lakes cut out of
-   the land: `scripts/build_lakes.py`), Rupes Nigra, Saxemberg, Pepys,
+   Caledonia), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
+   Bellin 1744, on the Great Lakes `scripts/build_lakes.py` cuts out of the
+   land), Rupes Nigra, Saxemberg, Pepys,
    Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite
-   Rock, Petermannland, Victoria (Pacific). **No** to Gillis Land, almost
-   certainly Kvitøya. Wikipedia's list has grown since his note; the
+   Rock, Petermannland, Victoria (Pacific); **maybe**, for the story they
+   would carry — Wak-Wak (from the *Thousand and One Nights*) and Taprobane.
+   He gives a premium to an island with a legend or an inventor behind it
+   over the 19th-century captain's speck. **No** to Gillis Land, almost
+   certainly Kvitøya, and to Jave la Grande. Wikipedia's list has grown since his note; the
    entries not on it were compared in November 2026.
 4. Verify the conjectural coordinates against Étienne's own research.
 5. Story-page inset map (same component, zoomed to one island).

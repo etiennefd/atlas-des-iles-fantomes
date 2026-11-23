@@ -1,0 +1,74 @@
+{
+  "name": "Carte des lacs du Canada, by Jacques-Nicolas Bellin, engineer-hydrographer of the Marine, 1744, for Charlevoix's Histoire et description generale de la Nouvelle France",
+  "holding": "Bibliotheque nationale de France, GE DD-2987 (btv1b8595972x), via Wikimedia Commons",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Carte_des_lacs_du_Canada_-_dress%C3%A9e_sur_les_manuscrits_du_Depost_des_cartes_plans_et_journaux_de_la_marine_et_sur_le_journal_du_RP._de_Charlevoix_par_N._Bellin_-_btv1b8595972x.jpg",
+  "licence": "public domain (1744); BnF scan, public domain on Commons",
+  "note": "The first printed map of the four islands Charlevoix named in Lake Superior after his patron Louis Phelypeaux — Isle Phelipeaux (lettered 'I. Philippeaux aut. I. Minong'), Pontchartrain, Maurepas and Ste Anne; a 1742 proof is earlier. Chosen over Mitchell's map of 1755, which copies these shapes and is why the islands mattered (the 1783 treaty ran the border north of 'Isles Royal and Phelipeaux'), and over Bellin's own reduced redrawing in the Petit atlas maritime (1764). The inventor's drawing, at its largest and cleanest, by the Nakanotorishima rule. Etienne picked it, November 2026.",
+  "raster_note": "Traced on Commons' 3840 x 2614 rendition, about half the 7366 x 5015 original: Commons throttled the original and Gallica's and the Library of Congress' image servers refuse automated requests. Phelipeaux is ~230 px across at this size. Every pixel coordinate here is in that rendition. Not committed.",
+  "extraction_note": "Each island is an engraved coast round bare paper, with the lake hatched in a band outside it: --mode band floods from inside, walled by the hatching, as on Gastaldi's Demoni. Phelipeaux's own name is lettered across its interior and painted out.",
+  "landmarks": [
+    {
+      "name": "Fond du Lac (St. Louis River mouth)",
+      "x": 118,
+      "y": 925,
+      "lon": -92.1,
+      "lat": 46.74
+    },
+    {
+      "name": "Baye du Tonnerre (Thunder Bay)",
+      "x": 665,
+      "y": 335,
+      "lon": -89.25,
+      "lat": 48.4
+    },
+    {
+      "name": "Isle Royale, centre",
+      "x": 580,
+      "y": 595,
+      "lon": -88.91,
+      "lat": 48.0
+    },
+    {
+      "name": "Isles des 12 Apotres (Apostle Islands), centre",
+      "x": 480,
+      "y": 840,
+      "lon": -90.7,
+      "lat": 46.95
+    },
+    {
+      "name": "Pte de Kioueounan (Keweenaw Point)",
+      "x": 910,
+      "y": 798,
+      "lon": -87.7,
+      "lat": 47.43
+    },
+    {
+      "name": "la Grande Isle (Grand Island)",
+      "x": 1210,
+      "y": 918,
+      "lon": -86.66,
+      "lat": 46.51
+    },
+    {
+      "name": "Gros Cap, the lake's outlet",
+      "x": 1472,
+      "y": 988,
+      "lon": -84.6,
+      "lat": 46.52
+    },
+    {
+      "name": "Baye de Michipicoton (Michipicoten Bay)",
+      "x": 1490,
+      "y": 320,
+      "lon": -84.9,
+      "lat": 47.95
+    },
+    {
+      "name": "Isles S. Ignace (St. Ignace Island)",
+      "x": 910,
+      "y": 298,
+      "lon": -87.92,
+      "lat": 48.8
+    }
+  ]
+}

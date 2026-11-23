@@ -11,6 +11,7 @@ const OCEANS = [
   "antarctique",
   "mer-noire",
   "mediterranee",
+  "grands-lacs",
 ] as const;
 
 /**

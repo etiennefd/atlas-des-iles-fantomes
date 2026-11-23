@@ -1,0 +1,49 @@
+name_fr: "Les îles Phélipeaux et Pontchartrain"
+name_en: "Isles Phelipeaux and Pontchartrain"
+kind: island
+ocean: grands-lacs
+coords: [-87.956, 47.773]
+coords_confidence: approximate
+coords_note: >-
+  Where Bellin's Carte des lacs du Canada (1744) puts them, fitted to the
+  real lake: a similarity transform on nine landmarks round Lake Superior
+  (Fond du Lac, Thunder Bay, Isle Royale, the Apostle Islands, Keweenaw
+  Point, Grand Island, Gros Cap, Michipicoten Bay, St. Ignace Island), RMS
+  41 km, the chart turned 4 degrees. The islands lie inside the ring those
+  landmarks enclose, as Kianida does on its sheet. Pontchartrain and
+  Sainte-Anne stand where that fit puts them. Two do not, because Bellin's
+  lake is not the real one's shape and the fit set them on real ground:
+  Phélipeaux's east end lay on the tip of the Keweenaw Peninsula, and half
+  of Maurepas on the north-east shore near Pukaskwa. A first fix moved each
+  only until it was clear, which left both within 4 km of the shore, under
+  a pixel at full zoom; Étienne asked for each to be placed on its own, the
+  four's arrangement mattering less than their sitting in open water. So
+  Phélipeaux and its islet moved 24 km north-west, from 88.62 W 47.41 N to
+  88.75 W 47.61 N, the midpoint of the channel between Isle Royale and the
+  Keweenaw where Bellin draws it, 17 km from both; and Maurepas 62 km
+  west-south-west, from 86.17 W 48.39 N to 87.00 W 48.30 N, in open water in
+  the north-east quarter, 36 km from any shore. Both are liberties, hence
+  `approximate`. `coords` is the group's centre. Charlevoix named all four after his patron Louis Phélypeaux,
+  comte de Pontchartrain and de Maurepas, whose patron saint was Anne; the
+  1783 Treaty of Paris ran the border "northward of the Isles Royal and
+  Phelipeaux". The English Wikipedia article suggests, hedged, that
+  Phélipeaux duplicates Isle Royale (Bellin also calls it "I. Minong", an
+  older name for Isle Royale), that Pontchartrain or Maurepas may be
+  Michipicoten Island, which Bellin does not otherwise draw, and that
+  Sainte-Anne resembles Caribou Island.
+outline_note: >-
+  Traced from Bellin's Carte des lacs du Canada, 1744 (BnF GE DD-2987), the
+  first printed map of the four islands: Phélipeaux with its western islet,
+  Pontchartrain, Maurepas and Sainte-Anne, one entry because they are one
+  invention under one man's names (Étienne, November 2026). Chosen over
+  Mitchell 1755, which copies these shapes and is the map behind the treaty,
+  and Bellin's own Petit atlas maritime of 1764. Traced on Commons' 3840 px
+  rendition, half the original's size, which Commons throttled and the BnF
+  and Library of Congress image servers refuse to automated requests.
+  --mode band, flooding from inside each island and walled by the hatching
+  Bellin cuts against every coast. Phélipeaux's own name, "I. Philippeaux
+  aut. I. Minong", is lettered across it close to the south shore and was
+  painted out in seven boxes kept off the coast; the notch on its north-west
+  shore beside the capital I is Bellin's. Sizes at the fit's scale: 74 x 41,
+  43 x 17, 43 x 34 and 14 x 17 km. No island is turned or rescaled; the two
+  moved in coords_note keep their traced shapes.
