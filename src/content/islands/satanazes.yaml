@@ -1,0 +1,35 @@
+name_fr: "Satanazes"
+name_en: "Satanazes"
+kind: island
+ocean: atlantique-nord
+coords: [-34.43, 42.94]
+coords_confidence: approximate
+coords_note: >-
+  Placed where Pizzigano 1424 draws it relative to Antillia, not where his chart
+  puts it in absolute terms. On the chart's own landmark fit (Madeira, Lanzarote,
+  Fuerteventura, Lisbon, Sanlúcar, Málaga; 1.549 km/px, turned -4.9 degrees, RMS
+  47 km) Satanazes' centre lies 826 km north and 66 km east of Antillia's, and
+  that offset is laid off from Antillia's chosen position (-35.2, 35.5). The fit
+  read raw puts it at -22.13, 45.58, but out here it is an extrapolation far
+  past the surveyed coasts, the trap that once landed Antillia east of the
+  Azores. Antillia is the nearest thing Pizzigano drew, so it is the anchor, and
+  the pair keeps the relation he gave them. Antillia's latitude was itself a
+  judgement, so this one inherits it. Open sea, its centre about 450 km
+  north-west of Corvo.
+outline_note: >-
+  Traced from Zuane Pizzigano's chart of 1424 (James Ford Bell Library), the
+  first chart to draw the island and the one that names it "Satanazes"; later
+  charts call it Salvaga or Saluaga. Chosen by Étienne over Canepa 1489's
+  "Salvaga", a notched coast band by the same hand as our Antillia's shape,
+  and over Benincasa 1463, which survives here only as an 1879 redrawing.
+  Pizzigano paints it as a flat blue wash with white name cartouches across
+  it, and several of them run so close to the shore that the wash between
+  cartouche and sea is a pixel or two wide: at any plain threshold the island
+  breaks along them and the largest piece loses its south-west lobe and its
+  north-east corner. A light smoothing (sigma 2) at a low blue threshold (10)
+  keeps those rims, and the cartouches are filled as land: they are lettering
+  on the island, not lakes. Stable from threshold 0 to 10. The red half-moon
+  above it is Saya, a separate island, left out. Size at the chart's scale:
+  321 km north-south, its long axis running north-east. Laying the shape
+  down 2.6 degrees south of where the fit drew it, a shift in degrees, widens
+  it about 4% east-west; left as is.

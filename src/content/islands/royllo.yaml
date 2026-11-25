@@ -1,0 +1,28 @@
+name_fr: "Royllo"
+name_en: "Royllo"
+kind: island
+ocean: atlantique-nord
+coords: [-37.604, 35.26]
+coords_confidence: approximate
+coords_note: >-
+  Placed where Canepa 1489 draws it relative to Antillia, at the scale our
+  Antillia already uses. That Antillia is Canepa's shape stood 593 km tall
+  (1022 px on the sheet, so 0.580 km/px), and on the same sheet Roillo's centre
+  lies 376 px west and 46 px south of Antillia's: 218 km west and 27 km south
+  of Antillia's position (-35.2, 35.5). No rotation, since Canepa's Antillia
+  is laid down unrotated. Canepa has no landmark fit yet, so both the scale
+  and the offset are only as good as Antillia's provisional height; if that
+  chart is ever georeferenced, Royllo should be re-placed with it. Pizzigano
+  1424 draws a small island in the same place west of Antillia and labels it
+  Ymana; it is much farther out there (about 580 km) because Pizzigano draws
+  Antillia far smaller against the gap.
+outline_note: >-
+  Traced from Albino de Canepa's portolan of 1489, where it is lettered
+  "Roillo": a grey wash, a pentagon with its point to the west, 138 x 184 px.
+  Chosen by Étienne over Pizzigano 1424's "Ymana" (same spot, different name,
+  36 x 52 px) and Benincasa 1463's "Rosellia", which the 1879 redrawing cuts
+  with its frame. Extracted by darkness (threshold 110, sigma 1.5) with a
+  2 px opening to drop the rhumb line touching its south-east corner; the
+  mask holds within 3% from threshold 105 to 115. The wash has faded at its
+  edges, so the coast is where the paint now stops. Size at Antillia's
+  inherited scale: 79 x 106 km.

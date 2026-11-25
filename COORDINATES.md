@@ -27,7 +27,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 29 May 1841 (*Nautical Magazine* 1841, p. 783). Keates (September 1859, not 1860) and Stannard 1886 gave slightly different fixes. |
 | `emerald` | 163.0, −57.25 | Capt. C. J. Nockells of the *Emerald*, 13 December 1821, in his own letter quoted by Findlay (1851, p. 678); not "Elliot". The island at 57°15′S 163°E, seen E by N 25 miles from the ship at 57°30′S 162°12′E. **Moved Nov 2026** from the ship's position, ~55 km. |
 
-## Approximate (13)
+## Approximate (15)
 
 | id | position | basis |
 |---|---|---|
@@ -38,6 +38,8 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `antillia` | −45.0, 32.0 | Pizzigano chart, 1424: far west of Portugal, with Satanazes just north. |
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
 | `phelipeaux-et-pontchartrain` | −87.956, 47.773 | The group's centre. Bellin's *Carte des lacs du Canada* (1744), fitted to Lake Superior on nine landmarks (RMS 41 km). Pontchartrain (−86.75, 47.86) and Sainte-Anne (−86.39, 47.19) stand where the fit puts them; the fit set the other two on real ground, so **Phélipeaux** moved 24 km NW to −88.75, 47.61 (mid-channel between Isle Royale and the Keweenaw, as Bellin draws it) and **Maurepas** 62 km WSW to −87.00, 48.30 (open water in the north-east quarter). Liberties, Nov 2026. |
+| `satanazes` | −34.43, 42.94 | Pizzigano 1424, by its offset from Antillia on that chart's landmark fit (826 km N, 66 km E), laid off from Antillia's chosen position. The fit read raw gives −22.13, 45.58, an extrapolation past the surveyed coasts. Nov 2026. |
+| `royllo` | −37.604, 35.26 | Canepa 1489 ("Roillo"), by its offset from Antillia on that sheet at Antillia's inherited scale (218 km W, 27 km S). Provisional with Antillia's own scale on Canepa. Nov 2026. |
 | `californie` | −116.65, 32.8 | Derived, not chosen: the island is real land, so its own headlands have modern positions and Vinckeboons names them. Eight landmarks fit to RMS 127 km. Traced from Vinckeboons c. 1650, 16 parts. Was −114.0, 28.0, a point for a placeholder blob. |
 | `coree` | 127.52, 37.64 | Derived, not chosen, as for Californie: six landmarks round Korea (Tsushima, Hirado, Gotō, Kagoshima Bay, Cape Sata, the Ningbo coast) fit Hondius' copy of Teixeira 1595 to RMS 35 km. The island lands at 33.1–42.4 N, about a degree south of the real peninsula. 4 parts. Was 127.5, 37.0, a point for a placeholder blob. |
 | `tuanaki` | −160.417, −26.5 | The charted position: Hamond, *Nautical Magazine* 1847, still in Richards 1920. Also printed: 25°15′S 160°35′W and ~25°50′S 160°55′W. The accounts put it nearer, "not more than 200 miles" from Rarotonga (Gill 1856). **Moved Nov 2026** from −158.0, −23.5, a point picked from the accounts, ~400 km NE. |

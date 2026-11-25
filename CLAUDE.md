@@ -331,12 +331,14 @@ earth.
 
 ## Adding an island
 
-Done twenty-seven times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done twenty-nine times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
 `ile-aux-vaches`, `maria-de-lajara`, `phelipeaux-et-pontchartrain` (the
-first island with no story, four islands in one entry), and `terre-de-davis`,
+first island with no story, four islands in one entry), `satanazes` and
+`royllo` (Antillia's neighbours, each placed by its offset from Antillia on
+its own chart), and `terre-de-davis`,
 `crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -649,6 +651,24 @@ python3 scripts/trace_outline.py phel-phel --chart bellin-1744 \
 # (--seed 1235,370 --bbox 1140,290,1325,455), phel-anne (--seed 1205,720
 # --bbox 1160,675,1260,780); then the four merged by hand, the temporary
 # outlines deleted, and two islands moved off land (see the trap below)
+
+# Satanazes — Pizzigano's blue wash, crossed by name cartouches that run to
+# within a pixel of the shore: at a plain threshold the island breaks along
+# them and loses its south-west lobe. A light smoothing at a low threshold
+# keeps the rims. Placed by its offset from Antillia on the same fit, laid
+# off from Antillia's chosen position — the fit read raw is an extrapolation
+python3 scripts/trace_outline.py satanazes --chart pizzigano \
+    --image ~/scratch/charts/antil/Pizzigano.jpg \
+    --mode blue --threshold 10 --smooth 2 --closing 6 --tolerance 1.5 \
+    --bbox 1080,1000,1380,1340 --centre=-34.43,42.94
+
+# Royllo — Canepa's faded grey "Roillo", at the scale Antillia inherits on
+# that sheet (593 km over 1022 px) and at its offset from Antillia there
+python3 scripts/trace_outline.py royllo --chart canepa \
+    --image ~/scratch/charts/antil/Portolan_chart_by_Albino_de_Canepa_1489.jpg \
+    --mode dark --threshold 110 --smooth 1.5 --open 2 --closing 3 \
+    --tolerance 1.5 --bbox 800,6600,1080,6880 \
+    --height-km 105.6 --centre=-37.604,35.26
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -1165,8 +1185,8 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 35 islands with coordinates; 11 attested, 18 approximate, 6 conjectural
-- 27 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
+- 37 islands with coordinates; 11 attested, 20 approximate, 6 conjectural
+- 29 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
   nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
   blobs at attested positions; 26 chart records in `scripts/charts/`
@@ -1221,7 +1241,10 @@ Two things went wrong during the move, both worth not repeating:
   Anson 1748, 52 x 68 km at the sheet's scale, position unchanged), and
   `phelipeaux-et-pontchartrain` (Bellin 1744, the four islands Charlevoix
   named in Lake Superior, as one entry; two moved off real land into open
-  water, the first island added with no story)
+  water, the first island added with no story), and Antillia's neighbours
+  `satanazes` (Pizzigano 1424, its name cartouches filled as land) and
+  `royllo` (Canepa 1489's "Roillo"), each placed by its offset from
+  Antillia on its own chart, no story yet
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1270,13 +1293,13 @@ Two things went wrong during the move, both worth not repeating:
    checked November 2026 on six posts), so a one-off re-import would need
    only a new fetch that takes the post body out of
    `/archive/cartographier/{slug}/` — title and date come from the page too.
-2. **Trace real outlines** — see *Adding an island*. Twenty-seven done:
+2. **Trace real outlines** — see *Adding an island*. Twenty-nine done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
-   `maria-de-lajara`, `phelipeaux-et-pontchartrain`. The rest are built from their reports or drawn as
+   `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1308,8 +1331,9 @@ Two things went wrong during the move, both worth not repeating:
    fits at RMS 231 km and cannot support one.
 3. **Add the islands that have no story yet** — gradually, and never as a
    blob: each arrives traced or built from its report. Étienne's list,
-   November 2026 (from his Obsidian note, revised): **yes** — Satanazes,
-   Royllo, Îles de la Compagnie Royale, Île de Sable (Sandy Island, New
+   November 2026 (from his Obsidian note, revised): **yes** — ~~Satanazes~~ and
+   ~~Royllo~~ (done November 2026, from Pizzigano 1424 and Canepa 1489),
+   Îles de la Compagnie Royale, Île de Sable (Sandy Island, New
    Caledonia), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
    Bellin 1744, on the Great Lakes `scripts/build_lakes.py` cuts out of the
    land), Rupes Nigra, Saxemberg, Pepys,
