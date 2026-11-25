@@ -222,6 +222,84 @@ a:hover {
 .prose > .prose__title[data-face="uncial"] {
   font-family: "Uncial Antiqua", var(--display);
 }
+/* A title page set in the story itself, as a 17th-century book would print
+   it (Terre de Davis): every line centred, sizes alternating line by line,
+   the key words in red as in red-and-black printing, rules between the
+   parts. It opens the text, so the story starts without a scene break. */
+.prose > .title-page {
+  margin: calc(var(--step) * 1.8) auto calc(var(--step) * 1.4);
+  max-width: 30rem;
+  text-align: center;
+  text-wrap: balance;
+  line-height: 1.25;
+}
+.title-page p {
+  margin: 0 0 0.45rem;
+}
+.title-page .tp-xxl {
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  margin-bottom: 0.3rem;
+}
+.title-page .tp-xl {
+  font-size: clamp(1.45rem, 4.8vw, 1.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+}
+.title-page .tp-l {
+  font-size: 1.2rem;
+}
+/* The isthmus in italic and "du" in roman, as in "Isthmus of America"
+   on Knapton's 1699 title page. */
+.title-page .tp-m {
+  font-size: clamp(1.2rem, 4vw, 1.4rem);
+}
+.title-page .tp-s {
+  font-size: 0.95rem;
+}
+/* The small connecting words between the display lines. */
+.title-page .tp-link {
+  font-size: 0.92rem;
+  font-style: italic;
+}
+.title-page .tp-red {
+  color: var(--phantom);
+}
+.title-page .tp-name {
+  letter-spacing: 0.08em;
+}
+.title-page .tp-caps {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.05em;
+}
+.title-page .tp-blurb {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  max-width: 24rem;
+  margin: 0.5rem auto 0;
+}
+.title-page .tp-date {
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  margin: 0;
+}
+.prose .title-page hr.tp-rule {
+  width: 5rem;
+  margin: 1rem auto;
+  border: 0;
+  border-top: 1px solid var(--ink);
+}
+.prose .title-page hr.tp-rule::after {
+  content: none;
+}
+.prose .title-page hr.tp-rule--double {
+  width: 100%;
+  height: 3px;
+  border-bottom: 1px solid var(--ink);
+}
 /* A heading inside a story ("Note historique"): small, well under the title. */
 .prose > h2 {
   font-family: var(--display);

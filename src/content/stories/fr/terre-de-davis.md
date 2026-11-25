@@ -28,27 +28,25 @@ notice:
       Antarctique.
 ---
 
-***
-
-Un Voyage nouveau, où l’on trouve la Description de l’Isthme du Continent américain
-
-Une traduction revue & très enjolivée de
-
-*A New Voyage and Description of the Iſthmus of America*,
-
-récit paru à Londres en 1699
-
-par LIONEL WAFER, du Pays de Galles,
-
-pirate, boucanier & chirurgien à bord du *Batchelor’s Delight*
-
-dont nous présentons ici
-
-*UN EXTRAIT*
-
-n’ayant rien à voir avec l’isthme du continent américain, mais plutôt avec la découverte de la Terre dite de Davis, dont il est présumé par M. Wafer s’agir d’un promontoire de la TERRA AUSTRALIS INCOGNITA
-
-M M X I X
+<div class="title-page">
+<p class="tp-xl">Un Voyage nouveau,</p>
+<p class="tp-link">où l’on trouve la</p>
+<p class="tp-xxl tp-red">Description</p>
+<p class="tp-m"><em>de l’Isthme</em> du <em>Continent américain</em></p>
+<hr class="tp-rule">
+<p class="tp-link">Une traduction revue &amp; très enjolivée de</p>
+<p class="tp-l"><em>A New Voyage and Description of the Iſthmus of America</em>,</p>
+<p class="tp-s">récit paru à Londres en 1699</p>
+<hr class="tp-rule">
+<p class="tp-s">par <span class="tp-name tp-red">LIONEL WAFER</span>, du Pays de Galles,</p>
+<p class="tp-s">pirate, boucanier &amp; chirurgien à bord du <em>Batchelor’s Delight</em></p>
+<hr class="tp-rule">
+<p class="tp-link">dont nous présentons ici</p>
+<p class="tp-xl tp-red"><em>UN EXTRAIT</em></p>
+<p class="tp-blurb">n’ayant rien à voir avec l’isthme du continent américain, mais plutôt avec la découverte de la Terre dite de Davis, dont il est présumé par M. Wafer s’agir d’un promontoire de la <span class="tp-caps">TERRA AUSTRALIS INCOGNITA</span></p>
+<hr class="tp-rule tp-rule--double">
+<p class="tp-date">M M X I X</p>
+</div>
 
 ***
 
