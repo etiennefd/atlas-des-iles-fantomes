@@ -76,7 +76,21 @@ export async function resolveIslands(lang: Lang): Promise<Resolved[]> {
       }
       return { island, name, state: "planned" };
     })
-    .sort((a, b) => a.name.localeCompare(b.name, lang));
+    .sort((a, b) => sortKey(a.name, lang).localeCompare(sortKey(b.name, lang), lang));
+}
+
+/**
+ * The leading article and generic word an island's name opens with, which
+ * the list skips when sorting: "L’île des Démons" files under D, "The Island
+ * of California" under C. The name is displayed whole.
+ */
+const LEADING: Record<Lang, RegExp> = {
+  fr: /^(?:(?:l[’']île|les\s+îles)\s+(?:de\s+la\s+|des\s+|de\s+|du\s+|aux\s+|au\s+)?|la\s+|le\s+|les\s+|l[’'])/i,
+  en: /^(?:the\s+)?(?:(?:islands?|isles?)\s+of\s+(?:the\s+)?|isles\s+)?/i,
+};
+
+export function sortKey(name: string, lang: Lang): string {
+  return name.replace(LEADING[lang], "");
 }
 
 /**
