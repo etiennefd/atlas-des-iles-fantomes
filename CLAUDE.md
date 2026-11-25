@@ -331,14 +331,15 @@ earth.
 
 ## Adding an island
 
-Done twenty-nine times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done thirty times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
 `ile-aux-vaches`, `maria-de-lajara`, `phelipeaux-et-pontchartrain` (the
 first island with no story, four islands in one entry), `satanazes` and
 `royllo` (Antillia's neighbours, each placed by its offset from Antillia on
-its own chart), and `terre-de-davis`,
+its own chart), `iles-de-la-compagnie-royale` (Arrowsmith 1814, three
+islets placed by the sheet's own Mercator graticule), and `terre-de-davis`,
 `crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -669,6 +670,15 @@ python3 scripts/trace_outline.py royllo --chart canepa \
     --mode dark --threshold 110 --smooth 1.5 --open 2 --closing 3 \
     --tolerance 1.5 --bbox 800,6600,1080,6880 \
     --height-km 105.6 --centre=-37.604,35.26
+
+# Îles de la Compagnie Royale — three engraved islets on a Mercator sheet
+# with no real coast near: centre and km/px read off its own graticule
+# (294.1 px per degree of longitude, 0.2455 km/px at 49.6 S), sheet scale kept
+python3 scripts/trace_outline.py iles-de-la-compagnie-royale \
+    --chart arrowsmith-1814 --image ~/scratch/charts/rci/arr-13258002.jp2 \
+    --mode dark --threshold 110 --closing 2 --satellites 150,3000 \
+    --tolerance 1 --bbox 12645,11600,12775,11750 \
+    --height-km 27.50 --centre=142.911,-49.561
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -1185,11 +1195,11 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 37 islands with coordinates; 11 attested, 20 approximate, 6 conjectural
-- 29 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
+- 38 islands with coordinates; 11 attested, 21 approximate, 6 conjectural
+- 30 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
   nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
-  blobs at attested positions; 26 chart records in `scripts/charts/`
+  blobs at attested positions; 27 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -1244,7 +1254,9 @@ Two things went wrong during the move, both worth not repeating:
   water, the first island added with no story), and Antillia's neighbours
   `satanazes` (Pizzigano 1424, its name cartouches filled as land) and
   `royllo` (Canepa 1489's "Roillo"), each placed by its offset from
-  Antillia on its own chart, no story yet
+  Antillia on its own chart, no story yet, and `iles-de-la-compagnie-royale`
+  (Arrowsmith 1814, the sheet Bellingshausen searched by, three islets at
+  the sheet's scale, 13 x 28 km the largest; no story)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1293,13 +1305,14 @@ Two things went wrong during the move, both worth not repeating:
    checked November 2026 on six posts), so a one-off re-import would need
    only a new fetch that takes the post body out of
    `/archive/cartographier/{slug}/` — title and date come from the page too.
-2. **Trace real outlines** — see *Adding an island*. Twenty-nine done:
+2. **Trace real outlines** — see *Adding an island*. Thirty done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
-   `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`. The rest are built from their reports or drawn as
+   `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`,
+   `iles-de-la-compagnie-royale`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1333,7 +1346,9 @@ Two things went wrong during the move, both worth not repeating:
    blob: each arrives traced or built from its report. Étienne's list,
    November 2026 (from his Obsidian note, revised): **yes** — ~~Satanazes~~ and
    ~~Royllo~~ (done November 2026, from Pizzigano 1424 and Canepa 1489),
-   Îles de la Compagnie Royale, Île de Sable (Sandy Island, New
+   ~~Îles de la Compagnie Royale~~ (done November 2026, from Arrowsmith
+   1814; Espinosa y Tello's 1812 original is in Spain's Biblioteca Virtual
+   de Defensa, unreachable from here, and worth comparing if Étienne gets it), Île de Sable (Sandy Island, New
    Caledonia), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
    Bellin 1744, on the Great Lakes `scripts/build_lakes.py` cuts out of the
    land), Rupes Nigra, Saxemberg, Pepys,

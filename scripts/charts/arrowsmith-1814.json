@@ -1,0 +1,10 @@
+{
+  "name": "Aaron Arrowsmith, Chart of the Pacific Ocean, published 1798, this edition 1814 (sheet with New Holland and Van Diemen's Land)",
+  "holding": "David Rumsey Map Collection, list no. 13258.002",
+  "source_url": "https://archive.org/details/dr_chart-of-the-pacific-ocean--australia-philippines-china-etc-london-13258002",
+  "licence": "public domain (the chart is from 1814)",
+  "note": "20774x16196, from the Internet Archive's mirror of the Rumsey scan (13258002.jp2); Rumsey's own site puts up an access check for scripts. South-west of Van Diemen's Land the sheet draws 'R. Company's Is. Seen by the Spanish Ship Raphael' as three engraved islets, hachured inside: one long north-south (55 x 113 px) and two small to its west. This is the edition Bellingshausen bought in 1819 and searched by in March 1820 (sheet 7 in his account), and it copies the three-island group Espinosa y Tello drew in 1812, the first chart of the islands, which could not be reached from here. Chosen by Etienne in November 2026 over Brue's Carte de l'Oceanie of 1822 (two specks of ~10 px) and Admiralty chart 2683 of 1859 (a cluster of dots marked (D)).",
+  "graticule_note": "A Mercator sheet with a 5-degree graticule. Read near the islands: meridians 140, 145 and 150 E at x 11870, 13342, 14811 (294.1 px per degree of longitude); parallels 45 and 50 S at y 9693 and 11880. Mercator predicts 2179 px between those parallels at that longitude scale; the sheet has 2187, 0.4% off. Position and scale are read from this, not from a landmark fit: there is no real coast within 500 km of the islands on the sheet.",
+  "extraction_note": "--mode dark: the engraved coast and its hachures are filled solid and the holes closed. Three parts, stable from threshold 90 to 130 (main islet 3701 to 3871 px). The lettering to the west and the dashed track to the north-east stay outside the bbox.",
+  "landmarks": []
+}

@@ -1,0 +1,37 @@
+name_fr: "Les îles de la Compagnie Royale"
+name_en: "Royal Company's Islands"
+kind: island
+ocean: antarctique
+coords: [142.911, -49.561]
+span: [1803, 1904]
+coords_confidence: approximate
+coords_note: >-
+  Where Arrowsmith's Chart of the Pacific Ocean (1814 edition) draws them,
+  read off its own Mercator graticule: meridians 140, 145 and 150 E and
+  parallels 45 and 50 S, whose spacing matches Mercator to 0.4%. The main
+  islet's centre is at 142.91 E, 49.56 S. That is the position of the
+  islands' first period on the charts, and it agrees with the others of that
+  period: Espinosa y Tello's 1812 chart, the first to draw them, has
+  49 30 S 143 E (converted from his Cádiz longitudes, per the French
+  Wikipedia article); Bellingshausen searched at 49 39 S 142 47 E on 23 March
+  1820, which he took to be exactly Arrowsmith's; Norie's tables of 1835 give
+  49 40 S 142 10 E. From the 1850s the charts moved them south of 50, after
+  the Admiralty's 1857 chart, and the English Wikipedia gives 50 20 S 140 E
+  or 52 20 S 143 E as later positions; those are not used. Open sea, about
+  720 km south-south-west of Tasmania's South East Cape. `span` runs from the San Rafael's claimed
+  sighting of 18 March 1803 to the Admiralty's removal of the islands from
+  its charts in 1904.
+outline_note: >-
+  Traced from Arrowsmith's 1814 edition (David Rumsey Map Collection,
+  13258.002, via the Internet Archive), the chart Bellingshausen carried and
+  searched by in 1820, which copies the three islets Espinosa y Tello drew in
+  1812: one long north-south and two small to its west, "Seen by the Spanish
+  Ship Raphael". Espinosa's own chart could not be reached from here.
+  Chosen by Étienne over Brué's Carte de l'Océanie of 1822 (two specks) and
+  Admiralty chart 2683 of 1859 (dots marked "(D)"). Extracted by darkness
+  (threshold 110), the engraved coast and its hachures filled solid; stable
+  from 90 to 130. At the sheet's own scale, 0.2455 km/px at 49.6 S from the
+  graticule, the main islet is 13 x 28 km and the two small ones about
+  6 x 10 and 9 x 6 km, the group about 42 x 31 km. That is the size of the
+  engraver's island symbol as much as of any report, since nothing survives
+  of what the San Rafael saw.
