@@ -68,6 +68,13 @@ never corrupt a shape, and the map loads geometry without pulling in prose.
 
   The Van der Grinten implementation is in git history at `170475b` if this
   is ever revisited.
+
+  The map's box is **square**, sized to the screen's height less the header
+  and story count, up to 900 px (`.pmap-wrap`). It used to be the flat map's
+  1200 x 640, which held the globe to 624 px on any screen with the reset
+  button stranded at the box's far corner. Étienne, November 2026, chose the
+  900 px cap over filling the whole height. Phones are unchanged: the box is
+  the screen's width.
 - **One canonical French slug per island**, used in both languages:
   `phantomislands.etiennefd.com/iles/ile-des-demons/`. No slug lookup table.
 - **Stories are many-to-many with islands.** Three existing posts cover more

@@ -442,12 +442,17 @@ sup {
 }
 
 /* --- map -------------------------------------------------------- */
+/* Square, because the globe is a disc fitted to the box's shorter side: any
+   width beyond the height is empty, and the reset button sits at the box's
+   corner. Sized to the screen's height less the header and the story count
+   (150px), up to 900px — the old 1200 x 640 box was the flat map's and held
+   the globe to 624px on any screen. Étienne, November 2026, picked the 900px
+   cap over filling the whole height. */
 .pmap-wrap {
   position: relative;
-  width: 100%;
-  height: min(72vh, 640px);
+  width: min(100%, max(240px, calc(100vh - 150px)), 900px);
+  aspect-ratio: 1;
   margin: 0 auto;
-  max-width: 1200px;
   touch-action: none;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -602,7 +607,6 @@ sup {
 .pmap__noscript { text-align: center; padding: 2rem 0; }
 
 @media (max-width: 640px) {
-  .pmap-wrap { height: min(60vh, 460px); }
   .pmap__name { font-size: 0.9rem; }
 }
 
