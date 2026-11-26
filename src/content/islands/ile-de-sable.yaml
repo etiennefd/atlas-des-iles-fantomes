@@ -1,0 +1,39 @@
+name_fr: "L'île de Sable"
+name_en: "Sandy Island"
+kind: island
+ocean: pacifique-sud
+coords: [159.935, -19.227]
+span: [1876, 2012]
+coords_confidence: attested
+coords_note: >-
+  Where the World Vector Shoreline had it, as GSHHS 2.2.0 (2011) distributes
+  the polygon: the centre of its extent, 159.935 E, 19.227 S, in the Coral
+  Sea about 100 km east of the Chesterfield Islands and 500 km north-west of
+  New Caledonia. Open sea, 1,488 to 2,353 m deep by the Australian
+  Hydrographic Service's soundings. The same place as its first chart, the
+  British Admiralty's of 1908, which draws it beside the 160 E meridian and
+  credits it to the whaler Velocity, 1876; Seton et al. (Eos, 2013) find the
+  shape, size and place of the 1908 island similar to the digital one.
+  `span` runs from the Velocity's report in 1876 to October 2012, when the
+  R/V Southern Surveyor sailed over the spot and found deep water, the dates
+  Seton et al. put on their obituary. The hydrographers had let it go long
+  before: ED (existence doubtful) on later charts, removed by the French
+  Hydrographic Service in 1974 and by the Australian in 1985. Older maps
+  also carry a smaller "Sandy Island" elsewhere, which is not this one.
+outline_note: >-
+  Not traced: the World Vector Shoreline's polygon, lifted unchanged from
+  GSHHS 2.2.0, the full-resolution coastline GMT shipped in 2011 (GSHHS id
+  1203, 216 vertices, 6.3 x 27.6 km, 130.8 km2), from the copy Debian
+  archived. This is the shape that kept the island alive after the
+  hydrographers dropped it: digitised from paper charts around 1990, carried
+  into GEBCO, ETOPO and satellite land masks, and drawn as a black sliver in
+  Google Earth, which is what made its 2012 "undiscovery" news; the releases
+  after that deleted it. Chosen by Étienne over the 1908 Admiralty chart,
+  the island's first depiction, a dotted lens of the same proportions too
+  small on the only available photograph to trace. No liberties: no
+  smoothing, scaling, turn or move. The polygon's fine stair-stepping, about
+  90 m, is the digitiser's, and below a pixel on the globe. The island was on
+  this atlas before it was added: Natural Earth's 50m land, the basemap,
+  still carried it in 2026 as a 71 km2 polygon in the same place, inherited
+  from the same shoreline, and scripts/drop_basemap_phantoms.mjs takes it out
+  so the globe does not draw it as real land.

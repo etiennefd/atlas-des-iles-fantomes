@@ -13,7 +13,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 
 ---
 
-## Attested (9)
+## Attested (10)
 
 | id | position | source |
 |---|---|---|
@@ -25,6 +25,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `maria-theresa` | −136.65, −36.833 | Reported 16 Nov 1843 by Capt. Asaph P. Taber of the *Maria-Theresa*. Note: Verne gives 37°11′S 153°00′W on the Paris meridian. |
 | `aurora` | −47.865, −52.975 | The Spanish *San Miguel* fixed them at 52°37′S, 47°49′W; surveyed by the *Atrevida*, **21–27 January** 1794 (not 20 Feb). **Now three positions, Oct 2026**, from Espinosa y Tello's *Memorias* (1809, p. 31), W of Cádiz + 6°17′15″: 53°15′22″S 47°57′15″W; 53°02′40″S 47°55′15″W (la Rasa); 52°37′24″S 47°43′15″W (Isla Nueva). `coords` is the group's centre. |
 | `dougherty` | −120.333, −59.333 | Capt. Daniel Dougherty of the *James Stewart*, 29 May 1841 (*Nautical Magazine* 1841, p. 783). Keates (September 1859, not 1860) and Stannard 1886 gave slightly different fixes. |
+| `ile-de-sable` | 159.935, −19.227 | The World Vector Shoreline's polygon as GSHHS 2.2.0 (2011) distributes it, centre of its extent; the same place as the 1908 Admiralty chart that first drew it ("Velocity 1876"). Open sea 1,488–2,353 m deep. Nov 2026. |
 | `emerald` | 163.0, −57.25 | Capt. C. J. Nockells of the *Emerald*, 13 December 1821, in his own letter quoted by Findlay (1851, p. 678); not "Elliot". The island at 57°15′S 163°E, seen E by N 25 miles from the ship at 57°30′S 162°12′E. **Moved Nov 2026** from the ship's position, ~55 km. |
 
 ## Approximate (16)

@@ -286,6 +286,18 @@ zero-area polygons that d3-geo reads as the whole sphere, giving 41.3 sr of
 land against a true ~2.9 and rendering the globe as a solid disc. Worth
 knowing before blaming your own code.
 
+**Natural Earth still carries a phantom as land.** `land-50m` has Sandy
+Island (`ile-de-sable`): a 6-point polygon of 71 km2 at 159.93-159.98 E,
+19.12-19.33 S, inherited from the same World Vector Shoreline that kept the
+island alive until 2012. `public/data/land-50m.json` is therefore no longer
+a plain copy of world-atlas's: `node scripts/drop_basemap_phantoms.mjs`
+rewrites it with that polygon taken out, and refuses unless each box drops
+exactly one polygon of the expected area. Dropped from the file rather than
+masked on the globe so that `check_overlap`, `place_island` and
+`lift_country` see the same basemap. Run it again after any world-atlas
+upgrade, and check a new island's spot for a basemap copy of itself:
+`check_overlap` reporting a phantom "on land" in open ocean is the tell.
+
 **The story importer must stay deterministic.** `scripts/import_posts.py`
 converts HTML to markdown with regexes over the small tag subset these posts
 actually use. That is deliberate: routing 47,000 words of literary prose
@@ -331,7 +343,7 @@ earth.
 
 ## Adding an island
 
-Done thirty times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done thirty-one times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
@@ -339,7 +351,9 @@ Done thirty times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 first island with no story, four islands in one entry), `satanazes` and
 `royllo` (Antillia's neighbours, each placed by its offset from Antillia on
 its own chart), `iles-de-la-compagnie-royale` (Arrowsmith 1814, three
-islets placed by the sheet's own Mercator graticule), and `terre-de-davis`,
+islets placed by the sheet's own Mercator graticule), `ile-de-sable` (no
+chart at all: the World Vector Shoreline's polygon, lifted unchanged), and
+`terre-de-davis`,
 `crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -679,6 +693,15 @@ python3 scripts/trace_outline.py iles-de-la-compagnie-royale \
     --mode dark --threshold 110 --closing 2 --satellites 150,3000 \
     --tolerance 1 --bbox 12645,11600,12775,11750 \
     --height-km 27.50 --centre=142.911,-49.561
+
+# Île de Sable — no tracing: the World Vector Shoreline's polygon, the one
+# Google Earth drew until 2012, lifted from GSHHS 2.2.0 (2011) as GMT shipped
+# it. One closed segment, written untouched and wound clockwise (GSHHS winds
+# land counterclockwise, which d3-geo reads as the planet minus the island)
+python3 -I scripts/extract_gshhs.py ile-de-sable \
+    --cdf ~/scratch/gshhs/gmt-gshhs-2.2.0/share/coast/binned_GSHHS_f.cdf \
+    --bbox 159.8,-19.5,160.1,-19.0 --chart gshhs-2.2.0
+node scripts/drop_basemap_phantoms.mjs   # Natural Earth has it as land too
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -1195,11 +1218,13 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 38 islands with coordinates; 11 attested, 21 approximate, 6 conjectural
-- 30 traced outlines (three of them open coasts, one of four islands), 4 shapes built from
+- 39 islands with coordinates; 12 attested, 21 approximate, 6 conjectural
+- 31 outlines from depictions (three of them open coasts, one of four
+  islands, and `ile-de-sable` lifted from a digital coastline rather than
+  traced), 4 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
   nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
-  blobs at attested positions; 27 chart records in `scripts/charts/`
+  blobs at attested positions; 28 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -1256,7 +1281,10 @@ Two things went wrong during the move, both worth not repeating:
   `royllo` (Canepa 1489's "Roillo"), each placed by its offset from
   Antillia on its own chart, no story yet, and `iles-de-la-compagnie-royale`
   (Arrowsmith 1814, the sheet Bellingshausen searched by, three islets at
-  the sheet's scale, 13 x 28 km the largest; no story)
+  the sheet's scale, 13 x 28 km the largest; no story), and `ile-de-sable`
+  (Sandy Island: the World Vector Shoreline's polygon from GSHHS 2.2.0,
+  6.3 x 27.6 km, unchanged; no story; Natural Earth's own copy of it dropped
+  from the basemap)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1305,14 +1333,14 @@ Two things went wrong during the move, both worth not repeating:
    checked November 2026 on six posts), so a one-off re-import would need
    only a new fetch that takes the post body out of
    `/archive/cartographier/{slug}/` — title and date come from the page too.
-2. **Trace real outlines** — see *Adding an island*. Thirty done:
+2. **Trace real outlines** — see *Adding an island*. Thirty-one done:
    `antillia`, `bermeja`, `nakanotorishima`, `frisland`, `kianida`,
    `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`, `saint-brendan`,
    `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
    `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`,
-   `iles-de-la-compagnie-royale`. The rest are built from their reports or drawn as
+   `iles-de-la-compagnie-royale`, `ile-de-sable`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1348,8 +1376,9 @@ Two things went wrong during the move, both worth not repeating:
    ~~Royllo~~ (done November 2026, from Pizzigano 1424 and Canepa 1489),
    ~~Îles de la Compagnie Royale~~ (done November 2026, from Arrowsmith
    1814; Espinosa y Tello's 1812 original is in Spain's Biblioteca Virtual
-   de Defensa, unreachable from here, and worth comparing if Étienne gets it), Île de Sable (Sandy Island, New
-   Caledonia), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
+   de Defensa, unreachable from here, and worth comparing if Étienne gets it), ~~Île de Sable~~
+   (Sandy Island, done November 2026, from the World Vector Shoreline's
+   polygon, chosen over the 1908 Admiralty chart), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
    Bellin 1744, on the Great Lakes `scripts/build_lakes.py` cuts out of the
    land), Rupes Nigra, Saxemberg, Pepys,
    Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —

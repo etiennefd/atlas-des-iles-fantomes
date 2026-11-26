@@ -1,0 +1,11 @@
+{
+  "name": "GSHHS 2.2.0 full-resolution coastline (Wessel and Smith, July 2011), derived from the World Vector Shoreline, as distributed for GMT",
+  "holding": "Debian package gmt-gshhs 2.2.0, archived at snapshot.debian.org",
+  "source_url": "https://snapshot.debian.org/archive/debian/20120314T034457Z/pool/main/g/gmt-gshhs/gmt-gshhs_2.2.0.orig.tar.bz2",
+  "sha1": "f351da571bf5505b2498882e71b3a63bc1f8f2ee",
+  "file": "gmt-gshhs-2.2.0/share/coast/binned_GSHHS_f.cdf",
+  "licence": "the shoreline is US government work (the World Vector Shoreline, NIMA), public domain; the GMT distribution of GSHHS is GPL v2 or later",
+  "note": "Not a chart: the polygon that kept Sandy Island on the world's maps after the hydrographers had dropped it. The NIMA digitised it from paper charts into the World Vector Shoreline around 1990 (Soluri and Woodson 1990); GSHHS took it from there and GMT shipped it; GEBCO, ETOPO, satellite land masks and Google Earth used it as land. It was this polygon, drawn black in Google Earth, that the R/V Southern Surveyor sailed through in October 2012, and the GSHHS/GSHHG releases after that dropped it (Seton et al., Eos 94(15), 2013). Release 2.2.0 is the last before the deletion that could be found complete: NOAA's old GSHHS directories now return 404. Chosen by Etienne in November 2026 over the 1908 Admiralty chart (Commons, 'Sandy Island on 1908 chart.jpg'), the island's first appearance, a dotted lens of about 14 x 52 px on a 1500 px photograph. The two agree on place and size; the polygon is the depiction that made the island famous.",
+  "extraction_note": "One closed segment in bin 39399 (south-west corner 159 E, 20 S): GSHHS id 1203, level 1 (land), 217 points, 130.77 km2 by the file's own area table. Lifted by scripts/extract_gshhs.py, written untouched.",
+  "landmarks": []
+}
