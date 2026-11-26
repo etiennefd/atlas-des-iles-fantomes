@@ -1203,7 +1203,7 @@ Two things went wrong during the move, both worth not repeating:
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
-- **8 written in English** (`aurora`, `bermeja`, `groclant`, `hy-brasil`,
+- **8 written in English** (`aurora`, `bermeja`, `frisland`, `groclant`,
   `ile-des-demons`, `kianida`, `los-jardines`, `tuanaki`), so 23 islands sit
   in `translated` state there
 - 2 partial drafts (`nakanotorishima`, `nimrod`) with notices
