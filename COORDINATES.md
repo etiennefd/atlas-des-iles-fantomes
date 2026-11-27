@@ -30,7 +30,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `ile-de-sable` | 159.935, −19.227 | The World Vector Shoreline's polygon as GSHHS 2.2.0 (2011) distributes it, centre of its extent; the same place as the 1908 Admiralty chart that first drew it ("Velocity 1876"). Open sea 1,488–2,353 m deep. Nov 2026. |
 | `emerald` | 163.0, −57.25 | Capt. C. J. Nockells of the *Emerald*, 13 December 1821, in his own letter quoted by Findlay (1851, p. 678); not "Elliot". The island at 57°15′S 163°E, seen E by N 25 miles from the ship at 57°30′S 162°12′E. **Moved Nov 2026** from the ship's position, ~55 km. |
 
-## Approximate (17)
+## Approximate (18)
 
 | id | position | basis |
 |---|---|---|
@@ -41,6 +41,7 @@ Positions are `[lon, lat]`, matching GeoJSON order.
 | `antillia` | −45.0, 32.0 | Pizzigano chart, 1424: far west of Portugal, with Satanazes just north. |
 | `bermeja` | −91.0, 22.5 | Santa Cruz, 1539; c. 55 nautical miles off the NW Yucatán coast. A seamount sits at 22°38.76′N 90°51.3′W, which is a defensible alternative. |
 | `phelipeaux-et-pontchartrain` | −87.956, 47.773 | The group's centre. Bellin's *Carte des lacs du Canada* (1744), fitted to Lake Superior on nine landmarks (RMS 41 km). Pontchartrain (−86.75, 47.86) and Sainte-Anne (−86.39, 47.19) stand where the fit puts them; the fit set the other two on real ground, so **Phélipeaux** moved 24 km NW to −88.75, 47.61 (mid-channel between Isle Royale and the Keweenaw, as Bellin draws it) and **Maurepas** 62 km WSW to −87.00, 48.30 (open water in the north-east quarter). Liberties, Nov 2026. |
+| `thompson` | 3.847, −54.108 | Norris's own chart (1825): 18.5′ N and 28.9′ E of his Liverpool Island (Bouvet), laid off from the real Bouvet, ~46 km NE. **Not** the charted 53°56′S 5°30′E, which is the same chart read raw: it sits ~1.6° east, so that puts Thompson 150 km from Bouvet. Nov 2026. |
 | `pepys` | −61.07, −47.47 | Moll's South Sea Company map, 1711: latitude off its Mercator graticule (47.47 S, agreeing with Cowley's 47°40′), longitude by its offset from the coast Moll draws (4.7° east of his Cabo Blanco), since his longitudes there run ~5° west. Nov 2026. |
 | `satanazes` | −34.43, 42.94 | Pizzigano 1424, by its offset from Antillia on that chart's landmark fit (826 km N, 66 km E), laid off from Antillia's chosen position. The fit read raw gives −22.13, 45.58, an extrapolation past the surveyed coasts. Nov 2026. |
 | `royllo` | −37.604, 35.26 | Canepa 1489 ("Roillo"), by its offset from Antillia on that sheet at Antillia's inherited scale (218 km W, 27 km S). Provisional with Antillia's own scale on Canepa. Nov 2026. |

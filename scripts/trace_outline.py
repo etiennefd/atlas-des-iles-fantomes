@@ -102,7 +102,8 @@ def residuals(p, K, landmarks):
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
                 seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
-                islets=None, islet_thr=110, dots=None, strip=0, channel=None, cut=None):
+                islets=None, islet_thr=110, dots=None, strip=0, channel=None, cut=None,
+                join=0):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -168,6 +169,12 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # and rounds every notch into a wave. (Canepa's north-west bay.)
         el = square(open_r) if se == "square" else disk(open_r)
         m = binary_opening(m, el)
+    if join:
+        # A hand sketch is not one line: Norris draws Thompson's Island in
+        # four separate strokes with gaps of up to 25 px between them, so the
+        # largest piece below is a quarter of the coast. Close the strokes
+        # into one ring before choosing.
+        m = binary_closing_sk(m, disk(join))
     if not m.any():
         raise SystemExit("nothing selected — adjust --threshold/--mode/--bbox")
     lab = label(m)
@@ -789,7 +796,7 @@ def polar(a, chart):
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                                  a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                                  a.seed, window=a.window, relief=a.relief,
-                                 strip=a.strip, channel=a.channel, cut=a.cut)
+                                 strip=a.strip, channel=a.channel, cut=a.cut, join=a.join)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -861,6 +868,12 @@ def polar(a, chart):
     print(f"  -> {os.path.relpath(dest, ROOT)}")
 
 
+def _km(v):
+    # size_km is a control build_geojson rescales to, so rounding it to whole
+    # km shrank Thompson's Island (2.28 km tall) by 12%
+    return round(v) if v >= 10 else round(v, 2)
+
+
 def manual(a, chart):
     """No landmarks on this chart yet, so the chart gives only the silhouette;
     size and position are set explicitly. Georeference it properly and this
@@ -875,7 +888,7 @@ def manual(a, chart):
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
                           islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
-                          strip=a.strip, channel=a.channel, cut=a.cut)
+                          strip=a.strip, channel=a.channel, cut=a.cut, join=a.join)
     if a.satellites or a.islet or a.dots or a.channel or a.cut or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
@@ -935,7 +948,7 @@ def manual(a, chart):
                            # height is not that span (the Groclant trap), so it is
                            # written as a readout instead
                            ("size_km" if (a.turn or 0) % 180 == 0 else "size_km_measured"):
-                               [round(km_w), round(a.height_km)]},
+                               [_km(km_w), _km(a.height_km)]},
             "geometry": ({"type": "Polygon", "coordinates": [pts]} if len(polys) == 1
                          else {"type": "MultiPolygon",
                                "coordinates": [[q] for q in polys]})}
@@ -969,6 +982,10 @@ def main():
     ap.add_argument("--seal", help="band mode: polylines of extra band where the chart "
                     "draws no coast, as 'x,y x,y ...' in source px, several separated "
                     "by ';'. A liberty — it IS the outline there; record it.")
+    ap.add_argument("--join", type=int, default=0,
+                    help="colour modes: close the mask with disk(R) BEFORE the largest "
+                         "piece is chosen, for an outline sketched in separate strokes "
+                         "(Norris' Thompson's Island, 1825)")
     ap.add_argument("--channel", help="colour modes: points in a channel the colourist "
                     "washed over as land, as 'x,y;x,y' in source px. Flooded through "
                     "unhatched pixels and cut out (Moll's Pepys Island, 1711)")
@@ -1104,7 +1121,7 @@ def main():
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
                           islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
-                          strip=a.strip, channel=a.channel, cut=a.cut)
+                          strip=a.strip, channel=a.channel, cut=a.cut, join=a.join)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass

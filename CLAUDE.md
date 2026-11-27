@@ -297,13 +297,24 @@ knowing before blaming your own code.
 Island (`ile-de-sable`): a 6-point polygon of 71 km2 at 159.93-159.98 E,
 19.12-19.33 S, inherited from the same World Vector Shoreline that kept the
 island alive until 2012. `public/data/land-50m.json` is therefore no longer
-a plain copy of world-atlas's: `node scripts/drop_basemap_phantoms.mjs`
+a plain copy of world-atlas's: `node scripts/build_basemap.mjs`
 rewrites it with that polygon taken out, and refuses unless each box drops
 exactly one polygon of the expected area. Dropped from the file rather than
 masked on the globe so that `check_overlap`, `place_island` and
 `lift_country` see the same basemap. Run it again after any world-atlas
 upgrade, and check a new island's spot for a basemap copy of itself:
 `check_overlap` reporting a phantom "on land" in open ocean is the tell.
+
+**And it lacks a real island a phantom is placed by.** Bouvet is in no
+polygon of `land-50m`, and Thompson Island is set by its offset from Bouvet
+on Norris's chart, so it sat alone in empty sea. The same script adds
+Bouvet from `land-10m` (54.5 km2, 18 points), re-quantized onto land-50m's
+grid (about 230 x 190 m there): one 10m polygon in a 50m basemap, by
+Étienne's choice (November 2026), and the only exception to the
+one-resolution rule. Each addition's box must hold exactly one 10m polygon
+of the expected area, which also skips land-10m's three degenerate
+whole-sphere polygons. Check a new island's real neighbours exist at 50m
+before placing it against them.
 
 **The story importer must stay deterministic.** `scripts/import_posts.py`
 converts HTML to markdown with regexes over the small tag subset these posts
@@ -350,7 +361,7 @@ earth.
 
 ## Adding an island
 
-Done thirty-two times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done thirty-three times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
@@ -361,7 +372,8 @@ its own chart), `iles-de-la-compagnie-royale` (Arrowsmith 1814, three
 islets placed by the sheet's own Mercator graticule), `ile-de-sable` (no
 chart at all: the World Vector Shoreline's polygon, lifted unchanged),
 `pepys` (Moll's 1711 inset, two islands with the channel the colourist
-washed over cut back out), and `terre-de-davis`,
+washed over cut back out), `thompson` (its discoverer's own chart, placed
+by its offset from Bouvet on it), and `terre-de-davis`,
 `crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -476,6 +488,11 @@ all general:
   Paint out lettering written across the channel first ("Bay"), keeping the
   box off both shores: a box 4 px too far south opened the flood into the
   south island's interior.
+- `--join R` closes the mask with `disk(R)` *before* the largest piece is
+  chosen, for an outline sketched in separate strokes: Norris drew Thompson's
+  Island in four, with gaps up to 25 px, and without it the trace was one
+  stroke. It also smooths over bays narrower than 2R; at 2.5 km nothing
+  that small shows.
 - `--cut "x,y x,y ..."` draws water by hand, 7 px wide, where the engraving
   crowds a channel shut (a coast line's end and a tree symbol, at Pepys'
   north-east outlet). A liberty, like `--seal`.
@@ -720,7 +737,7 @@ python3 scripts/trace_outline.py iles-de-la-compagnie-royale \
 python3 -I scripts/extract_gshhs.py ile-de-sable \
     --cdf ~/scratch/gshhs/gmt-gshhs-2.2.0/share/coast/binned_GSHHS_f.cdf \
     --bbox 159.8,-19.5,160.1,-19.0 --chart gshhs-2.2.0
-node scripts/drop_basemap_phantoms.mjs   # Natural Earth has it as land too
+node scripts/build_basemap.mjs   # Natural Earth has it as land too
 
 # Pepys — Moll's 1711 inset of the drawing from Cowley's voyage. The
 # colourist's yellow coastal wash is the shore (the north-east flanks have no
@@ -734,6 +751,16 @@ python3 scripts/trace_outline.py pepys --chart moll-1711 \
     --cut "6498,6780 6514,6762 6527,6742 6535,6722" \
     --tolerance 1.5 --bbox 6260,6650,6800,6950 \
     --height-km 19.8 --centre=-61.035,-47.496
+
+# Thompson — Norris's own chart (1825, printed by the RGS in 1928), the
+# island in four open strokes; the parallel and meridian across it painted
+# out, the strokes joined into one ring. Chart scale; the centre is its
+# offset from Bouvet on the chart, laid off from the real Bouvet
+python3 scripts/trace_outline.py thompson --chart norris-1825 \
+    --image ~/scratch/charts/thompson/norris-1825-chart.png \
+    --mode dark --threshold 100 --join 14 --closing 3 \
+    --blank-box "2000,660,2180,672;2101,672,2110,830" \
+    --tolerance 1 --bbox 2000,670,2180,830 --height-km 2.28 --centre=3.847,-54.108
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -1267,13 +1294,13 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 42 islands with coordinates; 14 attested, 22 approximate, 6 conjectural
-- 32 outlines from depictions (three of them open coasts, one of four
+- 43 islands with coordinates; 14 attested, 23 approximate, 6 conjectural
+- 33 outlines from depictions (three of them open coasts, one of four
   islands, and `ile-de-sable` lifted from a digital coastline rather than
   traced), 6 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, `saxemberg`, and
   `rupes-nigra` from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
-  blobs at attested positions; 29 chart records in `scripts/charts/`
+  blobs at attested positions; 30 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -1335,7 +1362,12 @@ Two things went wrong during the move, both worth not repeating:
   6.3 x 27.6 km, unchanged; no story; Natural Earth's own copy of it dropped
   from the basemap), and `pepys` (Moll's 1711 inset of the drawing from
   Cowley's voyage, two islands with Admiralty Bay between them, 50 km across
-  by Étienne's choice, placed off Patagonia by Moll's main map; no story)
+  by Étienne's choice, placed off Patagonia by Moll's main map; no story),
+  and `thompson` (George Norris's own chart from the Sprightly's log, 1825,
+  printed in the Geographical Journal in 1928, 2.5 x 2.3 km at its scale,
+  46 km NE of Bouvet by its offset on that chart; no story). Bouvet was not
+  on the globe at all, Natural Earth 50m having no polygon for it, so it is
+  added from land-10m by `build_basemap.mjs` (see Traps)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1391,7 +1423,7 @@ Two things went wrong during the move, both worth not repeating:
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
    `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`,
-   `iles-de-la-compagnie-royale`, `ile-de-sable`, `pepys`. The rest are built from their reports or drawn as
+   `iles-de-la-compagnie-royale`, `ile-de-sable`, `pepys`, `thompson`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1438,7 +1470,8 @@ Two things went wrong during the move, both worth not repeating:
    ~~Saxemberg~~ (done November 2026, Long's 1809 description at
    Lindeman's 1670 position, both by Étienne's choice), ~~Pepys~~ (done
    November 2026, from Moll's 1711 inset, two islands, 50 km),
-   Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
+   ~~Thompson~~ (done November 2026, from Norris's own 1825 chart, 2.5 km,
+   46 km NE of Bouvet), Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite
    Rock, Petermannland, Victoria (Pacific); **maybe**, for the story they

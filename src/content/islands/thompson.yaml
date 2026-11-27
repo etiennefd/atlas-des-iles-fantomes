@@ -1,0 +1,36 @@
+name_fr: "L'île Thompson"
+name_en: "Thompson Island"
+kind: island
+ocean: atlantique-sud
+coords: [3.847, -54.108]
+span: [1825, 1943]
+coords_confidence: approximate
+coords_note: >-
+  Placed by its offset from Bouvet on its discoverer's own chart, laid off
+  from the real Bouvet. George Norris of the Sprightly landed on Bouvet on
+  10 December 1825, took it for a new island and named it Liverpool Island,
+  and sighted Thompson's Island in the days after. His chart, copied for the
+  Hydrographic Department and printed in the Geographical Journal in 1928,
+  draws it 18.5' north and 28.9' east of his Liverpool Island: 34 km north
+  and 31 km east, about 46 km north-east. From the real Bouvet (54 25 S
+  3 22 E) that is 54.108 S 3.847 E, open sea. The position the charts
+  carried, 53 56 S 5 30 E, is what the same chart reads, but the whole chart
+  sits about 1.6 degrees east and 11' north of the truth (it puts Bouvet at
+  54 14 S 5 01 E), so read raw it sets Thompson 150 km from the island
+  Norris saw it beside; Wikipedia's 70 km NNE is neither. Chosen by Étienne
+  over the charted position. Norris's log disagreed with his chart, a known
+  problem. `span` runs from Norris's sighting to 1943, the last maps to draw
+  it: the last claimed sighting was in 1893, the Valdivia searched in vain
+  in 1898, and the sea there is more than 2,400 m deep.
+outline_note: >-
+  Traced from Norris's own chart (the Sprightly's log, 1825, as printed in
+  the Geographical Journal, December 1928): a small outline in plan, sketched
+  in four strokes, chosen by Étienne over his profile of the island on the
+  same sheet, a long low shape with a peak at one end. The strokes are
+  closed into one ring at their gaps (up to 25 px); the parallel and the
+  meridian that cross the drawing are painted out first. At the chart's own
+  scale, which draws Bouvet near its real size (8.6 x 14.6 km against
+  9.5 x 7), it is 2.5 x 2.3 km, also Étienne's choice; at full zoom that is
+  a speck inside its halo, beside Bouvet, which the basemap lacked and
+  which is added from Natural Earth 10m for it. The Chimnies, two rocks Norris drew 3 miles to
+  the south-east, and a third rock, are not drawn.

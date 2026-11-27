@@ -35,5 +35,5 @@ outline_note: >-
   90 m, is the digitiser's, and below a pixel on the globe. The island was on
   this atlas before it was added: Natural Earth's 50m land, the basemap,
   still carried it in 2026 as a 71 km2 polygon in the same place, inherited
-  from the same shoreline, and scripts/drop_basemap_phantoms.mjs takes it out
+  from the same shoreline, and scripts/build_basemap.mjs takes it out
   so the globe does not draw it as real land.
