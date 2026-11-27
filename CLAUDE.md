@@ -1442,7 +1442,15 @@ Two things went wrong during the move, both worth not repeating:
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite
    Rock, Petermannland, Victoria (Pacific); **maybe**, for the story they
-   would carry — Wak-Wak (from the *Thousand and One Nights*) and Taprobane.
+   would carry — Taprobane, and Wak-Wak (from the *Thousand and One
+   Nights*), which was looked at in November 2026 and **skipped**: on
+   Idrisi's maps Waqwaq is chiefly *land*, the far end of the southern
+   continent he stretches east from Africa past Sofala (the round world map,
+   MS Pococke 375, names no Waqwaq island at all); three islands labelled
+   *wāqwāq* appear only on the sectional maps (seen in Miller's 1928
+   reconstruction), as stock ovals beside al-Sīla, east of China. No shape
+   to recover and nothing to place the coast against, so it is a story
+   rather than an island.
    He gives a premium to an island with a legend or an inventor behind it
    over the 19th-century captain's speck. **No** to Gillis Land, almost
    certainly Kvitøya, and to Jave la Grande. Wikipedia's list has grown since his note; the
