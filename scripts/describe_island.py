@@ -9,7 +9,7 @@ least has the size and the build its reporter described instead of a 250 km
 blob. Everything past those few facts is invented, and each outline file
 says which is which.
 
-    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki
+    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki rupes-nigra
     npm run geo
 
 Writes src/data/outlines/{id}.geojson, which build_geojson.py then prefers
@@ -95,6 +95,21 @@ SPECS = {
         "atoll": dict(diameter=60.0, aspect=0.78, bearing=60, rim=0.07,
                       islets=[(20, 0.16, 38), (150, 0.13, 30), (255, 0.18, 44)],
                       gap=(95, 22), wobble=0.05, seed="tuanaki"),
+    },    "rupes-nigra": {
+        "traced_from": "Mercator's account, after Jacob Cnoyen: drawn only in profile",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Septentrionalium_terrarum_descriptio_-_per_Gerardum_Mercatorem_-_btv1b8591959t_(1_of_2).jpg",
+        "scale_source": (
+            "Mercator's legend on the Septentrionalium terrarum descriptio "
+            "(1595): 'Rupes quae sub polo est ambitum circiter 33 leucarum "
+            "habet', the rock under the pole is about 33 leagues round; his "
+            "1577 letter to John Dee, copying Cnoyen, gives 'almost 33 French "
+            "miles' and 'a bare Rock in the midst of the Sea'. 33 leagues of "
+            "4.45 km is 147 km round, so 46.7 km across, centred on the pole. "
+            "The roundness and the coastline are invented: every map draws "
+            "the rock as a cliff seen from the side"
+        ),
+        "parts": [dict(at=(0, 0), length=46.7, width=46.7, bearing=0,
+                       head=0.0, wobble=0.08, seed="rupes-nigra")],
     },
 }
 
@@ -156,7 +171,32 @@ def atoll(s, n=160):
     return outer + inner[::-1]
 
 
+def polar_lonlat(pts, lat0):
+    """At a pole the local plane cannot be scaled by cos(latitude): it is laid
+    out azimuthally instead, distance from the pole along a meridian. Up the
+    plane is the 180th meridian and right is 90 E at the north pole, as on
+    Mercator's polar sheet. The ring encloses the pole, so its winding is set
+    by longitude rather than by planar area: clockwise seen from the outside
+    of the sphere is westward round the north pole."""
+    north = lat0 > 0
+    ring = []
+    for x, y in pts:
+        d = math.hypot(x, y) / 111.32
+        lon = math.degrees(math.atan2(x, -y if north else y))
+        ring.append([round(lon, 5), round(lat0 - d if north else lat0 + d, 5)])
+    # unwrap, then wind so longitude falls round the north pole (rises round
+    # the south), and close
+    turn = 0.0
+    for a, b in zip(ring, ring[1:] + ring[:1]):
+        turn += (b[0] - a[0] + 180) % 360 - 180
+    if (turn > 0) == north:
+        ring = ring[::-1]
+    return [ring + [ring[0]]]
+
+
 def to_lonlat(pts, lon0, lat0):
+    if abs(lat0) > 89.5:
+        return polar_lonlat(pts, lat0)
     k = 1 / (111.32 * math.cos(math.radians(lat0)))
     ring = [[round(lon0 + x * k, 5), round(lat0 + y / 111.32, 5)] for x, y in pts]
     area = sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(ring, ring[1:] + ring[:1]))

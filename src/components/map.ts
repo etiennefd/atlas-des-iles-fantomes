@@ -328,11 +328,17 @@ export async function mount(cfg: Cfg) {
     // for a coast is its islet; the label belongs to the shore.
     const c = geoCentroid(coasts.get(f.properties.id)?.lineGeo ?? f);
     const b = geoBounds(f);
+    // An island round a pole (Rupes Nigra) has no north-south extent to halve:
+    // geoBounds reports it from -90 to 90, as it does d3's own geoCircle
+    // there. Its radius, pole to shore, stands in for the half-height.
+    const polar = b[0][1] <= -89.99 && b[1][1] >= 89.99;
     return {
       id: f.properties.id as string,
       lon: c[0],
       lat: c[1],
-      halfLat: Math.max((b[1][1] - b[0][1]) / 2, 0),
+      halfLat: polar
+        ? (geoDistance(c, f.geometry.coordinates[0][0]) * 180) / Math.PI
+        : Math.max((b[1][1] - b[0][1]) / 2, 0),
     };
   });
 
@@ -360,9 +366,10 @@ export async function mount(cfg: Cfg) {
       const p = projection([g.lon, g.lat]);
       if (!p || !Number.isFinite(p[0])) continue;
       // Apparent size, measured north-south so it never crosses the seam.
+      // Near the north pole, measure southward instead: there is no room north.
       const e =
         g.halfLat > 0
-          ? projection([g.lon, Math.min(g.lat + g.halfLat, 89)])
+          ? projection([g.lon, g.lat + g.halfLat <= 89 ? g.lat + g.halfLat : g.lat - g.halfLat])
           : null;
       const sizePx = e ? 2 * Math.hypot(e[0] - p[0], e[1] - p[1]) : 0;
       anchors.push({ id: g.id, x: p[0], y: p[1], sizePx });

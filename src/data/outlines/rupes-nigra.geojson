@@ -1,0 +1,177 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "rupes-nigra",
+  "traced_from": "Mercator's account, after Jacob Cnoyen: drawn only in profile",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Septentrionalium_terrarum_descriptio_-_per_Gerardum_Mercatorem_-_btv1b8591959t_(1_of_2).jpg",
+  "georeference": null,
+  "scale_source": "Mercator's legend on the Septentrionalium terrarum descriptio (1595): 'Rupes quae sub polo est ambitum circiter 33 leucarum habet', the rock under the pole is about 33 leagues round; his 1577 letter to John Dee, copying Cnoyen, gives 'almost 33 French miles' and 'a bare Rock in the midst of the Sea'. 33 leagues of 4.45 km is 147 km round, so 46.7 km across, centred on the pole. The roundness and the coastline are invented: every map draws the rock as a cliff seen from the side",
+  "described": true,
+  "liberties": [
+   "the coastline: no depiction with one exists"
+  ],
+  "centre": [
+   0.0,
+   90.0
+  ],
+  "extent_km": [
+   43.6,
+   50.9
+  ]
+ },
+ "geometry": {
+  "type": "Polygon",
+  "coordinates": [
+   [
+    [
+     180.0,
+     89.77924
+    ],
+    [
+     170.0,
+     89.78657
+    ],
+    [
+     160.0,
+     89.79021
+    ],
+    [
+     150.0,
+     89.78944
+    ],
+    [
+     140.0,
+     89.78662
+    ],
+    [
+     130.0,
+     89.78523
+    ],
+    [
+     120.0,
+     89.78732
+    ],
+    [
+     110.0,
+     89.79222
+    ],
+    [
+     100.0,
+     89.79723
+    ],
+    [
+     90.0,
+     89.79976
+    ],
+    [
+     80.0,
+     89.79932
+    ],
+    [
+     70.0,
+     89.79773
+    ],
+    [
+     60.0,
+     89.79751
+    ],
+    [
+     50.0,
+     89.79968
+    ],
+    [
+     40.0,
+     89.80255
+    ],
+    [
+     30.0,
+     89.80266
+    ],
+    [
+     20.0,
+     89.79717
+    ],
+    [
+     10.0,
+     89.78619
+    ],
+    [
+     0.0,
+     89.77331
+    ],
+    [
+     -10.0,
+     89.76374
+    ],
+    [
+     -20.0,
+     89.7615
+    ],
+    [
+     -30.0,
+     89.76714
+    ],
+    [
+     -40.0,
+     89.77772
+    ],
+    [
+     -50.0,
+     89.78882
+    ],
+    [
+     -60.0,
+     89.7972
+    ],
+    [
+     -70.0,
+     89.8023
+    ],
+    [
+     -80.0,
+     89.80559
+    ],
+    [
+     -90.0,
+     89.80867
+    ],
+    [
+     -100.0,
+     89.81134
+    ],
+    [
+     -110.0,
+     89.81154
+    ],
+    [
+     -120.0,
+     89.80688
+    ],
+    [
+     -130.0,
+     89.79696
+    ],
+    [
+     -140.0,
+     89.78438
+    ],
+    [
+     -150.0,
+     89.7738
+    ],
+    [
+     -160.0,
+     89.76929
+    ],
+    [
+     -170.0,
+     89.77196
+    ],
+    [
+     180.0,
+     89.77924
+    ]
+   ]
+  ]
+ }
+}

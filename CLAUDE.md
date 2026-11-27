@@ -748,13 +748,27 @@ in `scale_source` and everything else listed as invented. Done for
 `dougherty` (5.5 nm NE-SW, wider at the NE bluff), `emerald` (30 nm NE-SW),
 `nimrod` (a group: four islets, count and sizes invented) and `tuanaki` (an
 atoll: a reef ring with a passage, its rim widening on the lagoon side at
-three islets). Étienne, November 2026, chose "sized, groups as groups" over
+three islets), and `rupes-nigra`, which no one drew from above: Mercator
+draws a cliff in profile, so it is a round rock 46.7 km across from the 33
+leagues round his 1595 sheet writes beside it. Étienne, November 2026, chose "sized, groups as groups" over
 sized blobs; the older line below, that an island nobody agreed on should
 look vague, still holds for its *coastline*, which is invented here and says
 so. The atoll is 60 km across by his choice — at a plausible 25 km it was a
 6 px ring at 8x and did not read — the same stand-in size as the reefs'
 rock cluster. Something smaller than a few km (Jacquet, half a mile) is
-drawn as a reef. Check the report before the secondary literature: the
+drawn as a reef.
+
+**An island at a pole** cannot be laid out in the script's usual plane, which
+scales by cos(latitude); `describe_island.py` switches to an azimuthal plane
+above 89.5 and winds the ring by longitude (westward round the north pole,
+as d3's own `geoCircle` does). Two things then break downstream, both
+handled in `map.ts` for this case only: `geoBounds` reports a ring round the
+pole as running from -90 to 90, so the halo's half-height comes from the
+radius instead; and the apparent size, measured northward from the centroid
+and clamped at 89, would have measured a degree *south* of the pole, so it
+measures southward there. `check_overlap` is unaffected.
+
+Check the report before the secondary literature: the
 second search found Emerald's captain was Nockells, not Elliot, and that
 Jacquet had been placed 265 km off on a 1904 newspaper's word.
 
@@ -1225,12 +1239,12 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 39 islands with coordinates; 12 attested, 21 approximate, 6 conjectural
+- 40 islands with coordinates; 13 attested, 21 approximate, 6 conjectural
 - 31 outlines from depictions (three of them open coasts, one of four
   islands, and `ile-de-sable` lifted from a digital coastline rather than
-  traced), 4 shapes built from
-  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki` — see *Islands
-  nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
+  traced), 5 shapes built from
+  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, and `rupes-nigra`
+  from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
   blobs at attested positions; 28 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
@@ -1387,7 +1401,11 @@ Two things went wrong during the move, both worth not repeating:
    (Sandy Island, done November 2026, from the World Vector Shoreline's
    polygon, chosen over the 1908 Admiralty chart), ~~Phélipeaux et Pontchartrain~~ (done November 2026, from
    Bellin 1744, on the Great Lakes `scripts/build_lakes.py` cuts out of the
-   land), Rupes Nigra, Saxemberg, Pepys,
+   land), ~~Rupes Nigra~~ (done November 2026, the rock only, round from
+   Mercator's 33 leagues; Étienne weighed leaving it out, as cosmology
+   rather than a charting error, and kept it for the story; the four polar
+   islands are not drawn, since they reach 78 N across the real Arctic),
+   Saxemberg, Pepys,
    Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite

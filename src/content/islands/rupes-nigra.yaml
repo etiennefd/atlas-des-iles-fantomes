@@ -1,0 +1,33 @@
+name_fr: "Rupes Nigra"
+name_en: "Rupes Nigra"
+kind: island
+ocean: arctique
+coords: [0, 90]
+span: [1569, 1700]
+coords_confidence: attested
+coords_note: >-
+  The North Pole itself: "right under the Pole there lies a bare Rock in the
+  midst of the Sea", in Mercator's 1577 letter to John Dee, which copies
+  Jacob Cnoyen's summary of the lost Inventio Fortunata (a 14th-century
+  account of the far north). His world map of 1569 and his polar map of 1595
+  both draw it at 90, in the whirlpool where four seas between four islands
+  pour down into the earth. Open water, about 4,000 m deep. `span` runs from
+  the 1569 map, its first appearance, to 1700, a round end for the polar
+  maps of Mercator's successors, which kept the rock through the 17th
+  century; the end has no single event behind it, as for Groclant.
+outline_note: >-
+  No depiction from above exists: Mercator draws the rock in profile, a cliff
+  standing at the pole, on the 1569 map and on the 1595 Septentrionalium
+  terrarum descriptio (BnF copy, first state), and Hondius' 1606 state of the
+  same plate does the same. The shape is BUILT FROM THE TEXT by
+  scripts/describe_island.py, chosen by Étienne over tracing the 1595 profile
+  as though it were a coastline. The 1595 sheet itself gives the size, in its
+  legend on the polar islands: "Rupes quae sub polo est ambitum circiter 33
+  leucarum habet", the rock under the pole is about 33 leagues round, as the
+  letter to Dee has "almost 33 French miles". At 4.45 km to the league that
+  is 147 km round, so 46.7 km across, centred on the pole. The engraved rock
+  is far larger at the sheet's scale, about 165 px at 88.6 px to the degree,
+  roughly 205 km, but it is a pictorial symbol and not used. The roundness
+  and the coastline are invented. The four islands round the whirlpool are
+  not drawn: they reach about 78 N and would lie across northern Greenland,
+  Ellesmere, Svalbard, Franz Josef Land and Severnaya Zemlya.
