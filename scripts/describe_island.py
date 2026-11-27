@@ -9,7 +9,7 @@ least has the size and the build its reporter described instead of a 250 km
 blob. Everything past those few facts is invented, and each outline file
 says which is which.
 
-    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki rupes-nigra
+    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki rupes-nigra saxemberg
     npm run geo
 
 Writes src/data/outlines/{id}.geojson, which build_geojson.py then prefers
@@ -95,7 +95,22 @@ SPECS = {
         "atoll": dict(diameter=60.0, aspect=0.78, bearing=60, rim=0.07,
                       islets=[(20, 0.16, 38), (150, 0.13, 30), (255, 0.18, 44)],
                       gap=(95, 22), wobble=0.05, seed="tuanaki"),
-    },    "rupes-nigra": {
+    },
+    "saxemberg": {
+        "traced_from": "Capt. Long's log of the sloop Columbus, 1809: no drawing exists",
+        "source_url": "https://archive.org/details/voyageTerraAustv1Flin",
+        "scale_source": (
+            "Long, 22 September 1809, quoted by Flinders (A Voyage to Terra "
+            "Australis, 1814, i, pp. 35-36): 'about four leagues in length, N.W. "
+            "and S.E., and about 2 1/2 miles in breadth. The N.W. end is a "
+            "high bluff of about 70 feet, perpendicular form, and runs along "
+            "to the south-east about 8 miles'. 12 nm on a NW-SE axis, 2.5 nm "
+            "wide, its NW end the wider; the coastline is invented"
+        ),
+        "parts": [dict(at=(0, 0), length=12 * NM, width=2.5 * NM, bearing=315,
+                       head=0.45, wobble=0.10, seed="saxemberg")],
+    },
+    "rupes-nigra": {
         "traced_from": "Mercator's account, after Jacob Cnoyen: drawn only in profile",
         "source_url": "https://commons.wikimedia.org/wiki/File:Septentrionalium_terrarum_descriptio_-_per_Gerardum_Mercatorem_-_btv1b8591959t_(1_of_2).jpg",
         "scale_source": (

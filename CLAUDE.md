@@ -750,7 +750,10 @@ in `scale_source` and everything else listed as invented. Done for
 atoll: a reef ring with a passage, its rim widening on the lagoon side at
 three islets), and `rupes-nigra`, which no one drew from above: Mercator
 draws a cliff in profile, so it is a round rock 46.7 km across from the 33
-leagues round his 1595 sheet writes beside it. Étienne, November 2026, chose "sized, groups as groups" over
+leagues round his 1595 sheet writes beside it, and `saxemberg`, from
+Captain Long's 1809 log as Flinders quotes it (4 leagues NW-SE by 2 1/2
+miles, a bluff at the NW end), laid at Lindeman's charted position of 1670
+rather than Long's own, 830 km west. Étienne, November 2026, chose "sized, groups as groups" over
 sized blobs; the older line below, that an island nobody agreed on should
 look vague, still holds for its *coastline*, which is invented here and says
 so. The atoll is 60 km across by his choice — at a plausible 25 km it was a
@@ -1239,12 +1242,12 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 40 islands with coordinates; 13 attested, 21 approximate, 6 conjectural
+- 41 islands with coordinates; 14 attested, 21 approximate, 6 conjectural
 - 31 outlines from depictions (three of them open coasts, one of four
   islands, and `ile-de-sable` lifted from a digital coastline rather than
-  traced), 5 shapes built from
-  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, and `rupes-nigra`
-  from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
+  traced), 6 shapes built from
+  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, `saxemberg`, and
+  `rupes-nigra` from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
   blobs at attested positions; 28 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
@@ -1405,7 +1408,8 @@ Two things went wrong during the move, both worth not repeating:
    Mercator's 33 leagues; Étienne weighed leaving it out, as cosmology
    rather than a charting error, and kept it for the story; the four polar
    islands are not drawn, since they reach 78 N across the real Arctic),
-   Saxemberg, Pepys,
+   ~~Saxemberg~~ (done November 2026, Long's 1809 description at
+   Lindeman's 1670 position, both by Étienne's choice), Pepys,
    Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite

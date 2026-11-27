@@ -1,0 +1,34 @@
+name_fr: "L'île Saxemberg"
+name_en: "Saxemberg Island"
+kind: island
+ocean: atlantique-sud
+coords: [-19.667, -30.75]
+span: [1670, 1816]
+coords_confidence: attested
+coords_note: >-
+  Lindeman's position, 30 45 S 19 40 W, from his report of 1670: the place
+  "in the common tables and charts" (Flinders), where Bellin's world map of
+  1748 and Faden's South Atlantic of 1806 draw it, and where Flinders
+  searched and found nothing in September 1801. Open sea, about 2,600 km
+  west of the Cape. Chosen by Étienne over Captain Long's position of
+  1809, 30 18 S 28 20 W, about 830 km further west, which Flinders thought
+  would explain why ships kept missing it; Long's is the only sighting
+  that gives a size, and the shape comes from it. Galloway (1804) and Head
+  (1816) also reported seeing it; their positions were not found. `span`
+  runs from Lindeman's report to Head's sighting, the last; when the charts
+  finally dropped it was not found.
+outline_note: >-
+  No chart draws more than a speck: Bellin 1748 has an engraved islet of
+  about 16 x 10 px, low with a peak, inside its hachures, and Faden's 1806
+  chart a dot. The shape is BUILT FROM A REPORT by
+  scripts/describe_island.py, chosen by Étienne over tracing Bellin's
+  islet: Captain Long of the sloop Columbus, 22 September 1809, as Flinders
+  quotes his log (A Voyage to Terra Australis, 1814, i, pp. 35-36): "about
+  four leagues in length, N.W. and S.E., and about 2 1/2 miles in breadth.
+  The N.W. end is a high bluff of about 70 feet, perpendicular form, and
+  runs along to the south-east about 8 miles. You will see trees ... and a
+  sandy beach." So 12 nm (22 km) on a NW-SE axis, 2.5 nm (4.6 km) wide,
+  the NW end the wider. The coastline is invented. Long's shape is laid at
+  Lindeman's position, so the two claims come from different sightings 139
+  years apart. Lindeman's own sketch, low with a pointed mountain in the
+  middle, is a profile and was not found.
