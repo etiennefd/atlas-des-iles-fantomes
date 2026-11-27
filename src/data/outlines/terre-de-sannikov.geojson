@@ -1,0 +1,166 @@
+{
+ "type": "Feature",
+ "properties": {
+  "id": "terre-de-sannikov",
+  "traced_from": "Baron Eduard von Toll's account of his sighting on 13 August 1886: no drawing found",
+  "source_url": "https://archive.org/details/sim_geographical-journal_1898-08_12_2",
+  "georeference": null,
+  "scale_source": "Toll, 'Proposal for an Expedition to Sannikoff Land', Geographical Journal 12 (August 1898), pp. 162-163: from the mouth of the Mogur on Kotelny he saw, N 14-18 E, 'the sharp outlines of four truncated cones like table mountains, from which a low foreland extended towards the east', about 200 km off, and the mountains 'ought to have been marked on the map due north of the northern extremity of Kotelnyi island'. 4 degrees of arc at 200 km: the mountains span 14 km. The foreland's length (20 km) and the shore line are invented; only a south shore, since only that was seen",
+  "described": true,
+  "open_coast": true,
+  "land_side": "right",
+  "liberties": [
+   "the shore line: only a profile was ever seen, and no drawing found"
+  ],
+  "centre": [
+   139.293,
+   77.833
+  ],
+  "coast_km": 35
+ },
+ "geometry": {
+  "type": "LineString",
+  "coordinates": [
+   [
+    140.03889,
+    77.85983
+   ],
+   [
+    139.99626,
+    77.85804
+   ],
+   [
+    139.95364,
+    77.85619
+   ],
+   [
+    139.91102,
+    77.8488
+   ],
+   [
+    139.8684,
+    77.84459
+   ],
+   [
+    139.82578,
+    77.84446
+   ],
+   [
+    139.78315,
+    77.8414
+   ],
+   [
+    139.74053,
+    77.8411
+   ],
+   [
+    139.69791,
+    77.84266
+   ],
+   [
+    139.65529,
+    77.83818
+   ],
+   [
+    139.61267,
+    77.83428
+   ],
+   [
+    139.57004,
+    77.83475
+   ],
+   [
+    139.52742,
+    77.83244
+   ],
+   [
+    139.4848,
+    77.83175
+   ],
+   [
+    139.44218,
+    77.835
+   ],
+   [
+    139.39956,
+    77.83306
+   ],
+   [
+    139.35693,
+    77.82928
+   ],
+   [
+    139.31431,
+    77.82942
+   ],
+   [
+    139.27169,
+    77.82689
+   ],
+   [
+    139.22907,
+    77.82431
+   ],
+   [
+    139.18408,
+    77.82726
+   ],
+   [
+    139.13672,
+    77.82704
+   ],
+   [
+    139.08699,
+    77.82332
+   ],
+   [
+    139.03727,
+    77.8237
+   ],
+   [
+    138.98754,
+    77.82251
+   ],
+   [
+    138.93782,
+    77.82005
+   ],
+   [
+    138.88809,
+    77.82313
+   ],
+   [
+    138.83836,
+    77.82513
+   ],
+   [
+    138.78864,
+    77.82247
+   ],
+   [
+    138.73891,
+    77.82378
+   ],
+   [
+    138.68919,
+    77.82467
+   ],
+   [
+    138.63946,
+    77.82262
+   ],
+   [
+    138.59921,
+    77.82775
+   ],
+   [
+    138.56842,
+    77.83672
+   ],
+   [
+    138.54711,
+    77.84366
+   ]
+  ]
+ }
+}

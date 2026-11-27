@@ -1,0 +1,35 @@
+name_fr: "La terre de Sannikov"
+name_en: "Sannikov Land"
+kind: coast
+ocean: arctique
+coords: [139.293, 77.833]
+span: [1811, 1937]
+coords_confidence: approximate
+coords_note: >-
+  Where Baron Eduard von Toll saw it on 13 August 1886, from the mouth of the
+  Mogur at the north end of Kotelny: about 200 km off, and, by his own
+  correction for the compass, "due north of the northern extremity of
+  Kotelnyi island" (Geographical Journal, August 1898). From Anjou's
+  position for the Mogur mouth, 76 02 N 136 33 E of Paris (138 53 E of
+  Greenwich), that puts the mountains at 77.83 N 138.89 E; Toll himself put
+  the land "under about the 78th degree". The shore's centre is 9.5 km east
+  of the mountains, the foreland running that way. Open sea north of the New
+  Siberian Islands. Chosen by Étienne over Stanford's 1922 world map, which
+  draws it a little further west, near 77.5 N 138 E. Sannikov reported a
+  land north of Kotelny in 1811; the 1811 map of the islands drew it, Anjou
+  found nothing in 1821-23 and it left the maps, came back as a dotted shore
+  after De Long found Bennett Island in 1881, and Toll died looking for it in
+  1902. `span` runs from Sannikov's report to the icebreaker Sadko's search
+  of 1937, which found open sea.
+outline_note: >-
+  An open coast, as everyone who saw it saw it: from far off, from the south.
+  No usable drawing was found (the 1811 map's outlines, Toll's 1887
+  sketch-map; the maps before 1881 carry only a label, "land seen by
+  Sannikov" or "mountains seen by Sannikov", and Stanford's 1922 world map a
+  32 px bracket), so the shore is BUILT FROM TOLL'S DESCRIPTION by
+  scripts/describe_island.py, chosen by Étienne over tracing Stanford's
+  bracket: "four truncated cones like table mountains, from which a low
+  foreland extended towards the east", seen N 14-18 E. Four degrees of arc
+  at 200 km is 14 km of mountains; the foreland is given 20 km, the whole
+  shore 35 km. The foreland's length and the line of the shore are invented;
+  the mountains, being elevations, leave no mark on a coastline.

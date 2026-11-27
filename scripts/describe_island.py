@@ -9,7 +9,7 @@ least has the size and the build its reporter described instead of a 250 km
 blob. Everything past those few facts is invented, and each outline file
 says which is which.
 
-    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki rupes-nigra saxemberg
+    python3 scripts/describe_island.py dougherty emerald nimrod tuanaki rupes-nigra saxemberg terre-de-sannikov
     npm run geo
 
 Writes src/data/outlines/{id}.geojson, which build_geojson.py then prefers
@@ -109,6 +109,27 @@ SPECS = {
         ),
         "parts": [dict(at=(0, 0), length=12 * NM, width=2.5 * NM, bearing=315,
                        head=0.45, wobble=0.10, seed="saxemberg")],
+    },
+    "terre-de-sannikov": {
+        "traced_from": "Baron Eduard von Toll's account of his sighting on 13 August 1886: no drawing found",
+        "source_url": "https://archive.org/details/sim_geographical-journal_1898-08_12_2",
+        "scale_source": (
+            "Toll, 'Proposal for an Expedition to Sannikoff Land', Geographical "
+            "Journal 12 (August 1898), pp. 162-163: from the mouth of the Mogur "
+            "on Kotelny he saw, N 14-18 E, 'the sharp outlines of four truncated "
+            "cones like table mountains, from which a low foreland extended "
+            "towards the east', about 200 km off, and the mountains 'ought to "
+            "have been marked on the map due north of the northern extremity of "
+            "Kotelnyi island'. 4 degrees of arc at 200 km: the mountains span "
+            "14 km. The foreland's length (20 km) and the shore line are "
+            "invented; only a south shore, since only that was seen"
+        ),
+        # x east, y north, km, about the chord's midpoint; east to west, so
+        # the land is on the right. The mountains are x -16.5 to -2.5.
+        "coast": dict(points=[(17.5, 3.0), (12.5, 1.2), (6.5, 0.2), (0.5, -0.4),
+                              (-2.5, -0.8), (-6.0, -1.2), (-9.5, -1.0),
+                              (-13.0, -1.3), (-16.5, -0.6), (-17.5, 1.2)],
+                      wobble=0.25, seed="terre-de-sannikov"),
     },
     "rupes-nigra": {
         "traced_from": "Mercator's account, after Jacob Cnoyen: drawn only in profile",
@@ -227,9 +248,57 @@ def coords_of(iid):
     raise SystemExit(f"{iid}: no coords")
 
 
+def coast_line(c, n_per_km=1.0):
+    """An open shore: the given points densified to about 1 km, smoothed,
+    and roughened a little, deterministically from the seed."""
+    r = rnd(c["seed"])
+    pts = c["points"]
+    dense = []
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        n = max(1, int(math.hypot(x1 - x0, y1 - y0) * n_per_km))
+        dense += [(x0 + (x1 - x0) * k / n, y0 + (y1 - y0) * k / n) for k in range(n)]
+    dense.append(pts[-1])
+    sm = [dense[0]] + [((a[0] + b[0] + c2[0]) / 3, (a[1] + b[1] + c2[1]) / 3)
+                       for a, b, c2 in zip(dense, dense[1:], dense[2:])] + [dense[-1]]
+    out = []
+    for i, (x, y) in enumerate(sm):
+        a = 2 * math.pi * i / max(len(sm) - 1, 1)
+        out.append((x, y + c["wobble"] * (math.sin(5 * a + 6.3 * r[0]) * 0.8
+                                          + math.sin(11 * a + 6.3 * r[1]) * 0.5
+                                          + math.sin(23 * a + 6.3 * r[2]) * 0.3)))
+    return out
+
+
+def build_coast(iid, s, lon, lat):
+    pts = coast_line(s["coast"])
+    k = 1 / (111.32 * math.cos(math.radians(lat)))
+    line = [[round(lon + x * k, 5), round(lat + y / 111.32, 5)] for x, y in pts]
+    (xa, ya), (xb, yb) = pts[0], pts[-1]
+    props = {
+        "id": iid,
+        "traced_from": s["traced_from"],
+        "source_url": s["source_url"],
+        "georeference": None,
+        "scale_source": s["scale_source"],
+        "described": True,
+        "open_coast": True,
+        "land_side": "right",
+        "liberties": ["the shore line: only a profile was ever seen, and no drawing found"],
+        "centre": [lon, lat],
+        "coast_km": round(math.hypot(xb - xa, yb - ya)),
+    }
+    out = os.path.join(OUTLINES, iid + ".geojson")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump({"type": "Feature", "properties": props,
+                   "geometry": {"type": "LineString", "coordinates": line}}, f, indent=1)
+    print(f"{iid}: open coast, {len(line)} points, chord {props['coast_km']} km -> {os.path.relpath(out)}")
+
+
 def build(iid):
     s = SPECS[iid]
     lon, lat = coords_of(iid)
+    if "coast" in s:
+        return build_coast(iid, s, lon, lat)
     rings = [atoll(s["atoll"])] if "atoll" in s else [islet(p) for p in s["parts"]]
     polys = [to_lonlat(r, lon, lat) for r in rings]
     geom = ({"type": "Polygon", "coordinates": polys[0]} if len(polys) == 1

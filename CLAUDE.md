@@ -805,7 +805,13 @@ draws a cliff in profile, so it is a round rock 46.7 km across from the 33
 leagues round his 1595 sheet writes beside it, and `saxemberg`, from
 Captain Long's 1809 log as Flinders quotes it (4 leagues NW-SE by 2 1/2
 miles, a bluff at the NW end), laid at Lindeman's charted position of 1670
-rather than Long's own, 830 km west. Étienne, November 2026, chose "sized, groups as groups" over
+rather than Long's own, 830 km west, and `terre-de-sannikov`, an open coast
+built from what Toll saw from Kotelny in 1886 ("four truncated cones like
+table mountains, from which a low foreland extended towards the east",
+200 km due north): 14 km of mountains by his 4 degrees of arc, a 20 km
+foreland invented, 35 km of south shore — `describe_island.py` writes a
+`coast` spec as a LineString with the land on its right, like a traced one.
+Étienne, November 2026, chose "sized, groups as groups" over
 sized blobs; the older line below, that an island nobody agreed on should
 look vague, still holds for its *coastline*, which is invented here and says
 so. The atoll is 60 km across by his choice — at a plausible 25 km it was a
@@ -1294,11 +1300,12 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 43 islands with coordinates; 14 attested, 23 approximate, 6 conjectural
+- 44 islands with coordinates; 14 attested, 24 approximate, 6 conjectural
 - 33 outlines from depictions (three of them open coasts, one of four
   islands, and `ile-de-sable` lifted from a digital coastline rather than
-  traced), 6 shapes built from
-  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, `saxemberg`, and
+  traced), 7 shapes built from
+  reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, `saxemberg`,
+  `terre-de-sannikov` as an open coast, and
   `rupes-nigra` from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
   blobs at attested positions; 30 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
@@ -1471,7 +1478,9 @@ Two things went wrong during the move, both worth not repeating:
    Lindeman's 1670 position, both by Étienne's choice), ~~Pepys~~ (done
    November 2026, from Moll's 1711 inset, two islands, 50 km),
    ~~Thompson~~ (done November 2026, from Norris's own 1825 chart, 2.5 km,
-   46 km NE of Bouvet), Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
+   46 km NE of Bouvet), ~~Sannikov Land~~ (done November 2026, an open
+   coast built from Toll's 1886 sighting, 200 km north of Kotelny),
+   Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite
    Rock, Petermannland, Victoria (Pacific); **maybe**, for the story they
