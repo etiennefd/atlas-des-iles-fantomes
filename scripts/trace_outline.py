@@ -102,7 +102,7 @@ def residuals(p, K, landmarks):
 def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
                 upsample=1, smooth=0.0, bright=False, blank=None, despeckle=0,
                 seed=None, satellites=None, window=41, relief=None, seal=None, grow=0,
-                islets=None, islet_thr=110, dots=None, strip=0):
+                islets=None, islet_thr=110, dots=None, strip=0, channel=None, cut=None):
     """Isolate the island. On these charts land is a flat colour wash that
     nothing else nearby shares. Settlement cartouches are written *on* the
     island, so holes are filled: they are labels, not lakes."""
@@ -230,7 +230,49 @@ def island_mask(img, mode, thr, bbox, close, se="disk", open_r=0,
         # "core" became 1272 px of paper between strokes. 4-6 is a plateau,
         # 212-222 px, which is the islet.
         m |= ring_cores(a, islets, (x0, y0), upsample, "--islet", islet_thr)
+    if channel or cut:
+        m = cut_channel(m, a, channel, cut, (x0, y0), upsample)
     return m, (x0, y0)
+
+
+def cut_channel(m, a, seeds, cut, origin, upsample=1):
+    """Water the colourist washed over, taken back out of the island.
+
+    Moll's inset of Pepys Island (1711) draws two islands with a channel
+    between them, and the hand colouring runs the coastal yellow straight
+    across it, so the wash mode fills the channel as land. What is still
+    there is the engraving: the channel is bare of the hachures that cover
+    both islands. From each `seeds` point it floods through unhatched pixels
+    (ink, grey < 125, covering at most 10% of a 7 px window) inside the
+    island, and cuts that out. Paint out lettering written across the
+    channel first, or it bridges the two shores.
+
+    `cut` is a polyline of water drawn by hand, 7 px wide, for where the
+    engraving crowds the channel shut: the end of a coast line and a tree
+    symbol close Pepys' north-east outlet to 25 px. It is a liberty, like
+    `--seal`: record it."""
+    x0, y0 = origin
+    if seeds:
+        wall = uniform_filter((a.mean(axis=2) < 125).astype(np.float32), 7) > 0.10
+        start = np.zeros_like(m)
+        for sx, sy in seeds:
+            ly, lx = (sy - y0) * upsample, (sx - x0) * upsample
+            if wall[ly, lx] or not m[ly, lx]:
+                raise SystemExit(f"--channel {sx},{sy} is on hachures or off the island")
+            start[ly, lx] = True
+        m = m & ~binary_propagation(start, mask=~wall & m)
+    if cut:
+        line = Image.new("1", (m.shape[1], m.shape[0]), 0)
+        ImageDraw.Draw(line).line([((x - x0) * upsample, (y - y0) * upsample) for x, y in cut],
+                                  fill=1, width=7 * upsample)
+        m = m & ~np.asarray(line, bool)
+    # what lettering leaves in the channel after the cut — a serif, the tail
+    # of a "y" — would otherwise be written as islets of its own
+    lab = label(m)
+    for r in regionprops(lab):
+        if r.area < 200 * upsample ** 2:
+            m[lab == r.label] = False
+    return m
 
 
 def portolan_dots(a, island, reach):
@@ -747,7 +789,7 @@ def polar(a, chart):
                                  a.threshold, bbox, a.closing, a.se, a.open_r,
                                  a.upsample, a.smooth, a.bright, a.blank, a.despeckle,
                                  a.seed, window=a.window, relief=a.relief,
-                                 strip=a.strip)
+                                 strip=a.strip, channel=a.channel, cut=a.cut)
     ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
                                a.tolerance)
     if len(ring) > 3 and (ring[0] == ring[-1]).all():
@@ -833,8 +875,8 @@ def manual(a, chart):
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
                           islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
-                          strip=a.strip)
-    if a.satellites or a.islet or a.dots or a.mode == "ring":
+                          strip=a.strip, channel=a.channel, cut=a.cut)
+    if a.satellites or a.islet or a.dots or a.channel or a.cut or a.mode == "ring":
         rings = component_rings(mask, a.tolerance)
     else:
         ring = approximate_polygon(max(find_contours(mask.astype(float), 0.5), key=len),
@@ -927,6 +969,12 @@ def main():
     ap.add_argument("--seal", help="band mode: polylines of extra band where the chart "
                     "draws no coast, as 'x,y x,y ...' in source px, several separated "
                     "by ';'. A liberty — it IS the outline there; record it.")
+    ap.add_argument("--channel", help="colour modes: points in a channel the colourist "
+                    "washed over as land, as 'x,y;x,y' in source px. Flooded through "
+                    "unhatched pixels and cut out (Moll's Pepys Island, 1711)")
+    ap.add_argument("--cut", help="a polyline of water drawn by hand, 7 px wide, as "
+                    "'x,y x,y ...' in source px, where the engraving crowds a channel "
+                    "shut. A liberty — record it.")
     ap.add_argument("--relief-box", dest="relief",
                     help="x0,y0,x1,y1,r — density mode: close the notches that relief "
                          "drawn up to the shore leaves, inside this box only")
@@ -1022,6 +1070,9 @@ def main():
     a.islet = ([tuple(int(v) for v in s.split(",")) for s in a.islet.split(";")]
                if a.islet else None)
     a.relief = tuple(int(v) for v in a.relief.split(",")) if a.relief else None
+    a.channel = ([tuple(int(v) for v in q.split(",")) for q in a.channel.split(";")]
+                 if a.channel else None)
+    a.cut = [tuple(int(v) for v in q.split(",")) for q in a.cut.split()] if a.cut else None
     a.seal = ([[tuple(int(v) for v in p.split(",")) for p in line.split()]
                for line in a.seal.split(";")] if a.seal else None)
     a.drop_parts = tuple(int(v) for v in a.drop_parts.split(",")) if a.drop_parts else None
@@ -1053,7 +1104,7 @@ def main():
                           a.seed, a.satellites, window=a.window, relief=a.relief,
                           seal=a.seal, grow=a.grow if a.mode == "band" else 0,
                           islets=a.islet, islet_thr=a.islet_thr, dots=a.dots,
-                          strip=a.strip)
+                          strip=a.strip, channel=a.channel, cut=a.cut)
     rings = []
     for ring in component_rings(mask, a.tolerance):
         pass

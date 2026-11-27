@@ -350,7 +350,7 @@ earth.
 
 ## Adding an island
 
-Done thirty-one times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
+Done thirty-two times: `antillia`, `bermeja`, `nakanotorishima`, `frisland`,
 `kianida`, `hy-brasil`, `groclant`, `californie`, `coree`, `mayda`,
 `saint-brendan`, `buss`, `juan-de-lisboa`, `dos-romeiros`, `ile-des-demons`,
 `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
@@ -359,8 +359,9 @@ first island with no story, four islands in one entry), `satanazes` and
 `royllo` (Antillia's neighbours, each placed by its offset from Antillia on
 its own chart), `iles-de-la-compagnie-royale` (Arrowsmith 1814, three
 islets placed by the sheet's own Mercator graticule), `ile-de-sable` (no
-chart at all: the World Vector Shoreline's polygon, lifted unchanged), and
-`terre-de-davis`,
+chart at all: the World Vector Shoreline's polygon, lifted unchanged),
+`pepys` (Moll's 1711 inset, two islands with the channel the colourist
+washed over cut back out), and `terre-de-davis`,
 `crocker-land` and `bradley-land` as open coasts. `bacalao`, `los-jardines` and `zanara` were done
 in October 2026 in a run Étienne asked to go "without my input": every source
 and placement choice in them is Claude's, and their notes say so.
@@ -467,6 +468,17 @@ all general:
 - `--drop-parts i,j` discards satellites the georeference lands on real
   ground. Every part's centroid is printed so the choice is auditable. Two of
   Vinckeboons' Gulf islands come out 200 km inland in Arizona.
+- `--channel x,y;x,y` cuts back out water the colourist washed over as land:
+  Moll runs Pepys Island's coastal yellow straight across the channel
+  between its two islands. From each point it floods through the pixels the
+  engraver left unhatched (ink covering at most 10% of a 7 px window),
+  inside the island, and removes them; remnants under 200 px are dropped.
+  Paint out lettering written across the channel first ("Bay"), keeping the
+  box off both shores: a box 4 px too far south opened the flood into the
+  south island's interior.
+- `--cut "x,y x,y ..."` draws water by hand, 7 px wide, where the engraving
+  crowds a channel shut (a coast line's end and a tree symbol, at Pepys'
+  north-east outlet). A liberty, like `--seal`.
 
 ### The steps
 
@@ -709,6 +721,19 @@ python3 -I scripts/extract_gshhs.py ile-de-sable \
     --cdf ~/scratch/gshhs/gmt-gshhs-2.2.0/share/coast/binned_GSHHS_f.cdf \
     --bbox 159.8,-19.5,160.1,-19.0 --chart gshhs-2.2.0
 node scripts/drop_basemap_phantoms.mjs   # Natural Earth has it as land too
+
+# Pepys — Moll's 1711 inset of the drawing from Cowley's voyage. The
+# colourist's yellow coastal wash is the shore (the north-east flanks have no
+# engraved coast); it also fills Admiralty Bay, which is cut back out, and
+# the channel's crowded north-east end is opened by hand. 50 km across the
+# pair by Étienne's choice: the larger island is 19.8 km tall
+python3 scripts/trace_outline.py pepys --chart moll-1711 \
+    --image ~/scratch/charts/pepys/moll-1711-rumsey.jpg \
+    --mode blue --bright --threshold=-30 --smooth 2 --closing 3 \
+    --blank-box 6368,6806,6432,6834 --channel "6455,6792;6360,6835" \
+    --cut "6498,6780 6514,6762 6527,6742 6535,6722" \
+    --tolerance 1.5 --bbox 6260,6650,6800,6950 \
+    --height-km 19.8 --centre=-61.035,-47.496
 
 # Terre de Davis — an OPEN coast (trace_coast.py, not trace_outline.py):
 # Vaugondy's shore placed by his own graticule, the lettering and the
@@ -1242,13 +1267,13 @@ Two things went wrong during the move, both worth not repeating:
 
 ### The atlas
 
-- 41 islands with coordinates; 14 attested, 21 approximate, 6 conjectural
-- 31 outlines from depictions (three of them open coasts, one of four
+- 42 islands with coordinates; 14 attested, 22 approximate, 6 conjectural
+- 32 outlines from depictions (three of them open coasts, one of four
   islands, and `ile-de-sable` lifted from a digital coastline rather than
   traced), 6 shapes built from
   reports (`dougherty`, `emerald`, `nimrod`, `tuanaki`, `saxemberg`, and
   `rupes-nigra` from Mercator's text — see *Islands nobody drew*), 3 reefs (`jacquet` among them), and `aurora` as three
-  blobs at attested positions; 28 chart records in `scripts/charts/`
+  blobs at attested positions; 29 chart records in `scripts/charts/`
 - `californie` and `coree` replace the basemap rather than drawing over it
 - **31 of 35 written in French** — all 28 blog posts imported verbatim,
   47,269 words, with the 36 map plates from the posts in `public/iles/`
@@ -1308,7 +1333,9 @@ Two things went wrong during the move, both worth not repeating:
   the sheet's scale, 13 x 28 km the largest; no story), and `ile-de-sable`
   (Sandy Island: the World Vector Shoreline's polygon from GSHHS 2.2.0,
   6.3 x 27.6 km, unchanged; no story; Natural Earth's own copy of it dropped
-  from the basemap)
+  from the basemap), and `pepys` (Moll's 1711 inset of the drawing from
+  Cowley's voyage, two islands with Admiralty Bay between them, 50 km across
+  by Étienne's choice, placed off Patagonia by Moll's main map; no story)
 - **Île des Démons is placed by its story, not its charts.** The charts put it
   off the northern tip of Newfoundland, near Quirpon, and Gastaldi draws it
   ~470 km tall — read against Terra Nova on the same sheet it is nearly
@@ -1364,7 +1391,7 @@ Two things went wrong during the move, both worth not repeating:
    `saint-mathieu`, `bacalao`, `los-jardines`, `zanara`, `elizabeth`, `thule`,
    `ile-aux-vaches`, `terre-de-davis`, `crocker-land`, `bradley-land`,
    `maria-de-lajara`, `phelipeaux-et-pontchartrain`, `satanazes`, `royllo`,
-   `iles-de-la-compagnie-royale`, `ile-de-sable`. The rest are built from their reports or drawn as
+   `iles-de-la-compagnie-royale`, `ile-de-sable`, `pepys`. The rest are built from their reports or drawn as
    reefs (November 2026), so no default blob is left; a new island starts as
    one. An island nobody agreed on the shape of should still look vague in
    its coastline, which a described shape invents and says so.
@@ -1409,7 +1436,8 @@ Two things went wrong during the move, both worth not repeating:
    rather than a charting error, and kept it for the story; the four polar
    islands are not drawn, since they reach 78 N across the real Arctic),
    ~~Saxemberg~~ (done November 2026, Long's 1809 description at
-   Lindeman's 1670 position, both by Étienne's choice), Pepys,
+   Lindeman's 1670 position, both by Étienne's choice), ~~Pepys~~ (done
+   November 2026, from Moll's 1711 inset, two islands, 50 km),
    Thompson, Sannikov Land, Isla Grande (La Roché, 1675); **probably** —
    Middle Island (Powell 1822), Colunas, Willoughby's Land and Matsyn;
    **not sure** — Candyn, Récif Schjetman, Sarah Ann, Podesta and Yosemite

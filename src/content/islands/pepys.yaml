@@ -1,0 +1,40 @@
+name_fr: "L'île Pepys"
+name_en: "Pepys Island"
+kind: island
+ocean: atlantique-sud
+coords: [-61.07, -47.47]
+span: [1684, 1764]
+coords_confidence: approximate
+coords_note: >-
+  Where Moll's South Sea Company map of 1711 puts "Pepys Isle", the same
+  sheet the shape comes from. Latitude from its own Mercator graticule,
+  47.47 S, which agrees with Cowley's manuscript (47 40 S; his log says 47).
+  Longitude by the island's offset from the coast Moll draws, 4.7 degrees
+  east of his Cabo Blanco, laid off from the real cape (65.75 W): 61.07 W.
+  Moll's longitudes run about 5 degrees west along that coast, so read raw
+  they would put the island on Patagonia. Cowley gave no longitude; Hacke's
+  1687 roll says eighty leagues from the shore, and Halley's charts of
+  1701-02 draw a speck near 47 S, not measured here. Open sea on the
+  Patagonian shelf, about 350 km off the coast and 390 km north of the
+  Falklands, which most think Cowley actually saw. `span` runs from
+  Cowley's sighting (January 1684 by the modern calendar) to Byron's search
+  of 1764, after which he was "certain that there could be no such island".
+outline_note: >-
+  Traced from the inset "Peypses or Pepys I." on Herman Moll's A New & Exact
+  Map ... of ye South Sea Company (1711, Rumsey 9729.014), the drawing from
+  Cowley's voyage that Moll had first engraved for Hacke's Collection of
+  Original Voyages (1699). Chosen by Étienne over that 1699 printing, which
+  survives here only on a black-and-white microfilm cut off at its east end.
+  Two islands, by his choice: Moll leaves Admiralty Bay open at its
+  north-east end, so it reads as a channel between a north-western island
+  (Mount Charles, Peyps's Tableland) and a larger south-eastern one (Mount
+  James), as Parker describes Hacke's 1687 manuscript; Hacke 1699 appears to
+  close it, but the microfilm is too dark to be sure. Extracted from the
+  colourist's yellow coastal wash, with the channel cut back out of it (the
+  wash runs across it) and the "Bay" lettering painted out. LIBERTIES: the
+  channel's north-east outlet is drawn by hand for about 25 px (3 km), where
+  a coast line's end and a tree symbol crowd it shut; and the size, 50 km
+  across the pair (the larger island 45 x 20 km), is chosen by Étienne, since
+  nothing gives one: the inset has no scale and Moll's main map draws a
+  symbol. North-up as drawn: Moll's line marked N.W.-S.E. is not read as a
+  compass, since north-up puts the harbour "on the SW coast", as Cowley says.
